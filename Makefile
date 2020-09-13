@@ -1,13 +1,13 @@
 CXX=g++
 all: test
-python: 
-	$(CXX) -O3 -Wall -std=c++11 -fPIC "python3 -m pybind11 --includes" example.cpp -o example"python3-config --extension-suffix"
 test: test.o complex.o vector.o diff.o
-	$(CXX) -o test test.o complex.o vector.o diff.o
+	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o
+test.o:
+	$(CXX) -c test.cpp -o Build/test.o
 diff.o: Calc/diff.cpp
-	$(CXX) -c Calc/diff.cpp
+	$(CXX) -c Calc/diff.cpp -o Build/diff.o
 complex.o: LA/complex.cpp
-	$(CXX) -c LA/complex.cpp
+	$(CXX) -c LA/complex.cpp -o Build/complex.o
 vector.o: LA/vector.cpp
-	$(CXX) -c LA/vector.cpp
+	$(CXX) -c LA/vector.cpp -o Build/vector.o
 
