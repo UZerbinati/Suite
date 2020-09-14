@@ -1,14 +1,15 @@
 #include <cmath>
+#include <string>
 #include "complex.hpp"
 
 
 //Override the default constructor
 
-Complex::Complex()
+/*Complex::Complex()
 {
 	real = 0.0;
 	imag = 0.0;
-}
+}*/
 
 //Constructor that assign the value to the complex number as z=x+iy
 Complex::Complex(double x,double y)
@@ -56,7 +57,7 @@ Complex Complex::pow(double n) const
 	rho = abs();
 	phi = arg();
 	
-	Complex z;
+	Complex z(0,0);
 	z.polar(std::pow(rho,n),n*phi);
 	return z;
 }
@@ -65,7 +66,7 @@ Complex Complex::pow(double n) const
 
 Complex Complex::operator-(const Complex& z) const
 {
-	Complex w;
+	Complex w(0,0);
 
 	w.real = real - z.real;
 	w.imag = imag - z.imag;
@@ -77,7 +78,7 @@ Complex Complex::operator-(const Complex& z) const
 
 Complex Complex::operator+(const Complex& z) const
 {
-	Complex w;
+	Complex w(0,0);
 
 	w.real = real + z.real;
 	w.imag = imag + z.imag;
@@ -117,4 +118,10 @@ bool Complex::operator==(const Complex& other) const
 std::ostream& operator<< (std::ostream& output, const Complex& z) 
 {
 	output << "(" << z.real << ", " << z.imag << "i)";
+}
+//to String function
+std::string Complex::toString() const
+{
+	std::string str = "("+std::to_string(real)+","+std::to_string(imag)+")";
+	return str;
 }

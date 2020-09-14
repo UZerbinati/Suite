@@ -1,5 +1,5 @@
 CXX=g++
-all: test
+all: test python
 test: test.o complex.o vector.o diff.o
 	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o
 python: 

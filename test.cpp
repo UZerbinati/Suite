@@ -9,7 +9,7 @@ double f(double x)
 
 int main()
 {
-	std::cout << "----------------------" << std::endl << "| Testing PDESUITE |" << std::endl << "----------------------" <<std::endl;
+	std::cout << "----------------------" << std::endl << "| Testing SUITE |" << std::endl << "----------------------" <<std::endl;
 	std::cout << "Testing complex number library [ ]" << std::endl;
 	Complex z(1,1);
 	bool ComplexFlag;
