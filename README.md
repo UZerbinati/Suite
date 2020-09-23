@@ -11,3 +11,10 @@ We begin building PyBind11:
 	make
 We now can build the Suite:
 	make
+## Description of Prj structure
+- Build, contains the pre-linked compiled classes used in the project.
+- Calc, contains classes related to calculus.
+- LA, contains classes related to linear algebra and numerical linear algebra.
+- Dependencies, contains pybind11 (as git module)
+- Py, cotains the suite.cpp file that is the PyBind11 binder and the build folder contains the wrap of the suite library for Python.
+- test.cpp and suite.hpp are file used to keep track of all the things implemented in library and check if they work correctly.
