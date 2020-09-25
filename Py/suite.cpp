@@ -12,6 +12,9 @@
 #include "../LA/vector.hpp"
 #include "../LA/vector.cpp"
 
+#include "../LA/matrix.hpp"
+#include "../LA/matrix.cpp"
+
 class Test
 {
 	private:
@@ -55,13 +58,14 @@ PYBIND11_MODULE(suite, module) {
     //VECTOR
     py::class_<vec>(module, "vec")
 	    .def(py::init <int>())
-	    .def("__eq__", [](vec& a, vec&b){
-			    a = b;
-	    },py::is_operator())
 	    .def(py::self + py::self)
 	    .def(py::self - py::self)
 	    .def(py::self*double())
 	    .def(double()*py::self)
+	    .def("__eq__", [](vec& a, vec&b){
+			    a = b;
+	    },py::is_operator())
+	    .def("norm", &vec::norm)
 	    .def("len", &vec::getLen)
     	    .def("__getitem__", [](vec &a, int i) {
 			    double value;
@@ -74,6 +78,30 @@ PYBIND11_MODULE(suite, module) {
 	    .def("from_Array", [](vec &a,std::vector<double> array) {
 			    a.from_Array(array.data(), array.size());
 		})
+	    .def("free", &vec::free)
 	    .def("__repr__", &vec::toString);
+    //MATRIX
+    py::class_<mat>(module, "mat")
+	    .def(py::init <int, int>())
+	    .def("__eq__", [](mat& a, mat&b){
+			    a = b;
+	    },py::is_operator())
+	    .def(py::self + py::self)
+	    .def(py::self - py::self)
+	    .def(py::self * double())
+	    .def("free", &mat::free)
+    	    .def("__getitem__", [](mat &M, std::vector<int> index) {
+			    double value;
+			    value = M.getItem(index.data(),index.size());
+			    return value;
+		}, py::is_operator())
+	    .def("__repr__", &mat::toString)
+	    .def("toString", &mat::toString)
+    	    .def("from_Array", [](mat &M, std::vector<double> array) {
+			    M.from_Array(array.data(), array.size());
+		}, py::is_operator())
+    	    .def("__setitem__", [](mat &M, std::vector<int> idx,double value) {
+			    M.setItem(idx.data(),idx.size(), value);
+		}, py::is_operator());
 
 }

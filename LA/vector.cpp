@@ -13,10 +13,10 @@ vec::vec (int vlen){
 	}
 }
 //Override the destructur operator to free memory
-/*vec::~vec()
-{
-	delete[] data;
-}*/
+vec::~vec()
+{	
+	//Dummy due to problm with PyBind11
+}
 //Method to get the size of a vector
 int vec::getLen() const
 {
@@ -95,10 +95,37 @@ std::string vec::toString()
 	out = out+std::to_string(data[len-1])+")";
 	return out;
 }
+//Function that computes the p-norm (in a very un-efficient way)
+double vec::norm(double p)
+{
+	if (p > 0){
+		double S;
+
+		S = 0;
+		for(int i=0;i < len;i++){
+			S = S+pow(abs(data[i]),p);
+		}
+		return pow(S,1/p);
+	}
+	if(p == 0){
+		double max;
+		max =  data[0];
+		for (int i=0; i < len;i++){
+			if (data[i] > max){
+				max = data[i];
+			}
+		}
+		return max;
+	}
+}
 
 
 //overide mutplication on the left, using friend
 vec operator*(double lambda,const vec& a)
 {
 	return a*lambda;
+}
+void vec::free(){
+	std::cout << "Freeing memory" << std::endl;
+	delete[] data;
 }

@@ -1,7 +1,7 @@
 CXX=g++
 all: test python
-test: test.o complex.o vector.o diff.o
-	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o
+test: test.o complex.o vector.o diff.o matrix.o
+	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o Build/matrix.o
 python: 
 	$(CXX) -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` Py/suite.cpp -o Py/Build/suite`python3-config --extension-suffix`
 
@@ -13,4 +13,5 @@ complex.o: LA/complex.cpp
 	$(CXX) -c LA/complex.cpp -o Build/complex.o
 vector.o: LA/vector.cpp
 	$(CXX) -c LA/vector.cpp -o Build/vector.o
-
+matrix.o: LA/matrix.cpp
+	$(CXX) -c LA/matrix.cpp -o Build/matrix.o

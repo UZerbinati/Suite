@@ -3,14 +3,14 @@
 ## Build
 To build this project we first have to build first the dependencies.
 We begin building PyBind11:
-	cd Dependencies
-	cd pybind11
-	mkdir build
-	cd build
-	cmake ..
-	make
+- cd Dependencies
+- cd pybind11
+- mkdir build
+- cd build
+- cmake ..
+- make
 We now can build the Suite:
-	make
+- make
 ## Description of Prj structure
 - Build, contains the pre-linked compiled classes used in the project.
 - Calc, contains classes related to calculus.

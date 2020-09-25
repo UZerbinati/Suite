@@ -118,5 +118,11 @@ int main()
 		std::cout << "\t --subtraction vector operation [!]" << std::endl;
 		VecFlag = VecFlag && false;
 	}
+
+
+	mat M(3,3);
+	M(1,1) = 1; M(2,2) = 2; M(3,3)=3;
+	std::cout << "("<< M.getHeight() << "," << M.getWidth() << ")" << std::endl;
+	std::cout << M.toString() << std::endl;
 	return 0;
 }
