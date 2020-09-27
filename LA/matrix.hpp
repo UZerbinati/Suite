@@ -11,6 +11,7 @@ class mat
 		double *data;
 	public:
 		mat(int n,int m);
+		mat();
 		~mat();
 		int getHeight();
 		int getWidth();

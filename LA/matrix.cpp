@@ -9,6 +9,8 @@ mat::mat(int n,int m)
 		data[i]=0;
 	}
 }
+mat::mat(){
+}
 mat::~mat()
 {
 	

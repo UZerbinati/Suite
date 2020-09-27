@@ -12,6 +12,8 @@ vec::vec (int vlen){
 		data[i] = 0.0;
 	}
 }
+vec::vec(){
+}
 //Override the destructur operator to free memory
 vec::~vec()
 {	

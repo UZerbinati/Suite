@@ -15,6 +15,9 @@
 #include "../LA/matrix.hpp"
 #include "../LA/matrix.cpp"
 
+#include "../LA/linearsys.hpp"
+#include "../LA/linearsys.cpp"
+
 class Test
 {
 	private:
@@ -104,4 +107,12 @@ PYBIND11_MODULE(suite, module) {
 			    M.setItem(idx.data(),idx.size(), value);
 		}, py::is_operator());
 
+    py::class_<LinSys>(module, "LinSys")
+	    .def(py::init <mat&, vec&>())
+	    .def("BackSub", &LinSys::BackSub)
+	    .def("Gauss", &LinSys::Gauss)
+	    .def("setType", &LinSys::setType)
+	    .def("getMatrix", &LinSys::getMatrix)
+	    .def("__repr__", &LinSys::toString);
+	
 }

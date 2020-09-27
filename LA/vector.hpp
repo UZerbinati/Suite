@@ -8,6 +8,7 @@ class vec
 		int len;
 	public:
 		vec(int vlen);
+		vec();
 		~vec();
 		int getLen() const;
 		double& operator[] (int i);
