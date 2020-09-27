@@ -289,12 +289,12 @@ examples, the first three are provided in Lecture 6 of the Numerical
 Linear Algebra course at KAUST. The aim of the first three example would
 be to show the difference between "naive" Gaussian elimination, Gaussian
 elimination with partial pivoting and Gaussian elimination with complete
-pivoting. Unfortunately those example where imaged for a 3-decimal
+pivoting. Unfortunately those example where designed for a 3-decimal
 floating point arithmetic while the matrix, vector and linear system
-classes were implemented in a double precision arithmetics. For this
+classes were implemented in a double precision arithmetic. For this
 reason we introduce Example 4 and Example 5, which should show the
 advantage respectively of partial and complete pivoting in a double
-precision arithmetics. We will use two function of the linear system
+precision arithmetic. We will use two function of the linear system
 class, the first is Gauss(int n) that perform the Gaussian elimination,
 where the number n identify the type of pivoting we wont: - n = 0, we do
 Naive Gaussian elimination; - n = 1, we do partial Gaussian elimination
@@ -511,11 +511,11 @@ the linear system using "naive" Gaussian elimination.
 \end{Verbatim}
             
     We clearly find the wrong answer, this is because when subtracting the
-first row the second row we yield \(1-1*10^20\), which can't be
+first row the second row we yield \(1-10^{20}\), which can't be
 represented exactly in double precision (IEEE754 has a 15--17 decimals
 precision). To avoid this we simply perform Gaussian elimination with
-partial pivoting where since we swap the two rows of the matrix we end
-up immediately with an upper triangular matrix.
+partial pivoting. Since we swap the two rows of the matrix we end up
+immediately with an upper triangular matrix.
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}15}]:} \PY{n}{A} \PY{o}{=} \PY{n}{mat}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{;}
