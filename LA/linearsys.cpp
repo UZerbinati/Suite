@@ -3,6 +3,8 @@
 
 LinSys::LinSys(mat &M, vec &v){
 	type = "GENERIC";
+	ml = 0;
+	mr = 0;
 	assert(M.getWidth() == v.getLen() && "Error: dimension missmatch");
 	A = new mat(M.getHeight(),M.getWidth());
 	A = &M;
@@ -10,7 +12,14 @@ LinSys::LinSys(mat &M, vec &v){
 	b = &v;
 }
 void LinSys::setType(std::string value){
-	type = value;
+	if(value=="UPPER"){
+		type="BAND";
+		ml = 0;
+		mr = A->getHeight()-1;
+
+	}else{
+		type=value;
+	}
 }
 std::string LinSys::toString(){
 	std::string out = "";
@@ -45,29 +54,33 @@ vec LinSys::BackSub(){
 	m = M.getHeight();	
 	vec x(n);
 
-	if (type == "UPPER"){
-		x[n] = v[n]/M(n,n);
-		for(int i=n-1; 0 < i; i--){
-			S = v[i];
-			for(int j=m; 0 < j;j--){
-				S = S-M(i,j)*x[j];
+	if (type == "BAND"){
+		if(ml==0 && mr== n-1 && n==m){
+			x[n] = v[n]/M(n,n);
+			for(int i=n-1; 0 < i; i--){
+				S = v[i];
+				for(int j=m; 0 < j;j--){
+					S = S-M(i,j)*x[j];
+				}
+				x[i] = S/M(i,i);
 			}
-			x[i] = S/M(i,i);
 		}
 		return x;
-	} else if (type == "PIVOT-UPPER"){
-		x[n] = v[n]/M(n,n);
-		for(int i=n-1; 0 < i; i--){
-			S = v[i];
-			for(int j=m; 0 < j;j--){
-				S = S-M(i,j)*x[j];
+	} else if (type == "PIVOT-BAND"){
+		if(ml==0 && mr== n-1 && n==m){
+			x[n] = v[n]/M(n,n);
+			for(int i=n-1; 0 < i; i--){
+				S = v[i];
+				for(int j=m; 0 < j;j--){
+					S = S-M(i,j)*x[j];
+				}
+				x[i] = S/M(i,i);
 			}
-			x[i] = S/M(i,i);
-		}
-		for(int k=0; k< m-1; k++){
-			tmp = x[k+1];
-			x[k+1] = x[P[k]];
-			x[P[k]] = tmp;
+			for(int k=0; k< m-1; k++){
+				tmp = x[k+1];
+				x[k+1] = x[P[k]];
+				x[P[k]] = tmp;
+			}
 		}
 	}else{
 		std::cout << "Error: Matrix must be upper triangular for backword sub" << std::endl;
@@ -109,7 +122,9 @@ void LinSys::Gauss(int pivoting){
 				}
 			}
 		}	
-		type = "UPPER";
+		type = "BAND";
+		ml = 0;
+		mr = n-1;
 	}
 	if (pivoting == 1){
 		for (int k=1; k < m; k++){
@@ -146,7 +161,9 @@ void LinSys::Gauss(int pivoting){
 			}
 		std::cout << M.toString() << std::endl;
 		}
-		type = "UPPER";
+		type = "BAND";
+		ml = 0;
+		mr = n-1;
 	}
 	if (pivoting == 2){
 		for (int k=1; k < m; k++){
@@ -182,7 +199,9 @@ void LinSys::Gauss(int pivoting){
 			}
 		std::cout << M.toString() << std::endl;
 		}
-		type = "UPPER";
+		type = "BAND";
+		ml = 0;
+		mr = n-1;
 	}
 	if (pivoting == 3){
 		pivotIndex = 0;
@@ -232,6 +251,8 @@ void LinSys::Gauss(int pivoting){
 			}
 		std::cout << M.toString() << std::endl;
 		}
-		type = "PIVOT-UPPER";
+		type = "PIVOT-BAND";
+		ml = 0;
+		mr = n-1;
 	}
 }

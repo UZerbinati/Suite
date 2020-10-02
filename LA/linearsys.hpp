@@ -10,6 +10,8 @@ class LinSys
 		vec *b;
 		std::string type;
 		int *P;
+		int ml;
+		int mr;
 	public:
 		LinSys(mat &M, vec &v);
 		vec BackSub();

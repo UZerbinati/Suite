@@ -12,7 +12,9 @@ cmake ..
 make
 ```
 We now can build the Suite:
-- make
+```console
+make
+```
 ## Description of Prj structure
 - Build, contains the pre-linked compiled classes used in the project.
 - Calc, contains classes related to calculus.
