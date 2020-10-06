@@ -1,6 +1,7 @@
 #include "../suite.hpp"
 #include "matrix.hpp"
 #include <iostream>
+#include <omp.h>
 
 mat::mat(int n,int m)
 {
@@ -105,6 +106,24 @@ vec operator*(const mat &M,const vec &v){
 			}
 		}
 	}else{
+		
+		#pragma omp parallel
+		{
+		    double w_prv[M.height];
+		    int i,j;
+		    for (i = 0; i < M.width; i++) {
+			#pragma omp for
+			for (j = 0; j < M.height; j++) {
+			    w_prv[j] =w_prv[j]+ M.data[M.width*i+j]*v.getData(j);
+			}
+		    }
+		    #pragma omp critical
+		    {
+			for(i=0; i<M.height; i++){
+				result[i+1] += w_prv[i];
+			}    
+		}
+		}	
 	}
 	return result;
 }

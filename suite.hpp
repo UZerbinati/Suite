@@ -3,4 +3,3 @@
 #include "LA/matrix.hpp"
 #include "LA/linearsys.hpp"
 #include "Calc/diff.hpp"
-
