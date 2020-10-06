@@ -18,8 +18,8 @@
 #include "../LA/linearsys.hpp"
 #include "../LA/linearsys.cpp"
 
-#include "../Parallel/LA.hpp"
-#include "../Parallel/LA.cpp"
+#include "../Parallel/Test.hpp"
+#include "../Parallel/Test.cpp"
 
 class Test
 {
