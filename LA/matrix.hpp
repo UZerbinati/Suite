@@ -3,11 +3,13 @@
 
 #include <cassert>
 #include <string>
+
 class mat
 {
 	private:
 		int height;
 		int width;
+		bool parallel;
 		double *data;
 	public:
 		mat(int n,int m);
@@ -24,6 +26,10 @@ class mat
 		mat operator+(const mat &A) const;
 		mat operator-(const mat &A) const;
 		mat operator*(const double lam) const;
+		friend vec operator*(const mat &M,const vec &v);
 		void free();
+		void SetParallel(bool set);
+		bool GetParallel();
 };
+		vec operator*(const mat &M,const vec &v);
 #endif

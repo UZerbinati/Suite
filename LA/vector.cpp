@@ -131,3 +131,6 @@ void vec::free(){
 	std::cout << "Freeing memory" << std::endl;
 	delete[] data;
 }
+double vec::getData(int j) const{
+	return data[j];
+}

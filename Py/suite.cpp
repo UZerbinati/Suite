@@ -18,6 +18,9 @@
 #include "../LA/linearsys.hpp"
 #include "../LA/linearsys.cpp"
 
+#include "../Parallel/LA.hpp"
+#include "../Parallel/LA.cpp"
+
 class Test
 {
 	private:
@@ -36,6 +39,19 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(suite, module) {
     module.attr("release") = "0.0.1";
+    module.def("ParallelTest", []() {
+      /* Release GIL before calling into C++ code */
+      py::gil_scoped_release release;
+      ParallelTest();
+    });
+    module.def("parallel_calc_pi", [](int n) {
+      /* Release GIL before calling into C++ code */
+      py::gil_scoped_release release;
+      return parallel_calc_pi(n);
+    });
+    module.def("calc_pi", [](int n) {
+      return calc_pi(n);
+    });
     py::class_<Test>(module, "Test")
 	    .def(py::init <double, double>());
     //COMPLEX NUMBERS
@@ -103,10 +119,14 @@ PYBIND11_MODULE(suite, module) {
     	    .def("from_Array", [](mat &M, std::vector<double> array) {
 			    M.from_Array(array.data(), array.size());
 		}, py::is_operator())
+    	    .def("__mul__", [](mat &M, vec &v) {
+			    return M*v;
+		}, py::is_operator())
     	    .def("__setitem__", [](mat &M, std::vector<int> idx,double value) {
 			    M.setItem(idx.data(),idx.size(), value);
-		}, py::is_operator());
-
+		}, py::is_operator())
+	    .def_property("parallel", &mat::GetParallel, &mat::SetParallel);
+    //LINSYS
     py::class_<LinSys>(module, "LinSys")
 	    .def(py::init <mat&, vec&>())
 	    .def("BackSub", &LinSys::BackSub)

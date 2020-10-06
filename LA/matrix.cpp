@@ -1,9 +1,11 @@
+#include "../suite.hpp"
 #include "matrix.hpp"
 #include <iostream>
 
 mat::mat(int n,int m)
 {
 	height = n; width = m;
+	parallel = false;
 	data = new double[n*m];	
 	for(int i=0; i < n*m;i++){
 		data[i]=0;
@@ -94,6 +96,18 @@ mat mat::operator*(const double lam) const{
 	}
 	return result;
 }
+vec operator*(const mat &M,const vec &v){
+	vec result(M.height);
+	if (M.parallel == false){
+		for (int k=0; k < M.width; k++){
+			for (int j=0; j < M.height; j++){
+				result[k+1] = result.getData(k) + M.data[M.width*k+j]*v.getData(j);
+			}
+		}
+	}else{
+	}
+	return result;
+}
 mat& mat::operator=(const mat &A){
 	for(int i=0; i < height*width; i++){
 		data[i] = A.data[i];
@@ -102,4 +116,10 @@ mat& mat::operator=(const mat &A){
 }
 void mat::free(){
 	delete[] data;
+}
+void mat::SetParallel(bool set){
+	parallel = set;
+}
+bool mat::GetParallel(){
+	return parallel;
 }

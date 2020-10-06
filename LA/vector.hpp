@@ -21,6 +21,7 @@ class vec
 		double norm(double p);
 		std::string toString();
 		void free();
+		double getData(int j) const;
 
 };
 
