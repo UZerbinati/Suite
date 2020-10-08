@@ -6,6 +6,7 @@ class vec
 	private:
 		double* data;
 		int len;
+		bool Parallel;
 	public:
 		vec(int vlen);
 		vec();
@@ -17,11 +18,14 @@ class vec
 		vec operator+ (const vec& addendum) const;
 		vec operator-(const vec& othervec) const;
 		vec operator*(const double lambda) const;
+		double operator*(const vec& u) const;
 		friend vec operator*(double lambda, vec& a);
 		double norm(double p);
 		std::string toString();
 		void free();
 		double getData(int j) const;
+		void SetParallel(bool set);
+		bool GetParallel();
 
 };
 

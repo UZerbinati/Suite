@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cassert>
 #include <string>
+#include <omp.h>
 #include "vector.hpp"
 
 //Allocates memory for a new vector given the length, in particular all create vector zero.
@@ -11,6 +12,7 @@ vec::vec (int vlen){
 	for (int i=0; i < len; i++){
 		data[i] = 0.0;
 	}
+	Parallel = false;
 }
 vec::vec(){
 }
@@ -127,10 +129,40 @@ vec operator*(double lambda,const vec& a)
 {
 	return a*lambda;
 }
+//overide multiplication on vector
+double vec::operator*(const vec &u) const{
+	double S;
+	S=0.0;
+	assert(len == u.getLen() && "Vector must have the same length");
+	if (!Parallel){	
+		for (int k=0; k < len; k++){
+			std::cout << "("<<data[k]<<","<<u.getData(k)<<")->"<<data[k]*u.getData(k) << std::endl;
+			S = S+data[k]*u.getData(k);
+			std::cout << S << std::endl;
+		}	
+	}else{
+		#pragma omp parallel shared(S)
+		{
+			#pragma omp for reduction(+: S)
+			for (int k=0; k < len;k++){
+				S += data[k]*u.getData(k);
+			}	
+		}
+	}
+	return S;	
+}
+
 void vec::free(){
 	std::cout << "Freeing memory" << std::endl;
 	delete[] data;
 }
 double vec::getData(int j) const{
 	return data[j];
+}
+
+void vec::SetParallel(bool set){
+	Parallel = true;
+}
+bool vec::GetParallel(){
+	return Parallel;
 }

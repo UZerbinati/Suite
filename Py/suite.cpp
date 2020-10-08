@@ -80,6 +80,9 @@ PYBIND11_MODULE(suite, module) {
 	    .def(py::self - py::self)
 	    .def(py::self*double())
 	    .def(double()*py::self)
+    	    .def("__mul__", [](vec &v,vec &u) {
+			    return v*u;
+		}, py::is_operator())
 	    .def("__eq__", [](vec& a, vec&b){
 			    a = b;
 	    },py::is_operator())
@@ -97,7 +100,8 @@ PYBIND11_MODULE(suite, module) {
 			    a.from_Array(array.data(), array.size());
 		})
 	    .def("free", &vec::free)
-	    .def("__repr__", &vec::toString);
+	    .def("__repr__", &vec::toString)
+	    .def_property("parallel", &vec::GetParallel, &vec::SetParallel);
     //MATRIX
     py::class_<mat>(module, "mat")
 	    .def(py::init <int, int>())
@@ -129,6 +133,7 @@ PYBIND11_MODULE(suite, module) {
     py::class_<LinSys>(module, "LinSys")
 	    .def(py::init <mat&, vec&>())
 	    .def("BackSub", &LinSys::BackSub)
+	    .def("ForwardSub", &LinSys::ForwardSub)
 	    .def("Gauss", &LinSys::Gauss)
 	    .def("setType", &LinSys::setType)
 	    .def("getMatrix", &LinSys::getMatrix)

@@ -17,6 +17,11 @@ void LinSys::setType(std::string value){
 		ml = 0;
 		mr = A->getHeight()-1;
 
+	}else if(value=="LOWER"){
+		type="BAND";
+		ml = A->getHeight()-1;
+		mr = 0;
+		
 	}else{
 		type=value;
 	}
@@ -84,6 +89,49 @@ vec LinSys::BackSub(){
 		}
 	}else{
 		std::cout << "Error: Matrix must be upper triangular for backword sub" << std::endl;
+	}
+
+}
+vec LinSys::ForwardSub(){
+	/*This function solve a linear ssstem using forward substituion, therefore A needs to be lawer triangular. 
+	 *
+	 * Example of the alg
+	 * -------------------
+	 * Ax = b
+	 * [ 4 0 0  [a    [1
+	 *   2 1 0   b  =  2
+	 *   3 2 1]  c]    3]
+	 *
+	 *   a = 1/4;
+	 *   b = (2-2*a)/1;
+	 *   a = (1-2*b+3*c)/1;
+	 */ 
+	int n;
+	int m;
+	double tmp;
+	double S;
+	mat M = *A; //We do this to make bracket usable.
+	vec v = *b;
+
+	n = M.getWidth();
+	m = M.getHeight();	
+	vec x(n);
+
+	if (type == "BAND"){
+		std::cout << ml << "," << mr << std::endl;
+		if(ml==n-1 && mr== 0 && n==m){
+			x[1] = v[1]/M(1,1);
+			for(int i=2; i< n+1; i++){
+				S = v[i];
+				for(int j=1; j<i;j++){
+					S = S-M(i,j)*x[j];
+				}
+				x[i] = S/M(i,i);
+			}
+		}
+		return x;
+	}else{
+		std::cout << "Error: Matrix must be lower triangular for forward sub" << std::endl;
 	}
 
 }
