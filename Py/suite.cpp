@@ -17,8 +17,11 @@
 
 #include "../LA/linearsys.hpp"
 #include "../LA/linearsys.cpp"
+#include "../LA/decomposition.hpp"
+#include "../LA/decomposition.cpp"
 
 #include "../Parallel/Test.cpp"
+#include "../Parallel/LA.cpp"
 
 class Test
 {
@@ -112,6 +115,7 @@ PYBIND11_MODULE(suite, module) {
 	    .def(py::self - py::self)
 	    .def(py::self * double())
 	    .def("free", &mat::free)
+	    .def("T", &mat::transpose)
     	    .def("__getitem__", [](mat &M, std::vector<int> index) {
 			    double value;
 			    value = M.getItem(index.data(),index.size());
@@ -138,5 +142,17 @@ PYBIND11_MODULE(suite, module) {
 	    .def("setType", &LinSys::setType)
 	    .def("getMatrix", &LinSys::getMatrix)
 	    .def("__repr__", &LinSys::toString);
+    //DECOMPOSITION
+    module.def("GS", [](mat A) {
+	return GS(A);
+    });
+    module.def("Cholesky", [](mat A) {
+	return Cholesky(A);
+    });
+    module.def("ParallelGS", [](mat A) {
+      /* Release GIL before calling into C++ code */
+      	py::gil_scoped_release release;
+	return ParallelGS(A);
+    });
 	
 }

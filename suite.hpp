@@ -2,4 +2,5 @@
 #include "LA/vector.hpp"
 #include "LA/matrix.hpp"
 #include "LA/linearsys.hpp"
+#include "LA/decomposition.hpp"
 #include "Calc/diff.hpp"

@@ -30,6 +30,10 @@ class mat
 		void free();
 		void SetParallel(bool set);
 		bool GetParallel();
+		void pushColumn(vec &a,int i);
+		vec getColumn(int i);
+		mat transpose();
 };
 		vec operator*(const mat &M,const vec &v);
+
 #endif

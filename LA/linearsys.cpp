@@ -3,6 +3,7 @@
 
 LinSys::LinSys(mat &M, vec &v){
 	type = "GENERIC";
+	sym = false;
 	ml = 0;
 	mr = 0;
 	assert(M.getWidth() == v.getLen() && "Error: dimension missmatch");
@@ -21,9 +22,10 @@ void LinSys::setType(std::string value){
 		type="BAND";
 		ml = A->getHeight()-1;
 		mr = 0;
-		
+	}else if(value=="SYM"){
+		sym = true;	
 	}else{
-		type=value;
+		std::cout << "Error: " << value << "not a Matrix type." << std::endl;
 	}
 }
 std::string LinSys::toString(){

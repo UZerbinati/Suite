@@ -142,3 +142,24 @@ void mat::SetParallel(bool set){
 bool mat::GetParallel(){
 	return parallel;
 }
+void mat::pushColumn(vec &a,int i){
+	for (int k=0;k < height;k++){
+		data[width*k+i-1] = a[k+1];
+	}	
+}
+vec mat::getColumn(int i){
+	vec result(height);
+	for (int k=0; k < height;k++){
+		result[k+1] = data[width*k+i-1];
+	}
+	return result;
+}
+mat mat::transpose(){
+	mat A(width,height);
+	for (int k=0; k < height;k++){
+		for (int n=0; n < width; n++){
+			A(n+1,k+1) = data[width*k+n];
+		}	
+	}
+	return A;
+}

@@ -103,13 +103,26 @@ std::string vec::toString()
 double vec::norm(double p)
 {
 	if (p > 0){
-		double S;
+		if (!Parallel){
+			double S;
 
-		S = 0;
-		for(int i=0;i < len;i++){
-			S = S+pow(abs(data[i]),p);
+			S = 0;
+			for(int i=0;i < len;i++){
+				S = S+pow(abs(data[i]),p);
+			}
+			return pow(S,1/p);
+		}else{
+			double S;
+			S = 0;
+			#pragma omp parallel shared(S)
+			{
+				#pragma omp for reduction(+: S)
+				for (int k=0; k < len;k++){
+					S += pow(abs(data[k]),p);
+				}	
+			}
+			return pow(S,1/p);	
 		}
-		return pow(S,1/p);
 	}
 	if(p == 0){
 		double max;
@@ -136,9 +149,7 @@ double vec::operator*(const vec &u) const{
 	assert(len == u.getLen() && "Vector must have the same length");
 	if (!Parallel){	
 		for (int k=0; k < len; k++){
-			std::cout << "("<<data[k]<<","<<u.getData(k)<<")->"<<data[k]*u.getData(k) << std::endl;
 			S = S+data[k]*u.getData(k);
-			std::cout << S << std::endl;
 		}	
 	}else{
 		#pragma omp parallel shared(S)
@@ -153,7 +164,6 @@ double vec::operator*(const vec &u) const{
 }
 
 void vec::free(){
-	std::cout << "Freeing memory" << std::endl;
 	delete[] data;
 }
 double vec::getData(int j) const{

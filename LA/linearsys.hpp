@@ -12,6 +12,7 @@ class LinSys
 		int *P;
 		int ml;
 		int mr;
+		bool sym;
 	public:
 		LinSys(mat &M, vec &v);
 		vec BackSub();
@@ -20,6 +21,7 @@ class LinSys
 		mat getMatrix();
 		void setType(std::string value);
 		void Gauss(int pivoting);
+		vec Solve();
 
 };
 

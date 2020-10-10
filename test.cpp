@@ -124,5 +124,11 @@ int main()
 	M(1,1) = 1; M(2,2) = 2; M(3,3)=3;
 	std::cout << "("<< M.getHeight() << "," << M.getWidth() << ")" << std::endl;
 	std::cout << M.toString() << std::endl;
+
+
+	vec e(3);
+	e[1] = 1.0; e[3] = 1.0;
+	e = e*3.0;
+	std::cout << e.toString() << std::endl;
 	return 0;
 }
