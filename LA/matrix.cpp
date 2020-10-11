@@ -133,6 +133,26 @@ mat& mat::operator=(const mat &A){
 	}
 	return *this;
 }
+mat mat::operator*(const mat &A) const{
+	/*
+	 * [a b c  [1 2 3
+	 *  d e f   4 5 6
+	 *  g h i]  7 8 9]
+	 */
+	assert(width == A.height && "Error: dimension missmatch.");
+	mat B(height,A.width);
+	double S;
+	for (int i=1; i<height+1; i++){
+		for (int j=1; j < A.width+1;j++){
+			S = 0.0; 
+			for (int k=1; k<width+1;k++){
+				S += data[width*(i-1)+k-1]*A.data[A.width*(k-1)+j-1];
+			}		
+			B(i,j) = S;
+		}	
+	}
+	return B;
+}
 void mat::free(){
 	delete[] data;
 }

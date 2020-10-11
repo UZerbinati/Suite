@@ -129,6 +129,9 @@ PYBIND11_MODULE(suite, module) {
     	    .def("__mul__", [](mat &M, vec &v) {
 			    return M*v;
 		}, py::is_operator())
+    	    .def("__mul__", [](mat &A, mat &B) {
+			    return A*B;
+		}, py::is_operator())
     	    .def("__setitem__", [](mat &M, std::vector<int> idx,double value) {
 			    M.setItem(idx.data(),idx.size(), value);
 		}, py::is_operator())
@@ -149,10 +152,16 @@ PYBIND11_MODULE(suite, module) {
     module.def("Cholesky", [](mat A) {
 	return Cholesky(A);
     });
+    //PARALLEL
     module.def("ParallelGS", [](mat A) {
       /* Release GIL before calling into C++ code */
       	py::gil_scoped_release release;
 	return ParallelGS(A);
+    });
+    module.def("ParallelChol", [](mat A) {
+      /* Release GIL before calling into C++ code */
+      	py::gil_scoped_release release;
+	return ParallelChol(A);
     });
 	
 }

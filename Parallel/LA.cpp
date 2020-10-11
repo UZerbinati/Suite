@@ -1,8 +1,35 @@
 #include "../suite.hpp"
 #include <omp.h>
+#include <cmath>
 #include <tuple>
 
-//TODO Implement parallel Cholesky-Courant
+
+mat ParallelChol(mat &A){
+	assert(A.getHeight() == A.getWidth() && "Error: Matrix must be square to perform cholesky");
+	assert(A(1,1) > 0 && "Error: Matrix must be positive definite");
+
+	//Init L matrix that we are going to fill.
+	mat L(A.getHeight(),A.getHeight());
+	double S; double R;
+	int k; int n;
+	for (int j=1; j < A.getHeight()+1; j++){
+		S = 0.0;
+		for (k=1;k < j; k++){
+			S = S + L(j,k)*L(j,k); //We compute the sum \sum_{k=1}^{j-1} L_{j,k}^2}
+
+		}
+		L(j,j) = sqrt(A(j,j)-S); //We compute the diagonal element using L_{j,j} = \sqrt{A_{j,j} - \sum_{k=1}^{j-1} L_{j,k}^2}
+		#pragma omp parallel for private(n,k,R) shared (A,L,j) schedule (static)
+		for (n=j+1; n < A.getHeight()+1; n++){
+			R = 0.0;
+			for (int k=1;k < j; k++){
+				R = R + L(n,k)*L(j,k); //We compute \sum_{k=1}^{j-1} L_{n,k}L_{j,k}
+			}
+			L(n,j) = (A(n,j)-R)/L(j,j); //We compute the non diagonal element using L_{j,j}L_{n,j} = A_{n,j} -\sum_{k=1}^{j-1} L_{n,k}L_{j,k} for n > j
+		}
+	}
+	return L;
+}
 
 std::tuple<mat,mat> ParallelGS(mat &A){
 	//Init Q and R

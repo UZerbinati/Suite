@@ -26,6 +26,7 @@ class mat
 		mat operator+(const mat &A) const;
 		mat operator-(const mat &A) const;
 		mat operator*(const double lam) const;
+		mat operator*(const mat &A) const;
 		friend vec operator*(const mat &M,const vec &v);
 		void free();
 		void SetParallel(bool set);
