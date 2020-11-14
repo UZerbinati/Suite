@@ -11,17 +11,18 @@
 
 #include "../LA/vector.hpp"
 #include "../LA/vector.cpp"
-
 #include "../LA/matrix.hpp"
 #include "../LA/matrix.cpp"
-
 #include "../LA/linearsys.hpp"
 #include "../LA/linearsys.cpp"
 #include "../LA/decomposition.hpp"
 #include "../LA/decomposition.cpp"
+#include "../Parallel/LA.cpp""
+#include "../LA/sparse.hpp"
+#include "../LA/sparse.cpp"
 
 #include "../Parallel/Test.cpp"
-#include "../Parallel/LA.cpp"
+
 
 class Test
 {
@@ -136,6 +137,19 @@ PYBIND11_MODULE(suite, module) {
 			    M.setItem(idx.data(),idx.size(), value);
 		}, py::is_operator())
 	    .def_property("parallel", &mat::GetParallel, &mat::SetParallel);
+    //SPARSE MATRIX
+    py::class_<spmat>(module, "spmat")
+	    .def(py::init <int, int>())
+	    .def("__repr__", &spmat::toString)
+	    .def("toString", &spmat::toString)
+    	    .def("__setitem__", [](spmat &M, std::vector<int> idx,double value) {
+			    M.setItem(idx.data(),idx.size(), value);
+		}, py::is_operator())
+    	    .def("__getitem__", [](spmat &M, std::vector<int> index) {
+			    double value;
+			    value = M.getItem(index.data(),index.size());
+			    return value;
+		}, py::is_operator());
     //LINSYS
     py::class_<LinSys>(module, "LinSys")
 	    .def(py::init <mat&, vec&>())
