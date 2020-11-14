@@ -16,10 +16,12 @@ class spmat
 		spmat(int n,int m);
 		spmat();
 		~spmat();
-		double& operator()(unsigned i, unsigned j);
+		double& operator()(int i, int j);
+		double& getData(int i,int j);
 		void setItem(int *idx,int size, double data);
 		double& getItem(int *idx, int size);
+		friend vec operator*(const spmat &M, const vec &v);
 		std::string toString();
 };
-
+vec operator*(const spmat &M, const vec &v);
 #endif

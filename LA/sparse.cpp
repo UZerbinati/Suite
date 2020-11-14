@@ -70,7 +70,15 @@ spmat::spmat(){
 spmat::~spmat(){
 
 }
-double& spmat::operator() (unsigned i, unsigned j)
+double& spmat::operator() (int i, int j)
+{
+	int k;
+	k = (width*(i-1))+j-1;
+	int m = find(P,p,k);
+	return value[m];
+}
+
+double& spmat::getData (int i, int j)
 {
 	int k;
 	k = (width*(i-1))+j-1;
@@ -101,22 +109,22 @@ void spmat::setItem(int *idx,int size, double data){
 	double *new_value;
 	k = (width*(idx[0]-1))+idx[1]-1;
 	int m = find(P,p,k);
-	std::cout << "m: " << m << ", p:" << p<<std::endl;
+	//std::cout << "m: " << m << ", p:" << p<<std::endl;
 	if (m == -1){
 		new_P = new int[p+1];
 		new_value = new double[p+1];
 		for (int l=0;l < p;l++){
 			new_P[l] = P[l];
-			std::cout << "P[" << l << "]: " << P[l] << std::endl;
-			std::cout << "new_P[" << l << "]: " << new_P[l] << std::endl;
+			//std::cout << "P[" << l << "]: " << P[l] << std::endl;
+			//std::cout << "new_P[" << l << "]: " << new_P[l] << std::endl;
 			new_value[l] =  value[l];
-			std::cout << "value[" << l << "]: " << value[l] << std::endl;
-			std::cout << "new_value[" << l << "]: " << new_value[l] << std::endl;
+			//std::cout << "value[" << l << "]: " << value[l] << std::endl;
+			//std::cout << "new_value[" << l << "]: " << new_value[l] << std::endl;
 		}
 		new_P[p] = k;
 		new_value[p] = data;
-		std::cout << "new_P[" << p << "]: " << new_P[p] << std::endl;
-		std::cout << "new_value[" << p << "]: " << new_value[p] << std::endl;
+		//std::cout << "new_P[" << p << "]: " << new_P[p] << std::endl;
+		//std::cout << "new_value[" << p << "]: " << new_value[p] << std::endl;
 		p=p+1;
 
 		delete []P;
@@ -132,6 +140,18 @@ void spmat::setItem(int *idx,int size, double data){
 	}else{
 		value[m] = data;
 	}
+}
+vec operator*(const spmat &M, const vec &v){
+	vec result(M.height);
+	int j = 0;
+	int i = 0;
+	for (int k=0; k < M.p; k++){
+		i = (M.P[k]%M.width+1);
+		j = (M.P[k]/M.height+1);
+		int m = find(M.P,M.p,M.P[k]);
+		result[i] = result[i] + M.value[m]*v.getData(j-1);
+	}	
+	return result;
 }
 std::string spmat::toString(){	
 	std::string out;

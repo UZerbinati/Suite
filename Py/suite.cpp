@@ -145,6 +145,9 @@ PYBIND11_MODULE(suite, module) {
     	    .def("__setitem__", [](spmat &M, std::vector<int> idx,double value) {
 			    M.setItem(idx.data(),idx.size(), value);
 		}, py::is_operator())
+    	    .def("__mul__", [](spmat &M, vec &v) {
+			    return M*v;
+		}, py::is_operator())
     	    .def("__getitem__", [](spmat &M, std::vector<int> index) {
 			    double value;
 			    value = M.getItem(index.data(),index.size());
