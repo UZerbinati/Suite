@@ -178,6 +178,9 @@ PYBIND11_MODULE(suite, module) {
     module.def("GauBSiedel", [](spmat A, vec b, vec x0,int itmax,double eps) {
 	return GauBSiedel(A,b,x0,itmax,eps);
     },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.000001);
+    module.def("SOR", [](spmat A, vec b, vec x0,double w,int itmax,double eps) {
+	return SOR(A,b,x0,w,itmax,eps);
+    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("w"),py::arg("itmax")=20,py::arg("eps")=0.000001);
     //PARALLEL
     module.def("ParallelGS", [](mat A) {
       /* Release GIL before calling into C++ code */
