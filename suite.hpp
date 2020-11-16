@@ -3,4 +3,6 @@
 #include "LA/matrix.hpp"
 #include "LA/linearsys.hpp"
 #include "LA/decomposition.hpp"
+#include "LA/sparse.hpp"
+#include "LA/iteractive.hpp"
 #include "Calc/diff.hpp"

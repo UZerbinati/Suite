@@ -77,7 +77,12 @@ double& spmat::operator() (int i, int j)
 	int m = find(P,p,k);
 	return value[m];
 }
-
+int spmat::getWidth(){
+	return width;
+}
+int spmat::getHeight(){
+	return height;
+}
 double& spmat::getData (int i, int j)
 {
 	int k;
@@ -133,8 +138,8 @@ void spmat::setItem(int *idx,int size, double data){
 		P = new_P;
 		value = new_value;
 
-		std::cout << "P[" << p-1 << "]: " << P[p-1] << std::endl;
-		std::cout << "value[" << p-1 << "]: " << value[p-1] << std::endl;
+		//std::cout << "P[" << p-1 << "]: " << P[p-1] << std::endl;
+		//std::cout << "value[" << p-1 << "]: " << value[p-1] << std::endl;
 
 		pairsort(P,value,p);
 	}else{

@@ -24,6 +24,7 @@ class vec
 		std::string toString();
 		void free();
 		double getData(int j) const;
+		void setData(double value, int j) const;
 		void SetParallel(bool set);
 		bool GetParallel();
 

@@ -16,6 +16,8 @@ class spmat
 		spmat(int n,int m);
 		spmat();
 		~spmat();
+		int getWidth();
+		int getHeight();
 		double& operator()(int i, int j);
 		double& getData(int i,int j);
 		void setItem(int *idx,int size, double data);

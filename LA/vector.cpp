@@ -169,7 +169,9 @@ void vec::free(){
 double vec::getData(int j) const{
 	return data[j];
 }
-
+void vec::setData(double value, int j) const{
+	data[j] = value;
+}
 void vec::SetParallel(bool set){
 	Parallel = true;
 }

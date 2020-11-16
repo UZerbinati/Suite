@@ -20,6 +20,8 @@
 #include "../Parallel/LA.cpp""
 #include "../LA/sparse.hpp"
 #include "../LA/sparse.cpp"
+#include "../LA/iteractive.hpp"
+#include "../LA/iteractive.cpp"
 
 #include "../Parallel/Test.cpp"
 
@@ -169,6 +171,13 @@ PYBIND11_MODULE(suite, module) {
     module.def("Cholesky", [](mat A) {
 	return Cholesky(A);
     });
+    //ITERACTIVE
+    module.def("Jacobi", [](spmat A, vec b, vec x0,int itmax,double eps) {
+	return Jacobi(A,b,x0,itmax,eps);
+    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.000001);
+    module.def("GauBSiedel", [](spmat A, vec b, vec x0,int itmax,double eps) {
+	return GauBSiedel(A,b,x0,itmax,eps);
+    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.000001);
     //PARALLEL
     module.def("ParallelGS", [](mat A) {
       /* Release GIL before calling into C++ code */
