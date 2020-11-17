@@ -45,7 +45,7 @@ vec Jacobi(spmat &A,vec b,vec guess,int JacobiIT,double eps){
 	}
 	return x;
 }
-vec GauBSiedel(spmat &A,vec b,vec guess,int itmax,double eps){
+vec GauBSeidel(spmat &A,vec b,vec guess,int itmax,double eps){
 	/*	|GAUSS-SIEDEL METHOD|
 	 *	L^{*}x_{k+1} = Ux_{k}]
 	 *	where D=diag(A), L is the lower triangular part of A,
@@ -74,8 +74,8 @@ vec GauBSiedel(spmat &A,vec b,vec guess,int itmax,double eps){
 	return x;
 }
 vec SOR(spmat &A,vec b,vec guess,double omega,int itmax,double eps){
-	assert(omega < 2 && "Relaxation parameters must be smaller then 2.");
-	assert(1< omega && "Relaxation parameters must be greater then 1.");
+	assert(omega <= 2 && "Relaxation parameters must be smaller then 2.");
+	assert(0<= omega && "Relaxation parameters must be greater then 1.");
 	vec x(guess.getLen());
 	int k = 0;
 	double S = 0;

@@ -16,7 +16,7 @@ matrix.o: LA/matrix.cpp
 	$(CXX) -c LA/matrix.cpp -o Build/matrix.o
 linearsys.o: vector.o matrix.o LA/linearsys.cpp
 	$(CXX) -c LA/linearsys.cpp -o Build/linearsys.o
-decomposition.o: LA/decomposition.o
+decomposition.o: matrix.o
 	$(CXX) -c LA/decomposition.cpp -o Build/decomposition.o
 LAParallel.o: vector.o matrix.o
 	$(CXX) -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` -c Parallel/LA.cpp -fopenmp -o Build/LAParallel.o

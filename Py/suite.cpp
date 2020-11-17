@@ -106,6 +106,7 @@ PYBIND11_MODULE(suite, module) {
 			    a.from_Array(array.data(), array.size());
 		})
 	    .def("free", &vec::free)
+	    .def("toString", &vec::toString)
 	    .def("__repr__", &vec::toString)
 	    .def_property("parallel", &vec::GetParallel, &vec::SetParallel);
     //MATRIX
@@ -175,8 +176,8 @@ PYBIND11_MODULE(suite, module) {
     module.def("Jacobi", [](spmat A, vec b, vec x0,int itmax,double eps) {
 	return Jacobi(A,b,x0,itmax,eps);
     },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.000001);
-    module.def("GauBSiedel", [](spmat A, vec b, vec x0,int itmax,double eps) {
-	return GauBSiedel(A,b,x0,itmax,eps);
+    module.def("GauBSeidel", [](spmat A, vec b, vec x0,int itmax,double eps) {
+	return GauBSeidel(A,b,x0,itmax,eps);
     },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.000001);
     module.def("SOR", [](spmat A, vec b, vec x0,double w,int itmax,double eps) {
 	return SOR(A,b,x0,w,itmax,eps);
