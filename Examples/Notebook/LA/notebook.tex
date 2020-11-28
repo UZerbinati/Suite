@@ -1,0 +1,691 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Iterative}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{\texorpdfstring{Iterative Methods - Jacobi and
+Gau\(\beta\)-Siedel}{Iterative Methods - Jacobi and Gau\textbackslash{}beta-Siedel}}\label{iterative-methods---jacobi-and-gaubeta-siedel}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{sys}
+        \PY{n}{sys}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../../../Py/Build}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k+kn}{from} \PY{n+nn}{suite} \PY{k}{import} \PY{o}{*}
+\end{Verbatim}
+
+
+    \subsection{Jacobi Method}\label{jacobi-method}
+
+Here we study the Jacobi method applied to the the following linear
+system: \[A\vec{x} = \vec{b}\]
+\[\begin{bmatrix}3 & 1 & 1 \\ 0 & -2 & 1 \\ 2 & -2 & 5\end{bmatrix}\vec{x}= \begin{bmatrix}2\\0\\10 \end{bmatrix}\]
+where we chose the null vector as initial guess \(\vec{x}_{0}\). In the
+next code we declare the objects we are going to use (in particular
+notice that sparse matrices were implemented to work with iterative
+methods and \(A\) is defined as a sparse matrix).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{A} \PY{o}{=} \PY{n}{spmat}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{;}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{A}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{A}\PY{p}{)}
+        
+        \PY{n}{b} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+        \PY{n}{b}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{b}\PY{p}{)}
+        \PY{n}{x0} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x0}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x0:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{x0}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+A
+ [0,(1,1)]->3.000000
+[1,(1,2)]->1.000000
+[2,(1,3)]->-1.000000
+[3,(2,1)]->0.000000
+[4,(2,2)]->-2.000000
+[5,(2,3)]->1.000000
+[6,(3,1)]->2.000000
+[7,(3,2)]->-2.000000
+[8,(3,3)]->5.000000
+
+b: (2.000000,0.000000,10.000000)
+x0: (0.000000,0.000000,0.000000)
+x: (1.000000,1.000000,2.000000)
+
+    \end{Verbatim}
+
+    In the next line the method implementing the Jacobi function, wrapped
+from C++ using PyBind11, is invoked. In particular we observe that the
+Jacobi method converges to the correct solution.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{Jacobi}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}3}]:} (1.000000,1.000000,2.000000)
+\end{Verbatim}
+            
+    We can give a theoretical explanation to why the Jacobi method,
+converges. We study the Jacobi method written as a fixed-point iteration
+(it can also be written as a descent method, hopefully I'll be able to
+implement it soon.): \[\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\] where
+the iteration matrix is defined as \(B = I - C^{-1}A\),
+\(\vec{c} = C^{-1}b\), the matrix \(C\) is called the preconditioner. In
+the Jacobi method we choose \(C = diag(A)\) and therefore we obtain
+that:
+\[B = -D^{-1}(L+R) = -\begin{bmatrix}\frac{1}{3} & 0 & 0 \\ 0 & -\frac{1}{2} & 0 \\ 0 & 0 & \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 & 1 & -1 \\ 0 & 0 & 1 \\ 2 & -2 & 0 \end{bmatrix}=\begin{bmatrix}0 & -\frac{1}{3} & \frac{1}{3} \\ 0 & 0 & \frac{1}{2} \\ -\frac{2}{5} & \frac{2}{5} & 0 \end{bmatrix}\]
+Now observe that the fix-iteration theorem grants the convergence of the
+Jacobi method if \(\rho(B)<1\), there are different ways to prove this
+fact. First one can observe that the Gershgorin circles theorem grants
+us that:
+\[|\lambda_1|\leq \frac{2}{5}< 1\qquad\qquad |\lambda_2|\leq \frac{11}{15}< 1\qquad\qquad |\lambda_3|\leq \frac{5}{6}< 1\]
+which grants us that \(\rho(B)<1\). An other approach would be an
+analytical study of the characteristic polynomial, given by:
+\[p(\lambda) = -\lambda^3-\frac{\lambda}{30}+\frac{1}{15}\] Last we can
+compute numerically the eigenvalue of \(B\), to obtain
+\(\lambda_{1,2,3} = \{-0.22999765+i0.30336462,-0.22999765-i0.30336462,0.45999531\}\),
+which yield \(\rho(B) = 0.45999531\). Knowing the exact value of
+\(\rho(B)\) we can compare the convergence of our implementation of the
+Jacobi method with the estimates provided by the fixed-iteration
+theorem: \[||\vec{x}_n - x|| \leq \rho(B)^n||x_0-x||\]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{JacobiErr} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+        \PY{n}{ErrEst} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{:}
+            \PY{n}{err} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+            \PY{n}{err} \PY{o}{=} \PY{n}{Jacobi}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+            \PY{n}{JacobiErr} \PY{o}{=} \PY{n}{JacobiErr} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+            \PY{n}{ErrEst} \PY{o}{=} \PY{n}{ErrEst}\PY{o}{+}\PY{p}{[}\PY{p}{(}\PY{l+m+mf}{0.45999531}\PY{o}{*}\PY{o}{*}\PY{n}{i}\PY{p}{)}\PY{o}{*}\PY{n}{x}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{JacobiErr}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{ErrEst}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Jacobi Method}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fixed\PYZhy{}Iteration Error estimate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Jacobi Method}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:} Text(0.5,1,'Jacobi Method')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_7_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Gauss-Seidel}\label{gauss-seidel}
+
+Once again we try to solve the linear system mentioned above, but this
+time we use the Gauss-Seidel method: \[A\vec{x} = \vec{b}\]
+\[\begin{bmatrix}3 & 1 & 1 \\ 0 & -2 & 1 \\ 2 & -2 & 5\end{bmatrix}\vec{x}= \begin{bmatrix}2\\0\\10 \end{bmatrix}\]
+In the following line we define the the matrix \(A\) and the vectors
+\(\vec{x0}\) and \(\vec{b}\), then we run the GauBSeidel function which
+wraps the C++ implementation of the Gauss-Seidel method.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{A} \PY{o}{=} \PY{n}{spmat}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{;}
+        \PY{n}{b} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+        \PY{n}{b}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x0} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x0}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{GauBSeidel}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}6}]:} (1.000000,1.000000,2.000000)
+\end{Verbatim}
+            
+    Like we did for the Jacobi method we'd like to mathematically that the
+method must converge, to do this we rewrite the Gauss-Seidel method as a
+fixed-point iteration: \[\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\] where
+the iteration matrix is defined as \(B = I - C^{-1}A\),
+\(\vec{c} = C^{-1}b\), the matrix \(C\) is called the preconditioner. In
+particular in the Gauss-Seidel method we choose \(C=(D+L)^{-1}\), which
+imply:
+\[B = -(D+L)^{-1}R = -\begin{bmatrix}\frac{1}{3} & 0 & 0 \\ 0 & -\frac{1}{2} & 0 \\ -\frac{2}{5} & -\frac{1}{5} & \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 & 1 & -1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}=-\begin{bmatrix}0 & -\frac{1}{3} & -\frac{1}{3} \\ 0 & 0 & -\frac{1}{2} \\ 0 & -\frac{2}{5} & -\frac{1}{15} \end{bmatrix}\]
+we once again use the Greshgorin circles theorem to obtain the following
+estimates:
+\[|\lambda_1|=0 \qquad\qquad |\lambda_2|\leq \frac{7}{15}< 1\qquad\qquad |\lambda_3+\frac{1}{15}|\leq \frac{5}{6}\Rightarrow|\lambda_3|\leq \frac{1}{15}+\frac{5}{6}=\frac{27}{30}<1\]
+This imply that \(\rho(B)<1\) and therefore the fixed-point iterations
+theorem, grants us that the Gauss-Seidel method converges. Furthermore
+we can compute the eigenvalues of \(B\), \(\{0,0.2270,0.2937\}\), to use
+error estimates above provided, i.e.
+\[||\vec{x}_n - x|| \leq \rho(B)^n||x_0-x||\]
+\[||\vec{x}_n - x|| \leq (0.2937)^n||x_0-x||\]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{GSErr} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+        \PY{n}{ErrEst} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+        \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{:}
+            \PY{n}{err} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+            \PY{n}{err} \PY{o}{=} \PY{n}{GauBSeidel}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+            \PY{n}{GSErr} \PY{o}{=} \PY{n}{GSErr} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+            \PY{n}{ErrEst} \PY{o}{=} \PY{n}{ErrEst}\PY{o}{+}\PY{p}{[}\PY{p}{(}\PY{l+m+mf}{0.2937}\PY{o}{*}\PY{o}{*}\PY{n}{i}\PY{p}{)}\PY{o}{*}\PY{n}{x}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{GSErr}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{ErrEst}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gauss\PYZhy{}Seidel Method}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fixed\PYZhy{}Iteration Error Estimate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gauss\PYZhy{}Seidel Method}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}7}]:} Text(0.5,1,'Gauss-Seidel Method')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Successive Over Relaxation (SOR)
+Method}\label{successive-over-relaxation-sor-method}
+
+We now apply the SOR method to solve the linear system
+\(A\vec{x}=\vec{b}\) where: \[A=\begin{bmatrix}4 & 1 & 0 & -1 & 0 & 0\\
+-1& 4 & -1 & 0 & -1 & 0\\
+0 & -1 & 4 & 0 & 0 & 1\\
+-1 & 0 & 0 & 4 & -1 & 0\\
+0 & -1 & 0 & -1 & 4& -1\\
+0 & 0 & -1 & 0 & -1 & 4\\
+\end{bmatrix}\qquad\qquad \vec{b}=\begin{bmatrix}1\\0\\0\\0\\0\\0\end{bmatrix}\]
+In the following line we define the the matrix \(A\) and the vectors
+\(\vec{x0}\) and \(\vec{b}\), then we run the SOR function which wraps
+the C++ implementation of the successive relaxation method.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{A} \PY{o}{=} \PY{n}{spmat}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;}
+        \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}
+        \PY{n}{b} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{;}
+        \PY{n}{b}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x0} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x0}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{;}
+        \PY{n}{x}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.294824}\PY{p}{,}\PY{l+m+mf}{0.093168}\PY{p}{,}\PY{l+m+mf}{0.028157}\PY{p}{,}\PY{l+m+mf}{0.086128}\PY{p}{,}\PY{l+m+mf}{0.049689}\PY{p}{,}\PY{l+m+mf}{0.019462}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{SOR}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{l+m+mf}{1.4}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}9}]:} (0.294824,0.093168,0.028157,0.086128,0.049689,0.019462)
+\end{Verbatim}
+            
+    We now study the iteration matrix corresponding to the Jacobi method
+\(B\), to find the optimal choice of \(\omega\), in particular we
+observe that:
+\[\omega_{OPT} = 1+\Bigg(\frac{\rho(B)}{1+\sqrt{1-\rho(B)^2}}\Bigg)\] so
+we compute \(D^{-1}(R+L)\):
+\[B=D^{-1}(R+L)=\begin{bmatrix}0 & -\frac{1}{4} & 0 & -\frac{1}{4} & 0 & 0\\
+-\frac{1}{4}& 0 & -\frac{1}{4} & 0 & -\frac{1}{4} & 0\\
+0 & -\frac{1}{4} & 0 & 0 & 0 & -\frac{1}{4}\\
+-\frac{1}{4} & 0 & 0 & 0 & 0 & 0\\
+0 & -\frac{1}{4} & 0 & -\frac{1}{4} & 0& -\frac{1}{4}\\
+0 & 0 & -\frac{1}{4} & 0 & -\frac{1}{4} & 0\\
+\end{bmatrix}\] which has a single eigenvalue
+\(\lambda_{1,2,3,4}=\frac{1}{4}\) and therefore \(\rho(B)=\frac{1}{4}\).
+Plugging \(\rho(B)=\frac{1}{4}\) in the equation for \(\omega_{OPT}\) we
+obtain that \(\omega_{OPT}=1.02048\)
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{:}
+             \PY{n+nb}{print}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{p}{(}\PY{n}{SOR}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{l+m+mf}{1.02048}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{toString}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{;}
+             \PY{k}{if}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{p}{(}\PY{n}{SOR}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{l+m+mf}{1.02048}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{)}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{)}\PY{o}{\PYZlt{}}\PY{l+m+mf}{1e\PYZhy{}4}\PY{p}{)}\PY{p}{:}
+                 \PY{k}{break}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+1 (-0.039704,-0.028082,-0.011552,-0.021042,-0.016479,-0.006711)
+2 (-0.011719,-0.009567,-0.003926,-0.006763,-0.005551,-0.002238)
+3 (-0.003926,-0.003224,-0.001323,-0.002279,-0.001871,-0.000727)
+4 (-0.001324,-0.001087,-0.000446,-0.000768,-0.000631,-0.000217)
+5 (-0.000446,-0.000367,-0.000150,-0.000259,-0.000212,-0.000046)
+
+    \end{Verbatim}
+
+    Running the above code we notice that at the after the 4-th iteration
+the SOR method with optimal \(\omega\) yield the correct solution after
+the 4-th significant digit.
+
+    \subsection{\texorpdfstring{Jacobi and Gau\(\beta\)-Seidel in
+\(\mathbb{R}^{2\times 2}\)}{Jacobi and Gau\textbackslash{}beta-Seidel in \textbackslash{}mathbb\{R\}\^{}\{2\textbackslash{}times 2\}}}\label{jacobi-and-gaubeta-seidel-in-mathbbr2times-2}
+
+Let us consider \(A\in\mathbb{R}^{2\times 2}\) and a vector
+\(b\in\mathbb{R}^{2}\), in particular we assume \(A\) has general shape:
+\[ A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}\] Now we study the
+iteration matrix corresponding to the Jacobi method
+\(B=I-C^{-1}A=I-D^{-1}A=-D^{-1}(R+L)\):
+\[B=-\begin{bmatrix}a & 0\\0&d\end{bmatrix}^{-1}\begin{bmatrix}0 & b\\c & 0\end{bmatrix}=-\begin{bmatrix}\frac{1}{a} & 0\\0&\frac{1}{d}\end{bmatrix}\begin{bmatrix}0 & b\\c & 0\end{bmatrix}=\begin{bmatrix}0 & -\frac{b}{a}\\-\frac{c}{d} & 0\end{bmatrix}\]
+we now can compute the eigenvalue of the matrix \(B\) as follow:
+\[\det\begin{pmatrix}-\lambda & -\frac{b}{a}\\-\frac{c}{d} & -\lambda\end{pmatrix}=\lambda^2-\frac{bc}{ad}=0\]
+this imply that the eigenvalue of \(B\) are \(\pm \sqrt{\frac{bc}{ad}}\)
+and therefore \(\rho(B)\) is given by: \[\rho(B) = |\frac{bc}{ad}|\] and
+therefore using the fix-point iteration theorem the Jacobi method
+converge if and only if: \[\rho(B) = |\frac{bc}{ad}|<1\] We now study
+the iteration matrix for the Gauss-Seidel method,
+\(B=I-C^{-1}A=-(D+L)^{-1}R\):
+\[ (D+L) = \begin{bmatrix} a & 0 \\ c & d \end{bmatrix}\qquad\qquad R = \begin{bmatrix} 0 & b \\ 0 & 0 \end{bmatrix}\]
+now we compute \((D+L)^{-1}\) and \((D+L)^{-1}R\):
+\[(D+L)^{-1} = \frac{1}{ad}\begin{bmatrix}d & 0 \\ -c & a\end{bmatrix}\qquad\qquad (D+L)^{-1}R=\begin{bmatrix}0 & \frac{bd}{ad} \\ 0 & -\frac{bc}{ad}\end{bmatrix}\]
+now we compute the eigenvalue of \(B\) from the characteristic
+polynomial:
+\[\det\begin{bmatrix}-\lambda & \frac{bd}{ad} \\ 0 & -\lambda - \frac{bc}{ad} \end{bmatrix}=-\lambda (-\lambda - \frac{bc}{ad})=0\]
+now the eigenvalues are \(\lambda_{1,2} = \{0,\frac{bc}{ad}\}\), and
+therefore \(\rho(B)=|\frac{bc}{ad}|\), once again by the fixed-point
+iteration theorem the Gauss-Seidel method converge if and only if
+\(\rho(B)=|\frac{bc}{ad}|<1\).
+
+    \subsection{\texorpdfstring{Jacobi VS
+Gau\(\beta\)-Seidel}{Jacobi VS Gau\textbackslash{}beta-Seidel}}\label{jacobi-vs-gaubeta-seidel}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{A} \PY{o}{=} \PY{n}{spmat}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{;}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{;}    \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{;}
+         \PY{n}{b} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+         \PY{n}{b}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+         \PY{n}{x0} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+         \PY{n}{x0}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+         \PY{n}{x} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+         \PY{n}{x}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{JacobiErr} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+         \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{:}
+             \PY{n}{err} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+             \PY{n}{err} \PY{o}{=} \PY{n}{Jacobi}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+             \PY{n}{JacobiErr} \PY{o}{=} \PY{n}{JacobiErr} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{GSErr} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}
+         \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{:}
+             \PY{n}{err} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{;}
+             \PY{n}{err} \PY{o}{=} \PY{n}{GauBSeidel}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+             \PY{n}{GSErr} \PY{o}{=} \PY{n}{GSErr} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{JacobiErr}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{GSErr}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Jacobi Method}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gauss\PYZhy{}Seidel Method}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Jacobi Method VS Gauss\PYZhy{}Seidel Method}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}14}]:} Text(0.5,1,'Jacobi Method VS Gauss-Seidel Method')
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Relaxation Parameters}\label{relaxation-parameters}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{A} \PY{o}{=} \PY{n}{spmat}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{)}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;}
+         \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{;}  \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{;} \PY{n}{A}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{]}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{;}
+         \PY{n}{b} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{;}
+         \PY{n}{b}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+         \PY{n}{x0} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{;}
+         \PY{n}{x0}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+         \PY{n}{x} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{;}
+         \PY{n}{x}\PY{o}{.}\PY{n}{from\PYZus{}Array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{0.294824}\PY{p}{,}\PY{l+m+mf}{0.093168}\PY{p}{,}\PY{l+m+mf}{0.028157}\PY{p}{,}\PY{l+m+mf}{0.086128}\PY{p}{,}\PY{l+m+mf}{0.049689}\PY{p}{,}\PY{l+m+mf}{0.01942}\PY{p}{]}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{Err1} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+         \PY{n}{Err2} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+         \PY{n}{Err3} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+         \PY{n}{Err4} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+         \PY{n}{ErrOpt} \PY{o}{=} \PY{p}{[}\PY{n}{x}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+         \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{:}
+             \PY{n}{err} \PY{o}{=} \PY{n}{vec}\PY{p}{(}\PY{l+m+mi}{6}\PY{p}{)}\PY{p}{;}
+             \PY{n}{err} \PY{o}{=} \PY{n}{SOR}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{l+m+mf}{0.4}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+             \PY{n}{Err1} \PY{o}{=} \PY{n}{Err1} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+             \PY{n}{err} \PY{o}{=} \PY{n}{SOR}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{l+m+mf}{0.8}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+             \PY{n}{Err2} \PY{o}{=} \PY{n}{Err2} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+             \PY{n}{err} \PY{o}{=} \PY{n}{SOR}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{l+m+mf}{1.2}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+             \PY{n}{Err3} \PY{o}{=} \PY{n}{Err3} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+             \PY{n}{err} \PY{o}{=} \PY{n}{SOR}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{l+m+mf}{1.6}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+             \PY{n}{Err4} \PY{o}{=} \PY{n}{Err4} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+             \PY{n}{err} \PY{o}{=} \PY{n}{SOR}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{b}\PY{p}{,}\PY{n}{x0}\PY{p}{,}\PY{l+m+mf}{1.02048}\PY{p}{,}\PY{n}{i}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{x}\PY{p}{;}
+             \PY{n}{ErrOpt} \PY{o}{=} \PY{n}{ErrOpt} \PY{o}{+} \PY{p}{[}\PY{n}{err}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{]}\PY{p}{;}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{Err1}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{Err2}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{Err3}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{Err4}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{semilogy}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{21}\PY{p}{)}\PY{p}{,}\PY{n}{ErrOpt}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{*\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{omega=0.4\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{omega=0.8\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{omega=1.02048\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{omega=1.2\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{omega=1.6\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Succesive Over Relaxation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

@@ -10,8 +10,7 @@ Welcome to Suite's documentation!
    :maxdepth: 2
 
 
-
-Indices and tables
+Indices
 ==================
 
 * :ref:`genindex`
