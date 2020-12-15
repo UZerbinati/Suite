@@ -1,0 +1,425 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic Linear Algebra &#8212; Suite 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Welcome to Suite’s documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="basic-linear-algebra">
+<h1>Basic Linear Algebra<a class="headerlink" href="#basic-linear-algebra" title="Permalink to this headline">¶</a></h1>
+<p>In this notebook we explore the basic operations warped in pybind for
+Linear Algebra. We will begin by showing vector operations. ### Vectors</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="o">%</span><span class="k">load_ext</span> memory_profiler
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../../../Py/Build&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">suite</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>We create two vector of length 2 and then we check that their length is
+really two.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">len</span><span class="p">(),</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We now assign the value to vector from a list of consistent element
+types, i.e. an array. We will also show how to assign only the value of
+one entry and how to do operations between vectors.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">])</span>
+<span class="n">a</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span> <span class="n">b</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">-</span><span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">0.000000</span><span class="p">,</span><span class="o">-</span><span class="mf">2.000000</span><span class="p">,</span><span class="o">-</span><span class="mf">1.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="o">*</span><span class="mf">4.0</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">4.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mf">2.0</span><span class="o">*</span><span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">4.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">c</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span><span class="mf">0.0</span><span class="p">])</span>
+<span class="n">c</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">2.0</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">2.0</span>
+</pre></div>
+</div>
+<p>We have also implemented the dot product.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">a</span><span class="o">*</span><span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">)</span>
+<span class="p">(</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.0</span>
+</pre></div>
+</div>
+<div class="section" id="matrix">
+<h2>Matrix<a class="headerlink" href="#matrix" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">A</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">B</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span>  <span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="n">B</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">-</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">+</span><span class="n">B</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">-</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">4.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">-</span><span class="n">B</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">3.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span><span class="o">*</span><span class="mf">4.0</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">-</span><span class="mf">8.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">4.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">4.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">b</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">%</span><span class="k">timeit</span> A*b
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[1.000000,0.000000,0.000000]
+[0.000000,2.000000,0.000000]
+[0.000000,0.000000,3.000000]
+
+(1.000000,2.000000,1.000000)
+1.12 µs ± 58.5 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">]</span>
+
+<span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="n">B</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span> <span class="n">B</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span><span class="n">B</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+<span class="n">A</span><span class="o">*</span><span class="n">B</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">]</span>
+
+<span class="p">[</span><span class="mf">3.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">4.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">3.000000</span><span class="p">,</span><span class="mf">6.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">8.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">9.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="linear-systems">
+<h2>Linear Systems<a class="headerlink" href="#linear-systems" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">A</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span>   <span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span>   <span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="n">A</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span> <span class="n">b</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mf">3.0</span><span class="p">;</span>
+<span class="n">b</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span> <span class="o">=</span> <span class="n">LinSys</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+<span class="n">L</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;UPPER&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span><span class="o">.</span><span class="n">BackSub</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="o">-</span><span class="mf">1.000000</span><span class="p">,</span><span class="o">-</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">A</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span>   <span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span>   <span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">LinSys</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+<span class="n">L</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;LOWER&quot;</span><span class="p">)</span>
+<span class="n">L</span><span class="o">.</span><span class="n">ForwardSub</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">0.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span>
+
+<span class="ne">NameError</span>                                 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">27368</span><span class="n">ea81ced</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+      <span class="mi">2</span> <span class="n">A</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span>   <span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span>   <span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
+      <span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="o">----&gt;</span> <span class="mi">4</span> <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+      <span class="mi">5</span> <span class="n">L</span> <span class="o">=</span> <span class="n">LinSys</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+      <span class="mi">6</span> <span class="n">L</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;LOWER&quot;</span><span class="p">)</span>
+
+
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;b&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">A</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">6.0</span><span class="p">,</span>   <span class="mf">2.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">,</span>   <span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">7.0</span><span class="p">;</span> <span class="n">b</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mf">4.0</span><span class="p">;</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">LinSys</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+<span class="n">L</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mf">3.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">6.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">3.000000</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">,</span><span class="mf">1.000000</span><span class="p">]</span>
+
+<span class="p">(</span><span class="mf">2.000000</span><span class="p">,</span><span class="mf">7.000000</span><span class="p">,</span><span class="mf">4.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span><span class="o">.</span><span class="n">Gauss</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">L</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span>
+
+<span class="ne">NameError</span>                                 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">4</span><span class="o">-</span><span class="mi">29655</span><span class="n">d07480f</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">L</span><span class="o">.</span><span class="n">Gauss</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+      <span class="mi">2</span> <span class="n">L</span>
+
+
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;L&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span><span class="o">.</span><span class="n">BackSub</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">19.000000</span><span class="p">,</span><span class="o">-</span><span class="mf">7.000000</span><span class="p">,</span><span class="o">-</span><span class="mf">8.000000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="remark">
+<h2>Remark<a class="headerlink" href="#remark" title="Permalink to this headline">¶</a></h2>
+<p>We now have a look to the memory usage and to how the garbage collector
+of Python is works with the deconstructor operator implemented in C++.
+In particular when overloading mathematical operators if in the
+deconstruction operator we deleted the content of the data pointers
+problem occurs, therefore we implemented a free function to empty the
+data pointer.</p>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">MemoryExamples</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">mprun</span> -f ex1 ex1()
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">mprun</span> -f ex2 ex2()
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">mprun</span> -f ex3 ex3()
+</pre></div>
+</div>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">mprun</span> -f ex4 ex4()
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Suite</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#matrix">Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linear-systems">Linear Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#remark">Remark</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to Suite’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Umberto Zerbinati.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/LinearAlgebra/Basics.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
