@@ -8,6 +8,7 @@ Welcome to Suite's documentation!
 
 .. toctree::
    LinearAlgebra/Basics
+   LinearAlgebra/GE
 
 Indices
 ==================
