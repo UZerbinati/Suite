@@ -1,0 +1,819 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iterative Methods - Jacobi and Gau\(\beta\)-Siedel &#8212; Suite 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Iterative-Methods---Jacobi-and-Gau\beta-Siedel">
+<h1>Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel<a class="headerlink" href="#Iterative-Methods---Jacobi-and-Gau\beta-Siedel" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../../../Py/Build&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">suite</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Jacobi-Method">
+<h2>Jacobi Method<a class="headerlink" href="#Jacobi-Method" title="Permalink to this headline">¶</a></h2>
+<p>Here we study the Jacobi method applied to the the following linear system:</p>
+<div class="math notranslate nohighlight">
+\[A\vec{x} = \vec{b}\]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}\begin{bmatrix}3 &amp; 1 &amp; 1 \\ 0 &amp; -2 &amp; 1 \\ 2 &amp; -2 &amp; 5\end{bmatrix}\vec{x}= \begin{bmatrix}2\\0\\10 \end{bmatrix}\end{split}\\where we chose the null vector as initial guess :math:`\vec{x}_{0}`. In the next code we declare the objects we are going to use (in particular notice that sparse matrices were implemented to work with iterative methods and :math:`A` is defined as a sparse matrix).\end{aligned}\end{align} \]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">spmat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">A</span><span class="p">)</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">b</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]);</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;b:&quot;</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">x0</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x0:&quot;</span><span class="p">,</span><span class="n">x0</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">x</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]);</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x:&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+A
+ [0,(1,1)]-&gt;3.000000
+[1,(1,2)]-&gt;1.000000
+[2,(1,3)]-&gt;-1.000000
+[3,(2,1)]-&gt;0.000000
+[4,(2,2)]-&gt;-2.000000
+[5,(2,3)]-&gt;1.000000
+[6,(3,1)]-&gt;2.000000
+[7,(3,2)]-&gt;-2.000000
+[8,(3,3)]-&gt;5.000000
+
+b: (2.000000,0.000000,10.000000)
+x0: (0.000000,0.000000,0.000000)
+x: (1.000000,1.000000,2.000000)
+</pre></div></div>
+</div>
+<p>In the next line the method implementing the Jacobi function, wrapped from C++ using PyBind11, is invoked. In particular we observe that the Jacobi method converges to the correct solution.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1.000000,1.000000,2.000000)
+</pre></div></div>
+</div>
+<p>We can give a theoretical explanation to why the Jacobi method, converges. We study the Jacobi method written as a fixed-point iteration (it can also be written as a descent method, hopefully I’ll be able to implement it soon.):</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\\where the iteration matrix is defined as :math:`B = I - C^{-1}A`, :math:`\vec{c} = C^{-1}b`, the matrix :math:`C` is called the preconditioner. In the Jacobi method we choose :math:`C = diag(A)` and therefore we obtain that:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}B = -D^{-1}(L+R) = -\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ 0 &amp; 0 &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 2 &amp; -2 &amp; 0 \end{bmatrix}=\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; \frac{1}{3} \\ 0 &amp; 0 &amp; \frac{1}{2} \\ -\frac{2}{5} &amp; \frac{2}{5} &amp; 0 \end{bmatrix}\end{split}\\Now observe that the fix-iteration theorem grants the convergence of the Jacobi method if :math:`\rho(B)&lt;1`, there are different ways to prove this fact. First one can observe that the Gershgorin circles theorem grants us that:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}|\lambda_1|\leq \frac{2}{5}&lt; 1\qquad\qquad |\lambda_2|\leq \frac{11}{15}&lt; 1\qquad\qquad |\lambda_3|\leq \frac{5}{6}&lt; 1\\which grants us that :math:`\rho(B)&lt;1`. An other approach would be an analytical study of the characteristic polynomial, given by:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}p(\lambda) = -\lambda^3-\frac{\lambda}{30}+\frac{1}{15}\\Last we can compute numerically the eigenvalue of :math:`B`, to obtain :math:`\lambda_{1,2,3} = \{-0.22999765+i0.30336462,-0.22999765-i0.30336462,0.45999531\}`, which yield :math:`\rho(B) = 0.45999531`. Knowing the exact value of :math:`\rho(B)` we can compare the convergence of our implementation of the Jacobi method with the estimates provided by the fixed-iteration theorem:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[||\vec{x}_n - x|| \leq \rho(B)^n||x_0-x||\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">JacobiErr</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="n">ErrEst</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">):</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">Jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">JacobiErr</span> <span class="o">=</span> <span class="n">JacobiErr</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+    <span class="n">ErrEst</span> <span class="o">=</span> <span class="n">ErrEst</span><span class="o">+</span><span class="p">[(</span><span class="mf">0.45999531</span><span class="o">**</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span><span class="n">JacobiErr</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span><span class="n">ErrEst</span><span class="p">,</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Jacobi Method&quot;</span><span class="p">,</span><span class="s2">&quot;Fixed-Iteration Error estimate&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Jacobi Method&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5,1,&#39;Jacobi Method&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/LinearAlgebra_Iterative_7_1.png" src="../_images/LinearAlgebra_Iterative_7_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Gauss-Seidel">
+<h2>Gauss-Seidel<a class="headerlink" href="#Gauss-Seidel" title="Permalink to this headline">¶</a></h2>
+<p>Once again we try to solve the linear system mentioned above, but this time we use the Gauss-Seidel method:</p>
+<div class="math notranslate nohighlight">
+\[A\vec{x} = \vec{b}\]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}\begin{bmatrix}3 &amp; 1 &amp; 1 \\ 0 &amp; -2 &amp; 1 \\ 2 &amp; -2 &amp; 5\end{bmatrix}\vec{x}= \begin{bmatrix}2\\0\\10 \end{bmatrix}\end{split}\\In the following line we define the the matrix :math:`A` and the vectors :math:`\vec{x0}` and :math:`\vec{b}`, then we run the GauBSeidel function which wraps the C++ implementation of the Gauss-Seidel method.\end{aligned}\end{align} \]</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">spmat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">b</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]);</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">x0</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">x</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">GauBSeidel</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1.000000,1.000000,2.000000)
+</pre></div></div>
+</div>
+<p>Like we did for the Jacobi method we’d like to mathematically that the method must converge, to do this we rewrite the Gauss-Seidel method as a fixed-point iteration:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\\where the iteration matrix is defined as :math:`B = I - C^{-1}A`, :math:`\vec{c} = C^{-1}b`, the matrix :math:`C` is called the preconditioner. In particular in the Gauss-Seidel method we choose :math:`C=(D+L)^{-1}`, which imply:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}B = -(D+L)^{-1}R = -\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ -\frac{2}{5} &amp; -\frac{1}{5} &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 \end{bmatrix}=-\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; -\frac{1}{3} \\ 0 &amp; 0 &amp; -\frac{1}{2} \\ 0 &amp; -\frac{2}{5} &amp; -\frac{1}{15} \end{bmatrix}\end{split}\\we once again use the Greshgorin circles theorem to obtain the following estimates:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}|\lambda_1|=0 \qquad\qquad |\lambda_2|\leq \frac{7}{15}&lt; 1\qquad\qquad |\lambda_3+\frac{1}{15}|\leq \frac{5}{6}\Rightarrow|\lambda_3|\leq \frac{1}{15}+\frac{5}{6}=\frac{27}{30}&lt;1\\This imply that :math:`\rho(B)&lt;1` and therefore the fixed-point iterations theorem, grants us that the Gauss-Seidel method converges. Furthermore we can compute the eigenvalues of :math:`B`, :math:`\{0,0.2270,0.2937\}`, to use error estimates above provided, i.e.\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[||\vec{x}_n - x|| \leq \rho(B)^n||x_0-x||\]</div>
+<div class="math notranslate nohighlight">
+\[||\vec{x}_n - x|| \leq (0.2937)^n||x_0-x||\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">GSErr</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="n">ErrEst</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">):</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">GauBSeidel</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">GSErr</span> <span class="o">=</span> <span class="n">GSErr</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+    <span class="n">ErrEst</span> <span class="o">=</span> <span class="n">ErrEst</span><span class="o">+</span><span class="p">[(</span><span class="mf">0.2937</span><span class="o">**</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span><span class="n">GSErr</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span><span class="n">ErrEst</span><span class="p">,</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Gauss-Seidel Method&quot;</span><span class="p">,</span><span class="s2">&quot;Fixed-Iteration Error Estimate&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Gauss-Seidel Method&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5,1,&#39;Gauss-Seidel Method&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/LinearAlgebra_Iterative_12_1.png" src="../_images/LinearAlgebra_Iterative_12_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Successive-Over-Relaxation-(SOR)-Method">
+<h2>Successive Over Relaxation (SOR) Method<a class="headerlink" href="#Successive-Over-Relaxation-(SOR)-Method" title="Permalink to this headline">¶</a></h2>
+<p>We now apply the SOR method to solve the linear system <span class="math notranslate nohighlight">\(A\vec{x}=\vec{b}\)</span> where:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}  A=\begin{bmatrix}4 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 0\\
+  -1&amp; 4 &amp; -1 &amp; 0 &amp; -1 &amp; 0\\
+  0 &amp; -1 &amp; 4 &amp; 0 &amp; 0 &amp; 1\\
+  -1 &amp; 0 &amp; 0 &amp; 4 &amp; -1 &amp; 0\\
+  0 &amp; -1 &amp; 0 &amp; -1 &amp; 4&amp; -1\\
+  0 &amp; 0 &amp; -1 &amp; 0 &amp; -1 &amp; 4\\
+  \end{bmatrix}\qquad\qquad \vec{b}=\begin{bmatrix}1\\0\\0\\0\\0\\0\end{bmatrix}\end{split}\\In the following line we define the the matrix :math:`A` and the vectors :math:`\vec{x0}` and :math:`\vec{b}`, then we run the SOR function which wraps the C++ implementation of the successive relaxation method.\end{aligned}\end{align} \]</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">spmat</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="n">b</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="n">x0</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="n">x</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">0.294824</span><span class="p">,</span><span class="mf">0.093168</span><span class="p">,</span><span class="mf">0.028157</span><span class="p">,</span><span class="mf">0.086128</span><span class="p">,</span><span class="mf">0.049689</span><span class="p">,</span><span class="mf">0.019462</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">SOR</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="mf">1.4</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(0.294824,0.093168,0.028157,0.086128,0.049689,0.019462)
+</pre></div></div>
+</div>
+<p>We now study the iteration matrix corresponding to the Jacobi method <span class="math notranslate nohighlight">\(B\)</span>, to find the optimal choice of <span class="math notranslate nohighlight">\(\omega\)</span>, in particular we observe that:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\omega_{OPT} = 1+\Bigg(\frac{\rho(B)}{1+\sqrt{1-\rho(B)^2}}\Bigg)\\so we compute :math:`D^{-1}(R+L)`:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}  B=D^{-1}(R+L)=\begin{bmatrix}0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; 0\\
+  -\frac{1}{4}&amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0\\
+  0 &amp; -\frac{1}{4} &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{1}{4}\\
+  -\frac{1}{4} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+  0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0&amp; -\frac{1}{4}\\
+  0 &amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0\\
+  \end{bmatrix}\end{split}\\which has a single eigenvalue :math:`\lambda_{1,2,3,4}=\frac{1}{4}` and therefore :math:`\rho(B)=\frac{1}{4}`. Plugging :math:`\rho(B)=\frac{1}{4}` in the equation for :math:`\omega_{OPT}` we obtain that :math:`\omega_{OPT}=1.02048`\end{aligned}\end{align} \]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,(</span><span class="n">SOR</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="mf">1.02048</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">());</span>
+    <span class="k">if</span><span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">SOR</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="mf">1.02048</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">&lt;</span><span class="mf">1e-4</span><span class="p">):</span>
+        <span class="k">break</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1 (-0.039704,-0.028082,-0.011552,-0.021042,-0.016479,-0.006711)
+2 (-0.011719,-0.009567,-0.003926,-0.006763,-0.005551,-0.002238)
+3 (-0.003926,-0.003224,-0.001323,-0.002279,-0.001871,-0.000727)
+4 (-0.001324,-0.001087,-0.000446,-0.000768,-0.000631,-0.000217)
+5 (-0.000446,-0.000367,-0.000150,-0.000259,-0.000212,-0.000046)
+</pre></div></div>
+</div>
+<p>Running the above code we notice that at the after the 4-th iteration the SOR method with optimal <span class="math notranslate nohighlight">\(\omega\)</span> yield the correct solution after the 4-th significant digit.</p>
+</div>
+<div class="section" id="Jacobi-and-Gau\beta-Seidel-in-\mathbb{R}^{2\times-2}">
+<h2>Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel in <span class="math notranslate nohighlight">\(\mathbb{R}^{2\times 2}\)</span><a class="headerlink" href="#Jacobi-and-Gau\beta-Seidel-in-\mathbb{R}^{2\times-2}" title="Permalink to this headline">¶</a></h2>
+<p>Let us consider <span class="math notranslate nohighlight">\(A\in\mathbb{R}^{2\times 2}\)</span> and a vector <span class="math notranslate nohighlight">\(b\in\mathbb{R}^{2}\)</span>, in particular we assume <span class="math notranslate nohighlight">\(A\)</span> has general shape:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}A = \begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}\end{split}\\Now we study the iteration matrix corresponding to the Jacobi method :math:`B=I-C^{-1}A=I-D^{-1}A=-D^{-1}(R+L)`:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}B=-\begin{bmatrix}a &amp; 0\\0&amp;d\end{bmatrix}^{-1}\begin{bmatrix}0 &amp; b\\c &amp; 0\end{bmatrix}=-\begin{bmatrix}\frac{1}{a} &amp; 0\\0&amp;\frac{1}{d}\end{bmatrix}\begin{bmatrix}0 &amp; b\\c &amp; 0\end{bmatrix}=\begin{bmatrix}0 &amp; -\frac{b}{a}\\-\frac{c}{d} &amp; 0\end{bmatrix}\end{split}\\we now can compute the eigenvalue of the matrix :math:`B` as follow:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}\det\begin{pmatrix}-\lambda &amp; -\frac{b}{a}\\-\frac{c}{d} &amp; -\lambda\end{pmatrix}=\lambda^2-\frac{bc}{ad}=0\end{split}\\this imply that the eigenvalue of :math:`B` are :math:`\pm \sqrt{\frac{bc}{ad}}` and therefore :math:`\rho(B)` is given by:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\rho(B) = |\frac{bc}{ad}|\\and therefore using the fix-point iteration theorem the Jacobi method converge if and only if:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\rho(B) = |\frac{bc}{ad}|&lt;1\\We now study the iteration matrix for the Gauss-Seidel method, :math:`B=I-C^{-1}A=-(D+L)^{-1}R`:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}(D+L) = \begin{bmatrix} a &amp; 0 \\ c &amp; d \end{bmatrix}\qquad\qquad R = \begin{bmatrix} 0 &amp; b \\ 0 &amp; 0 \end{bmatrix}\end{split}\\now we compute :math:`(D+L)^{-1}` and :math:`(D+L)^{-1}R`:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}(D+L)^{-1} = \frac{1}{ad}\begin{bmatrix}d &amp; 0 \\ -c &amp; a\end{bmatrix}\qquad\qquad (D+L)^{-1}R=\begin{bmatrix}0 &amp; \frac{bd}{ad} \\ 0 &amp; -\frac{bc}{ad}\end{bmatrix}\end{split}\\now we compute the eigenvalue of :math:`B` from the characteristic polynomial:\end{aligned}\end{align} \]</div>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}\det\begin{bmatrix}-\lambda &amp; \frac{bd}{ad} \\ 0 &amp; -\lambda - \frac{bc}{ad} \end{bmatrix}=-\lambda (-\lambda - \frac{bc}{ad})=0\end{split}\\now the eigenvalues are :math:`\lambda_{1,2} = \{0,\frac{bc}{ad}\}`, and therefore :math:`\rho(B)=|\frac{bc}{ad}|`, once again by the fixed-point iteration theorem the Gauss-Seidel method converge if and only if :math:`\rho(B)=|\frac{bc}{ad}|&lt;1`.\end{aligned}\end{align} \]</div>
+</div>
+<div class="section" id="Jacobi-VS-Gau\beta-Seidel">
+<h2>Jacobi VS Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel<a class="headerlink" href="#Jacobi-VS-Gau\beta-Seidel" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">spmat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">2</span><span class="p">;</span>    <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">5</span><span class="p">;</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">b</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">]);</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">x0</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">x</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">JacobiErr</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">):</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">Jacobi</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">JacobiErr</span> <span class="o">=</span> <span class="n">JacobiErr</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">GSErr</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">):</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">GauBSeidel</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">GSErr</span> <span class="o">=</span> <span class="n">GSErr</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span><span class="n">JacobiErr</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">),</span><span class="n">GSErr</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;Jacobi Method&quot;</span><span class="p">,</span><span class="s2">&quot;Gauss-Seidel Method&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Jacobi Method VS Gauss-Seidel Method&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Text(0.5,1,&#39;Jacobi Method VS Gauss-Seidel Method&#39;)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/LinearAlgebra_Iterative_24_1.png" src="../_images/LinearAlgebra_Iterative_24_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="Relaxation-Parameters">
+<h2>Relaxation Parameters<a class="headerlink" href="#Relaxation-Parameters" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">spmat</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>  <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span><span class="o">=-</span><span class="mi">1</span><span class="p">;</span> <span class="n">A</span><span class="p">[</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">]</span><span class="o">=</span><span class="mi">4</span><span class="p">;</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="n">b</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="n">x0</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+<span class="n">x</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">0.294824</span><span class="p">,</span><span class="mf">0.093168</span><span class="p">,</span><span class="mf">0.028157</span><span class="p">,</span><span class="mf">0.086128</span><span class="p">,</span><span class="mf">0.049689</span><span class="p">,</span><span class="mf">0.01942</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Err1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+<span class="n">Err2</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+<span class="n">Err3</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+<span class="n">Err4</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+<span class="n">ErrOpt</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">21</span><span class="p">):</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">SOR</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">Err1</span> <span class="o">=</span> <span class="n">Err1</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">SOR</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">Err2</span> <span class="o">=</span> <span class="n">Err2</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">SOR</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="mf">1.2</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">Err3</span> <span class="o">=</span> <span class="n">Err3</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">SOR</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="mf">1.6</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">Err4</span> <span class="o">=</span> <span class="n">Err4</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+    <span class="n">err</span> <span class="o">=</span> <span class="n">SOR</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="mf">1.02048</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">-</span><span class="n">x</span><span class="p">;</span>
+    <span class="n">ErrOpt</span> <span class="o">=</span> <span class="n">ErrOpt</span> <span class="o">+</span> <span class="p">[</span><span class="n">err</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="mi">2</span><span class="p">)];</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span><span class="n">Err1</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span><span class="n">Err2</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span><span class="n">Err3</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span><span class="n">Err4</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span><span class="n">ErrOpt</span><span class="p">,</span><span class="s2">&quot;*-&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;$\omega=0.4$&quot;</span><span class="p">,</span><span class="s2">&quot;$\omega=0.8$&quot;</span><span class="p">,</span><span class="s2">&quot;$\omega=1.02048$&quot;</span><span class="p">,</span><span class="s2">&quot;$\omega=1.2$&quot;</span><span class="p">,</span><span class="s2">&quot;$\omega=1.6$&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Succesive Over Relaxation&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/LinearAlgebra_Iterative_27_0.png" src="../_images/LinearAlgebra_Iterative_27_0.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Suite</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="BasicLA.html">Basic Linear Algebra</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Umberto Zerbinati.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/LinearAlgebra/Iterative.ipynb.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

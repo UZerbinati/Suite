@@ -7,8 +7,12 @@ Welcome to Suite's documentation!
 =================================
 
 .. toctree::
-   LinearAlgebra/Basics
-   LinearAlgebra/GE
+   LinearAlgebra/BasicLA.ipynb
+   LinearAlgebra/GE.ipynb
+   LinearAlgebra/Factorization.ipynb
+   LinearAlgebra/Sparse.ipynb
+   LinearAlgebra/Iterative.ipynb
+   LinearAlgebra/Parallel-LA.ipynb
 
 Indices
 ==================

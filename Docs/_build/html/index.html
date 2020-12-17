@@ -13,10 +13,12 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Basic Linear Algebra" href="LinearAlgebra/Basics.html" />
+    <link rel="next" title="Basic Linear Algebra" href="LinearAlgebra/BasicLA.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -37,19 +39,38 @@
 <h1>Welcome to Suite’s documentation!<a class="headerlink" href="#welcome-to-suite-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Basics.html">Basic Linear Algebra</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Basics.html#vectors">Vectors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Basics.html#matrix">Matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Basics.html#linear-systems">Linear Systems</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Basics.html#remark">Remark</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/BasicLA.html">Basic Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/BasicLA.html#Vectors">Vectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/BasicLA.html#Matrix">Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/BasicLA.html#Linear-Systems">Linear Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/BasicLA.html#Remark">Remark</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/GE.html">Gaussian Elimination</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#example-1">Example 1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#example-2">Example 2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#example-3">Example 3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#example-4">Example 4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#example-5">Example 5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#Example-1">Example 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#Example-2">Example 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#Example-3">Example 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#Example-4">Example 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/GE.html#Example-5">Example 5</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Factorization.html">Cholesky factorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Factorization.html#Gram-Schmidt">Gram-Schmidt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Factorization.html#Parallel-Cholesky">Parallel Cholesky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Sparse.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Iterative.html">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Iterative.html#Jacobi-Method">Jacobi Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Iterative.html#Gauss-Seidel">Gauss-Seidel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Iterative.html#Successive-Over-Relaxation-(SOR)-Method">Successive Over Relaxation (SOR) Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Iterative.html#Jacobi-and-Gau\beta-Seidel-in-\mathbb{R}^{2\times-2}">Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel in <span class="math notranslate nohighlight">\(\mathbb{R}^{2\times 2}\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Iterative.html#Jacobi-VS-Gau\beta-Seidel">Jacobi VS Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Iterative.html#Relaxation-Parameters">Relaxation Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Parallel-LA.html">Parallel Linear Algebra</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Parallel-LA.html#Parallel-Dot-Product">Parallel Dot Product</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Parallel-LA.html#Parallel-Matrix-Vector-Multiplication">Parallel Matrix Vector Multiplication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="LinearAlgebra/Parallel-LA.html#Parallel-Cholesky">Parallel Cholesky</a></li>
 </ul>
 </li>
 </ul>
@@ -82,15 +103,21 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Basics.html">Basic Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/BasicLA.html">Basic Linear Algebra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/GE.html">Gaussian Elimination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Factorization.html">Cholesky factorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Factorization.html#Gram-Schmidt">Gram-Schmidt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Factorization.html#Parallel-Cholesky">Parallel Cholesky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Sparse.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Iterative.html">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LinearAlgebra/Parallel-LA.html">Parallel Linear Algebra</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="LinearAlgebra/Basics.html" title="next chapter">Basic Linear Algebra</a></li>
+      <li>Next: <a href="LinearAlgebra/BasicLA.html" title="next chapter">Basic Linear Algebra</a></li>
   </ul></li>
 </ul>
 </div>
