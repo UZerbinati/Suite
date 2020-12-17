@@ -1,0 +1,2 @@
+dearpygui>=0.6.16
+pybind11>=2.5.0
