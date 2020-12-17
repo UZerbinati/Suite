@@ -18,6 +18,8 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parallel Linear Algebra" href="Parallel-LA.html" />
+    <link rel="prev" title="Sparse Linear Algebra" href="Sparse.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -767,14 +769,31 @@ Text(0.5,1,&#39;Jacobi Method VS Gauss-Seidel Method&#39;)
 
 
 <h3>Navigation</h3>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="BasicLA.html">Basic Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GE.html">Gaussian Elimination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Factorization.html">Cholesky factorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Factorization.html#Gram-Schmidt">Gram-Schmidt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Factorization.html#Parallel-Cholesky">Parallel Cholesky</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sparse.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Jacobi-Method">Jacobi Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Gauss-Seidel">Gauss-Seidel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Successive-Over-Relaxation-(SOR)-Method">Successive Over Relaxation (SOR) Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Jacobi-and-Gau\beta-Seidel-in-\mathbb{R}^{2\times-2}">Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel in <span class="math notranslate nohighlight">\(\mathbb{R}^{2\times 2}\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Jacobi-VS-Gau\beta-Seidel">Jacobi VS Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Relaxation-Parameters">Relaxation Parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Parallel-LA.html">Parallel Linear Algebra</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Sparse.html" title="previous chapter">Sparse Linear Algebra</a></li>
+      <li>Next: <a href="Parallel-LA.html" title="next chapter">Parallel Linear Algebra</a></li>
   </ul></li>
 </ul>
 </div>
