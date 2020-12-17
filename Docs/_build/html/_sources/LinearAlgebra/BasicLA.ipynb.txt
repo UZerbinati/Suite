@@ -24,7 +24,7 @@
     "from math import sqrt\n",
     "%load_ext memory_profiler\n",
     "import sys\n",
-    "sys.path.append('../../../Py/Build')\n",
+    "sys.path.append('../../Py/Build')\n",
     "from suite import *"
    ]
   },

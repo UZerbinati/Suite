@@ -304,7 +304,8 @@ div.rendered_html tbody tr:hover {
 <div class="math notranslate nohighlight">
 \[A\vec{x} = \vec{b}\]</div>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}\begin{bmatrix}3 &amp; 1 &amp; 1 \\ 0 &amp; -2 &amp; 1 \\ 2 &amp; -2 &amp; 5\end{bmatrix}\vec{x}= \begin{bmatrix}2\\0\\10 \end{bmatrix}\end{split}\\where we chose the null vector as initial guess :math:`\vec{x}_{0}`. In the next code we declare the objects we are going to use (in particular notice that sparse matrices were implemented to work with iterative methods and :math:`A` is defined as a sparse matrix).\end{aligned}\end{align} \]</div>
+\[\begin{split}\begin{bmatrix}3 &amp; 1 &amp; 1 \\ 0 &amp; -2 &amp; 1 \\ 2 &amp; -2 &amp; 5\end{bmatrix}\vec{x}= \begin{bmatrix}2\\0\\10 \end{bmatrix}\end{split}\]</div>
+<p>where we chose the null vector as initial guess <span class="math notranslate nohighlight">\(\vec{x}_{0}\)</span>. In the next code we declare the objects we are going to use (in particular notice that sparse matrices were implemented to work with iterative methods and <span class="math notranslate nohighlight">\(A\)</span> is defined as a sparse matrix).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -370,13 +371,17 @@ x: (1.000000,1.000000,2.000000)
 </div>
 <p>We can give a theoretical explanation to why the Jacobi method, converges. We study the Jacobi method written as a fixed-point iteration (it can also be written as a descent method, hopefully I’ll be able to implement it soon.):</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\\where the iteration matrix is defined as :math:`B = I - C^{-1}A`, :math:`\vec{c} = C^{-1}b`, the matrix :math:`C` is called the preconditioner. In the Jacobi method we choose :math:`C = diag(A)` and therefore we obtain that:\end{aligned}\end{align} \]</div>
+\[\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\]</div>
+<p>where the iteration matrix is defined as <span class="math notranslate nohighlight">\(B = I - C^{-1}A\)</span>, <span class="math notranslate nohighlight">\(\vec{c} = C^{-1}b\)</span>, the matrix <span class="math notranslate nohighlight">\(C\)</span> is called the preconditioner. In the Jacobi method we choose <span class="math notranslate nohighlight">\(C = diag(A)\)</span> and therefore we obtain that:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}B = -D^{-1}(L+R) = -\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ 0 &amp; 0 &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 2 &amp; -2 &amp; 0 \end{bmatrix}=\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; \frac{1}{3} \\ 0 &amp; 0 &amp; \frac{1}{2} \\ -\frac{2}{5} &amp; \frac{2}{5} &amp; 0 \end{bmatrix}\end{split}\\Now observe that the fix-iteration theorem grants the convergence of the Jacobi method if :math:`\rho(B)&lt;1`, there are different ways to prove this fact. First one can observe that the Gershgorin circles theorem grants us that:\end{aligned}\end{align} \]</div>
+\[\begin{split}B = -D^{-1}(L+R) = -\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ 0 &amp; 0 &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 2 &amp; -2 &amp; 0 \end{bmatrix}=\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; \frac{1}{3} \\ 0 &amp; 0 &amp; \frac{1}{2} \\ -\frac{2}{5} &amp; \frac{2}{5} &amp; 0 \end{bmatrix}\end{split}\]</div>
+<p>Now observe that the fix-iteration theorem grants the convergence of the Jacobi method if <span class="math notranslate nohighlight">\(\rho(B)&lt;1\)</span>, there are different ways to prove this fact. First one can observe that the Gershgorin circles theorem grants us that:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}|\lambda_1|\leq \frac{2}{5}&lt; 1\qquad\qquad |\lambda_2|\leq \frac{11}{15}&lt; 1\qquad\qquad |\lambda_3|\leq \frac{5}{6}&lt; 1\\which grants us that :math:`\rho(B)&lt;1`. An other approach would be an analytical study of the characteristic polynomial, given by:\end{aligned}\end{align} \]</div>
+\[|\lambda_1|\leq \frac{2}{5}&lt; 1\qquad\qquad |\lambda_2|\leq \frac{11}{15}&lt; 1\qquad\qquad |\lambda_3|\leq \frac{5}{6}&lt; 1\]</div>
+<p>which grants us that <span class="math notranslate nohighlight">\(\rho(B)&lt;1\)</span>. An other approach would be an analytical study of the characteristic polynomial, given by:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}p(\lambda) = -\lambda^3-\frac{\lambda}{30}+\frac{1}{15}\\Last we can compute numerically the eigenvalue of :math:`B`, to obtain :math:`\lambda_{1,2,3} = \{-0.22999765+i0.30336462,-0.22999765-i0.30336462,0.45999531\}`, which yield :math:`\rho(B) = 0.45999531`. Knowing the exact value of :math:`\rho(B)` we can compare the convergence of our implementation of the Jacobi method with the estimates provided by the fixed-iteration theorem:\end{aligned}\end{align} \]</div>
+\[p(\lambda) = -\lambda^3-\frac{\lambda}{30}+\frac{1}{15}\]</div>
+<p>Last we can compute numerically the eigenvalue of <span class="math notranslate nohighlight">\(B\)</span>, to obtain <span class="math notranslate nohighlight">\(\lambda_{1,2,3} = \{-0.22999765+i0.30336462,-0.22999765-i0.30336462,0.45999531\}\)</span>, which yield <span class="math notranslate nohighlight">\(\rho(B) = 0.45999531\)</span>. Knowing the exact value of <span class="math notranslate nohighlight">\(\rho(B)\)</span> we can compare the convergence of our implementation of the Jacobi method with the estimates provided by the fixed-iteration theorem:</p>
 <div class="math notranslate nohighlight">
 \[||\vec{x}_n - x|| \leq \rho(B)^n||x_0-x||\]</div>
 <div class="nbinput docutils container">
@@ -411,7 +416,7 @@ Text(0.5,1,&#39;Jacobi Method&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/LinearAlgebra_Iterative_7_1.png" src="../_images/LinearAlgebra_Iterative_7_1.png" />
+<img alt="../_images/LinearAlgebra_Iterative_13_1.png" src="../_images/LinearAlgebra_Iterative_13_1.png" />
 </div>
 </div>
 </div>
@@ -421,7 +426,8 @@ Text(0.5,1,&#39;Jacobi Method&#39;)
 <div class="math notranslate nohighlight">
 \[A\vec{x} = \vec{b}\]</div>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}\begin{bmatrix}3 &amp; 1 &amp; 1 \\ 0 &amp; -2 &amp; 1 \\ 2 &amp; -2 &amp; 5\end{bmatrix}\vec{x}= \begin{bmatrix}2\\0\\10 \end{bmatrix}\end{split}\\In the following line we define the the matrix :math:`A` and the vectors :math:`\vec{x0}` and :math:`\vec{b}`, then we run the GauBSeidel function which wraps the C++ implementation of the Gauss-Seidel method.\end{aligned}\end{align} \]</div>
+\[\begin{split}\begin{bmatrix}3 &amp; 1 &amp; 1 \\ 0 &amp; -2 &amp; 1 \\ 2 &amp; -2 &amp; 5\end{bmatrix}\vec{x}= \begin{bmatrix}2\\0\\10 \end{bmatrix}\end{split}\]</div>
+<p>In the following line we define the the matrix <span class="math notranslate nohighlight">\(A\)</span> and the vectors <span class="math notranslate nohighlight">\(\vec{x0}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}\)</span>, then we run the GauBSeidel function which wraps the C++ implementation of the Gauss-Seidel method.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -460,11 +466,14 @@ Text(0.5,1,&#39;Jacobi Method&#39;)
 </div>
 <p>Like we did for the Jacobi method we’d like to mathematically that the method must converge, to do this we rewrite the Gauss-Seidel method as a fixed-point iteration:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\\where the iteration matrix is defined as :math:`B = I - C^{-1}A`, :math:`\vec{c} = C^{-1}b`, the matrix :math:`C` is called the preconditioner. In particular in the Gauss-Seidel method we choose :math:`C=(D+L)^{-1}`, which imply:\end{aligned}\end{align} \]</div>
+\[\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\]</div>
+<p>where the iteration matrix is defined as <span class="math notranslate nohighlight">\(B = I - C^{-1}A\)</span>, <span class="math notranslate nohighlight">\(\vec{c} = C^{-1}b\)</span>, the matrix <span class="math notranslate nohighlight">\(C\)</span> is called the preconditioner. In particular in the Gauss-Seidel method we choose <span class="math notranslate nohighlight">\(C=(D+L)^{-1}\)</span>, which imply:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}B = -(D+L)^{-1}R = -\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ -\frac{2}{5} &amp; -\frac{1}{5} &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 \end{bmatrix}=-\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; -\frac{1}{3} \\ 0 &amp; 0 &amp; -\frac{1}{2} \\ 0 &amp; -\frac{2}{5} &amp; -\frac{1}{15} \end{bmatrix}\end{split}\\we once again use the Greshgorin circles theorem to obtain the following estimates:\end{aligned}\end{align} \]</div>
+\[\begin{split}B = -(D+L)^{-1}R = -\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ -\frac{2}{5} &amp; -\frac{1}{5} &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 \end{bmatrix}=-\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; -\frac{1}{3} \\ 0 &amp; 0 &amp; -\frac{1}{2} \\ 0 &amp; -\frac{2}{5} &amp; -\frac{1}{15} \end{bmatrix}\end{split}\]</div>
+<p>we once again use the Greshgorin circles theorem to obtain the following estimates:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}|\lambda_1|=0 \qquad\qquad |\lambda_2|\leq \frac{7}{15}&lt; 1\qquad\qquad |\lambda_3+\frac{1}{15}|\leq \frac{5}{6}\Rightarrow|\lambda_3|\leq \frac{1}{15}+\frac{5}{6}=\frac{27}{30}&lt;1\\This imply that :math:`\rho(B)&lt;1` and therefore the fixed-point iterations theorem, grants us that the Gauss-Seidel method converges. Furthermore we can compute the eigenvalues of :math:`B`, :math:`\{0,0.2270,0.2937\}`, to use error estimates above provided, i.e.\end{aligned}\end{align} \]</div>
+\[|\lambda_1|=0 \qquad\qquad |\lambda_2|\leq \frac{7}{15}&lt; 1\qquad\qquad |\lambda_3+\frac{1}{15}|\leq \frac{5}{6}\Rightarrow|\lambda_3|\leq \frac{1}{15}+\frac{5}{6}=\frac{27}{30}&lt;1\]</div>
+<p>This imply that <span class="math notranslate nohighlight">\(\rho(B)&lt;1\)</span> and therefore the fixed-point iterations theorem, grants us that the Gauss-Seidel method converges. Furthermore we can compute the eigenvalues of <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(\{0,0.2270,0.2937\}\)</span>, to use error estimates above provided, i.e.</p>
 <div class="math notranslate nohighlight">
 \[||\vec{x}_n - x|| \leq \rho(B)^n||x_0-x||\]</div>
 <div class="math notranslate nohighlight">
@@ -501,7 +510,7 @@ Text(0.5,1,&#39;Gauss-Seidel Method&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/LinearAlgebra_Iterative_12_1.png" src="../_images/LinearAlgebra_Iterative_12_1.png" />
+<img alt="../_images/LinearAlgebra_Iterative_24_1.png" src="../_images/LinearAlgebra_Iterative_24_1.png" />
 </div>
 </div>
 </div>
@@ -509,13 +518,14 @@ Text(0.5,1,&#39;Gauss-Seidel Method&#39;)
 <h2>Successive Over Relaxation (SOR) Method<a class="headerlink" href="#Successive-Over-Relaxation-(SOR)-Method" title="Permalink to this headline">¶</a></h2>
 <p>We now apply the SOR method to solve the linear system <span class="math notranslate nohighlight">\(A\vec{x}=\vec{b}\)</span> where:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}  A=\begin{bmatrix}4 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 0\\
-  -1&amp; 4 &amp; -1 &amp; 0 &amp; -1 &amp; 0\\
-  0 &amp; -1 &amp; 4 &amp; 0 &amp; 0 &amp; 1\\
-  -1 &amp; 0 &amp; 0 &amp; 4 &amp; -1 &amp; 0\\
-  0 &amp; -1 &amp; 0 &amp; -1 &amp; 4&amp; -1\\
-  0 &amp; 0 &amp; -1 &amp; 0 &amp; -1 &amp; 4\\
-  \end{bmatrix}\qquad\qquad \vec{b}=\begin{bmatrix}1\\0\\0\\0\\0\\0\end{bmatrix}\end{split}\\In the following line we define the the matrix :math:`A` and the vectors :math:`\vec{x0}` and :math:`\vec{b}`, then we run the SOR function which wraps the C++ implementation of the successive relaxation method.\end{aligned}\end{align} \]</div>
+\[\begin{split}A=\begin{bmatrix}4 &amp; 1 &amp; 0 &amp; -1 &amp; 0 &amp; 0\\
+-1&amp; 4 &amp; -1 &amp; 0 &amp; -1 &amp; 0\\
+0 &amp; -1 &amp; 4 &amp; 0 &amp; 0 &amp; 1\\
+-1 &amp; 0 &amp; 0 &amp; 4 &amp; -1 &amp; 0\\
+0 &amp; -1 &amp; 0 &amp; -1 &amp; 4&amp; -1\\
+0 &amp; 0 &amp; -1 &amp; 0 &amp; -1 &amp; 4\\
+\end{bmatrix}\qquad\qquad \vec{b}=\begin{bmatrix}1\\0\\0\\0\\0\\0\end{bmatrix}\end{split}\]</div>
+<p>In the following line we define the the matrix <span class="math notranslate nohighlight">\(A\)</span> and the vectors <span class="math notranslate nohighlight">\(\vec{x0}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}\)</span>, then we run the SOR function which wraps the C++ implementation of the successive relaxation method.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -557,15 +567,17 @@ Text(0.5,1,&#39;Gauss-Seidel Method&#39;)
 </div>
 <p>We now study the iteration matrix corresponding to the Jacobi method <span class="math notranslate nohighlight">\(B\)</span>, to find the optimal choice of <span class="math notranslate nohighlight">\(\omega\)</span>, in particular we observe that:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\omega_{OPT} = 1+\Bigg(\frac{\rho(B)}{1+\sqrt{1-\rho(B)^2}}\Bigg)\\so we compute :math:`D^{-1}(R+L)`:\end{aligned}\end{align} \]</div>
+\[\omega_{OPT} = 1+\Bigg(\frac{\rho(B)}{1+\sqrt{1-\rho(B)^2}}\Bigg)\]</div>
+<p>so we compute <span class="math notranslate nohighlight">\(D^{-1}(R+L)\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}  B=D^{-1}(R+L)=\begin{bmatrix}0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; 0\\
-  -\frac{1}{4}&amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0\\
-  0 &amp; -\frac{1}{4} &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{1}{4}\\
-  -\frac{1}{4} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
-  0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0&amp; -\frac{1}{4}\\
-  0 &amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0\\
-  \end{bmatrix}\end{split}\\which has a single eigenvalue :math:`\lambda_{1,2,3,4}=\frac{1}{4}` and therefore :math:`\rho(B)=\frac{1}{4}`. Plugging :math:`\rho(B)=\frac{1}{4}` in the equation for :math:`\omega_{OPT}` we obtain that :math:`\omega_{OPT}=1.02048`\end{aligned}\end{align} \]</div>
+\[\begin{split}B=D^{-1}(R+L)=\begin{bmatrix}0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; 0\\
+-\frac{1}{4}&amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0\\
+0 &amp; -\frac{1}{4} &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{1}{4}\\
+-\frac{1}{4} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0&amp; -\frac{1}{4}\\
+0 &amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0\\
+\end{bmatrix}\end{split}\]</div>
+<p>which has a single eigenvalue <span class="math notranslate nohighlight">\(\lambda_{1,2,3,4}=\frac{1}{4}\)</span> and therefore <span class="math notranslate nohighlight">\(\rho(B)=\frac{1}{4}\)</span>. Plugging <span class="math notranslate nohighlight">\(\rho(B)=\frac{1}{4}\)</span> in the equation for <span class="math notranslate nohighlight">\(\omega_{OPT}\)</span> we obtain that <span class="math notranslate nohighlight">\(\omega_{OPT}=1.02048\)</span></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
@@ -591,26 +603,6 @@ Text(0.5,1,&#39;Gauss-Seidel Method&#39;)
 </pre></div></div>
 </div>
 <p>Running the above code we notice that at the after the 4-th iteration the SOR method with optimal <span class="math notranslate nohighlight">\(\omega\)</span> yield the correct solution after the 4-th significant digit.</p>
-</div>
-<div class="section" id="Jacobi-and-Gau\beta-Seidel-in-\mathbb{R}^{2\times-2}">
-<h2>Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel in <span class="math notranslate nohighlight">\(\mathbb{R}^{2\times 2}\)</span><a class="headerlink" href="#Jacobi-and-Gau\beta-Seidel-in-\mathbb{R}^{2\times-2}" title="Permalink to this headline">¶</a></h2>
-<p>Let us consider <span class="math notranslate nohighlight">\(A\in\mathbb{R}^{2\times 2}\)</span> and a vector <span class="math notranslate nohighlight">\(b\in\mathbb{R}^{2}\)</span>, in particular we assume <span class="math notranslate nohighlight">\(A\)</span> has general shape:</p>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}A = \begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}\end{split}\\Now we study the iteration matrix corresponding to the Jacobi method :math:`B=I-C^{-1}A=I-D^{-1}A=-D^{-1}(R+L)`:\end{aligned}\end{align} \]</div>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}B=-\begin{bmatrix}a &amp; 0\\0&amp;d\end{bmatrix}^{-1}\begin{bmatrix}0 &amp; b\\c &amp; 0\end{bmatrix}=-\begin{bmatrix}\frac{1}{a} &amp; 0\\0&amp;\frac{1}{d}\end{bmatrix}\begin{bmatrix}0 &amp; b\\c &amp; 0\end{bmatrix}=\begin{bmatrix}0 &amp; -\frac{b}{a}\\-\frac{c}{d} &amp; 0\end{bmatrix}\end{split}\\we now can compute the eigenvalue of the matrix :math:`B` as follow:\end{aligned}\end{align} \]</div>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}\det\begin{pmatrix}-\lambda &amp; -\frac{b}{a}\\-\frac{c}{d} &amp; -\lambda\end{pmatrix}=\lambda^2-\frac{bc}{ad}=0\end{split}\\this imply that the eigenvalue of :math:`B` are :math:`\pm \sqrt{\frac{bc}{ad}}` and therefore :math:`\rho(B)` is given by:\end{aligned}\end{align} \]</div>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\rho(B) = |\frac{bc}{ad}|\\and therefore using the fix-point iteration theorem the Jacobi method converge if and only if:\end{aligned}\end{align} \]</div>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\rho(B) = |\frac{bc}{ad}|&lt;1\\We now study the iteration matrix for the Gauss-Seidel method, :math:`B=I-C^{-1}A=-(D+L)^{-1}R`:\end{aligned}\end{align} \]</div>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}(D+L) = \begin{bmatrix} a &amp; 0 \\ c &amp; d \end{bmatrix}\qquad\qquad R = \begin{bmatrix} 0 &amp; b \\ 0 &amp; 0 \end{bmatrix}\end{split}\\now we compute :math:`(D+L)^{-1}` and :math:`(D+L)^{-1}R`:\end{aligned}\end{align} \]</div>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}(D+L)^{-1} = \frac{1}{ad}\begin{bmatrix}d &amp; 0 \\ -c &amp; a\end{bmatrix}\qquad\qquad (D+L)^{-1}R=\begin{bmatrix}0 &amp; \frac{bd}{ad} \\ 0 &amp; -\frac{bc}{ad}\end{bmatrix}\end{split}\\now we compute the eigenvalue of :math:`B` from the characteristic polynomial:\end{aligned}\end{align} \]</div>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}\det\begin{bmatrix}-\lambda &amp; \frac{bd}{ad} \\ 0 &amp; -\lambda - \frac{bc}{ad} \end{bmatrix}=-\lambda (-\lambda - \frac{bc}{ad})=0\end{split}\\now the eigenvalues are :math:`\lambda_{1,2} = \{0,\frac{bc}{ad}\}`, and therefore :math:`\rho(B)=|\frac{bc}{ad}|`, once again by the fixed-point iteration theorem the Gauss-Seidel method converge if and only if :math:`\rho(B)=|\frac{bc}{ad}|&lt;1`.\end{aligned}\end{align} \]</div>
 </div>
 <div class="section" id="Jacobi-VS-Gau\beta-Seidel">
 <h2>Jacobi VS Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel<a class="headerlink" href="#Jacobi-VS-Gau\beta-Seidel" title="Permalink to this headline">¶</a></h2>
@@ -683,7 +675,7 @@ Text(0.5,1,&#39;Jacobi Method VS Gauss-Seidel Method&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/LinearAlgebra_Iterative_24_1.png" src="../_images/LinearAlgebra_Iterative_24_1.png" />
+<img alt="../_images/LinearAlgebra_Iterative_39_1.png" src="../_images/LinearAlgebra_Iterative_39_1.png" />
 </div>
 </div>
 </div>
@@ -746,7 +738,7 @@ Text(0.5,1,&#39;Jacobi Method VS Gauss-Seidel Method&#39;)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/LinearAlgebra_Iterative_27_0.png" src="../_images/LinearAlgebra_Iterative_27_0.png" />
+<img alt="../_images/LinearAlgebra_Iterative_42_0.png" src="../_images/LinearAlgebra_Iterative_42_0.png" />
 </div>
 </div>
 </div>
@@ -780,7 +772,6 @@ Text(0.5,1,&#39;Jacobi Method VS Gauss-Seidel Method&#39;)
 <li class="toctree-l2"><a class="reference internal" href="#Jacobi-Method">Jacobi Method</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Gauss-Seidel">Gauss-Seidel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Successive-Over-Relaxation-(SOR)-Method">Successive Over Relaxation (SOR) Method</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Jacobi-and-Gau\beta-Seidel-in-\mathbb{R}^{2\times-2}">Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel in <span class="math notranslate nohighlight">\(\mathbb{R}^{2\times 2}\)</span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Jacobi-VS-Gau\beta-Seidel">Jacobi VS Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Seidel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Relaxation-Parameters">Relaxation Parameters</a></li>
 </ul>

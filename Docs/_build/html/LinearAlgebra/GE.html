@@ -290,12 +290,12 @@ div.rendered_html tbody tr:hover {
 floating point arithmetic while the matrix, vector and linear system classes were implemented in a double precision arithmetic. For this reason we introduce Example 4 and Example 5, which should show the advantage respectively of partial and complete pivoting in a double precision arithmetic. We will use two function of the linear system class, the first is Gauss(int n) that perform the Gaussian elimination, where the number n identify the type of pivoting we wont: - n = 0, we do Naive Gaussian
 elimination; - n = 1, we do partial Gaussian elimination searching for non zero pivot; - n = 2, we do partial Gaussian elimination searching for pivot with greatest magnitude; - n = 3, we do complete Gaussian elimination. The second is BackSub(), which perform backward substitution swapping the unknown when needed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../../../Py/Build&#39;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../../Py/Build&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">suite</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
@@ -582,18 +582,20 @@ elimination; - n = 1, we do partial Gaussian elimination searching for non zero 
 <h2>Example 4<a class="headerlink" href="#Example-4" title="Permalink to this headline">¶</a></h2>
 <p>In this example we show the advantage of using partial pivoting compared with naive Gaussian elimination. We consider the linear system <span class="math notranslate nohighlight">\(A\vec{x} = \vec{b}\)</span>, where:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}  A=\begin{pmatrix}
-      0 &amp; 1 \\
-      1 &amp; 1
-  \end{pmatrix}\qquad\qquad \vec{b} = \begin{pmatrix}
-  1
-  \\
-  0
-  \end{pmatrix}\end{split}\\we know the solution to the problem is given by the vector:\end{aligned}\end{align} \]</div>
+\[\begin{split}A=\begin{pmatrix}
+    0 &amp; 1 \\
+    1 &amp; 1
+\end{pmatrix}\qquad\qquad \vec{b} = \begin{pmatrix}
+1
+\\
+0
+\end{pmatrix}\end{split}\]</div>
+<p>we know the solution to the problem is given by the vector:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}  \vec{x} = \begin{pmatrix}
-  -1 \\ 1
-  \end{pmatrix}\end{split}\\we now perturbate the matrix :math:`A` by a factor :math:`10^{-20}` that is smaller then the machine epsilon, and try to solve the linear system using &quot;naive&quot; Gaussian elimination.\end{aligned}\end{align} \]</div>
+\[\begin{split}\vec{x} = \begin{pmatrix}
+-1 \\ 1
+\end{pmatrix}\end{split}\]</div>
+<p>we now perturbate the matrix <span class="math notranslate nohighlight">\(A\)</span> by a factor <span class="math notranslate nohighlight">\(10^{-20}\)</span> that is smaller then the machine epsilon, and try to solve the linear system using “naive” Gaussian elimination.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -648,18 +650,20 @@ elimination; - n = 1, we do partial Gaussian elimination searching for non zero 
 <h2>Example 5<a class="headerlink" href="#Example-5" title="Permalink to this headline">¶</a></h2>
 <p>Similar problem as the one above occurs when we work with the matrix:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}  A = \begin{pmatrix}
-  2 &amp; 2(10^{20})\\
-  1 &amp; 1
-  \end{pmatrix} \qquad\qquad \vec{b}=\begin{pmatrix}
-  2(10^{20})\\
-  2
-  \end{pmatrix}\end{split}\\the exact result would be:\end{aligned}\end{align} \]</div>
+\[\begin{split}A = \begin{pmatrix}
+2 &amp; 2(10^{20})\\
+1 &amp; 1
+\end{pmatrix} \qquad\qquad \vec{b}=\begin{pmatrix}
+2(10^{20})\\
+2
+\end{pmatrix}\end{split}\]</div>
+<p>the exact result would be:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}  \vec{x} = \begin{pmatrix}
-      1+10^{-20} \\
-      1-10^{-20}
-  \end{pmatrix}\end{split}\\when we perform naive Gaussian elimination and Gaussian elimination the same phenomena as in Example 4 occurs and therefore we obtain the wrong solution:\end{aligned}\end{align} \]</div>
+\[\begin{split}\vec{x} = \begin{pmatrix}
+    1+10^{-20} \\
+    1-10^{-20}
+\end{pmatrix}\end{split}\]</div>
+<p>when we perform naive Gaussian elimination and Gaussian elimination the same phenomena as in Example 4 occurs and therefore we obtain the wrong solution:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\vec{x} = \begin{pmatrix}
 0\\

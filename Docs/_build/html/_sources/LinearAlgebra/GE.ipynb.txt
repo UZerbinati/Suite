@@ -23,12 +23,12 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 4,
+   "execution_count": 2,
    "metadata": {},
    "outputs": [],
    "source": [
     "import sys\n",
-    "sys.path.append('../../../Py/Build')\n",
+    "sys.path.append('../../Py/Build')\n",
     "from suite import *"
    ]
   },
@@ -360,11 +360,29 @@
     "1\n",
     "\\\\\n",
     "0\n",
-    "\\end{pmatrix}$$\n",
-    "we know the solution to the problem is given by the vector:\n",
+    "\\end{pmatrix}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "we know the solution to the problem is given by the vector:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "$$\\vec{x} = \\begin{pmatrix}\n",
     "-1 \\\\ 1\n",
-    "\\end{pmatrix}$$\n",
+    "\\end{pmatrix}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "we now perturbate the matrix $A$ by a factor $10^{-20}$ that is smaller then the machine epsilon, and try to solve the linear system using \"naive\" Gaussian elimination."
    ]
   },
@@ -439,12 +457,24 @@
     "\\end{pmatrix} \\qquad\\qquad \\vec{b}=\\begin{pmatrix}\n",
     "2(10^{20})\\\\\n",
     "2\n",
-    "\\end{pmatrix}$$\n",
+    "\\end{pmatrix}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "the exact result would be:\n",
     "$$\\vec{x} = \\begin{pmatrix}\n",
     "    1+10^{-20} \\\\\n",
     "    1-10^{-20}\n",
-    "\\end{pmatrix}$$\n",
+    "\\end{pmatrix}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "when we perform naive Gaussian elimination and Gaussian elimination the same phenomena as in Example 4 occurs and therefore we obtain the wrong solution:\n",
     "$$\\vec{x} = \\begin{pmatrix}\n",
     "0\\\\\n",
