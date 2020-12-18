@@ -1,14 +1,19 @@
-language: cpp
-os: linux
-dist: xenial
-compiler: g++
-script: 
-        - cd Dependencies
-        - cd pybind11
-        - mkdir build
-        - cd build
-        - cmake ..
-        - make
-        - cd .. && cd .. && cd ..
-        - make all
+matrix:
+        include:
+                language: python
+                python: 3.8
+        include:
+                language: cpp
+                os: linux
+                dist: bionic
+                compiler: g++
+                script: 
+                        - cd Dependencies
+                        - cd pybind11
+                        - mkdir build
+                        - cd build
+                        - cmake ..
+                        - make
+                        - cd .. && cd .. && cd ..
+                        - make all
 
