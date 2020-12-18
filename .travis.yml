@@ -1,3 +1,12 @@
 language: cpp
 compiler: g++
-script: make all
+script: 
+        - cd Dependencies
+        - cd pybind11
+        - mkdir build
+        - cmake ..
+        - make
+        - cd ..
+        - cd ..
+        - make all
+
