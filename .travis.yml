@@ -1,9 +1,8 @@
 matrix:
         include:
-                language: python
+              - language: python
                 python: 3.7
-        include:
-                language: cpp
+              - language: cpp
                 os: linux
                 dist: bionic
                 compiler: g++
