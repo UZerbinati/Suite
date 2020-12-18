@@ -1,18 +1,15 @@
-matrix:
-        include:
-              - language: cpp
-                os: linux
-                dist: bionic
-                compiler: g++
-                script: 
-                        - cd Dependencies
-                        - cd pybind11
-                        - mkdir build
-                        - cd build
-                        - cmake ..
-                        - make
-                        - cd .. && cd .. && cd ..
-                        - make all
-              - language: python
-                python: 3.7
+language: cpp
+os: linux
+dist: bionic
+compiler: g++
+before_install: pyenv 3.6
+script: 
+        - cd Dependencies
+        - cd pybind11
+        - mkdir build
+        - cd build
+        - cmake ..
+        - make
+        - cd .. && cd .. && cd ..
+        - make all
 
