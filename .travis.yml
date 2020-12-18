@@ -2,7 +2,8 @@ language: cpp
 os: linux
 dist: bionic
 compiler: g++
-before_install: pyenv 3.6
+before_install: 
+        - pyenv global 3.6
 script: 
         - cd Dependencies
         - cd pybind11
