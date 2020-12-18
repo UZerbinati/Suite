@@ -1,7 +1,5 @@
 matrix:
         include:
-              - language: python
-                python: 3.7
               - language: cpp
                 os: linux
                 dist: bionic
@@ -15,4 +13,6 @@ matrix:
                         - make
                         - cd .. && cd .. && cd ..
                         - make all
+              - language: python
+                python: 3.7
 
