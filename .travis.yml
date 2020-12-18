@@ -12,5 +12,6 @@ script:
         - cmake ..
         - make
         - cd .. && cd .. && cd ..
+        - python --version
         - make all
 
