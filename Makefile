@@ -2,7 +2,7 @@ CXX=g++
 all: test python
 test: test.o complex.o vector.o diff.o matrix.o linearsys.o decomposition.o sparse.o iteractive.o
 	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o Build/matrix.o Build/linearsys.o Build/sparse.o Build/iteractive.o
-python: LAParallel.o TestParallel.o 
+python: LAParallel.o 
 	$(CXX) -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` Py/suite.cpp -fopenmp -o Py/Build/suite`python3-config --extension-suffix`
 test.o: test.cpp
 	$(CXX) -c test.cpp -o Build/test.o
@@ -20,8 +20,6 @@ decomposition.o: matrix.o
 	$(CXX) -c LA/decomposition.cpp -o Build/decomposition.o
 LAParallel.o: vector.o matrix.o
 	$(CXX) -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` -c Parallel/LA.cpp -fopenmp -o Build/LAParallel.o
-TestParallel.o: vector.o matrix.o
-	$(CXX) -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` -c Parallel/Test.cpp -fopenmp -o Build/TestParallel.o
 sparse.o: vector.o LA/sparse.cpp
 	$(CXX) -c LA/sparse.cpp -o Build/sparse.o
 iteractive.o: vector.o sparse.o LA/iteractive.cpp
