@@ -4,6 +4,7 @@ dist: bionic
 compiler: g++
 before_install: 
         - pyenv global 3.8
+        - pip install pybind11
 script: 
         - cd Dependencies
         - cd pybind11
