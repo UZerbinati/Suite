@@ -5,6 +5,7 @@ compiler: g++
 before_install: 
         - pyenv global 3.8
         - pip install pybind11
+        - pip install pytest
 script: 
         - cd Dependencies
         - cd pybind11
@@ -15,4 +16,5 @@ script:
         - cd .. && cd .. && cd ..
         - python3 --version
         - make all
+        - python3 Tests/test_main.py
 
