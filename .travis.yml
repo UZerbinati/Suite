@@ -16,5 +16,6 @@ script:
         - cd .. && cd .. && cd ..
         - python3 --version
         - make all
-        - python3 Tests/test_main.py
+        - cd Tests
+        - python3 test_main.py
 
