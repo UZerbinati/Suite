@@ -4,7 +4,7 @@
 #include <cmath>
 std::tuple<mat,mat> GS(mat &A){
 	//Init Q and R
-	mat Q(A.getHeight(),A.getHeight());
+	mat Q(A.getHeight(),A.getWidth());
 	mat R(A.getWidth(),A.getWidth());
 	//Computing Q first column
 	vec a1(A.getHeight());
@@ -21,7 +21,7 @@ std::tuple<mat,mat> GS(mat &A){
 	vec q(A.getHeight());
 	vec qj(A.getHeight());
 	double r;
-	for (int i=2; i < A.getHeight()+1; i++){
+	for (int i=2; i < A.getWidth()+1; i++){
 		q = A.getColumn(i);
 		a = A.getColumn(i);
 		for (int j=1; j < i;j++){
