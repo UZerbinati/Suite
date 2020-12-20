@@ -118,4 +118,40 @@ def test_LA_dense_GE_Complete_Pivoting():
         print(abs(x[i]-s[i]))
         flag = flag and (abs(x[i]-s[i])<tol);
     assert flag;
-
+def test_LA_dense_Cholesky():
+    print("Testing Cholesky decomposition");
+    A = mat(3,3)
+    A.from_Array([1.0,2.0,1.0,  2.0,8.0,4.0,  1.0,4.0,11.0])
+    L = mat(3,3);
+    L = Cholesky(A);
+    exactL = mat(3,3);
+    exactL.from_Array([1.0,0.0,0.0,     2.0,2.0,0.0,        1.0,1.0,3.0]);
+    flag = True;
+    for i in range(1,4):
+        for j in range(1,4):
+            flag = flag and (abs(L[i,j]-exactL[i,j])<tol);
+    assert flag;
+def test_LA_dense_QR_Non_Square():
+    print("Testing QR decomposition");
+    A = mat(4,3)
+    A.from_Array([-1.0,-1.0,1.0,  1.0,3.0,3.0,  -1.0,-1.0,5.0,  1.0,3.0,7.0])
+    Q = mat(4,3);
+    R = mat(3,3);
+    [Q,R] = GS(A);
+    exactQ = mat(4,3);
+    exactQ.from_Array([-0.5, 0.5, -0.5,     0.5,0.5,-0.5,   -0.5, 0.5, 0.5,     0.5, 0.5, 0.5]);
+    exactR = mat(3,3);
+    exactR.from_Array([2.0,4.0,2.0,   0.0,2.0,8.0,  0.0,0.0,4.0]);
+    print(Q)
+    print(exactQ)
+    print("--------------------------------")
+    print(R)
+    print(exactR)
+    flag = True;
+    for i in range(1,5):
+        for j in range(1,4):
+            flag = flag and (abs(Q[i,j]-exactQ[i,j])<tol);
+    for i in range(1,4):
+        for j in range(1,4):
+            flag = flag and (abs(R[i,j]-exactR[i,j])<tol);
+    assert flag;
