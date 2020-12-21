@@ -1,5 +1,6 @@
 # Suite
 [![Documentation Status](https://readthedocs.org/projects/suite/badge/?version=latest)](https://suite.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.com/UZerbinati/Suite.svg?branch=master)](https://travis-ci.com/UZerbinati/Suite)
 ## Build
 To build this project we first have to build first the dependencies.
 We begin building PyBind11:

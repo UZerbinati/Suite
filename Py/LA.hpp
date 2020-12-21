@@ -1,9 +1,6 @@
 #include "../LA/complex.hpp"
 #include "../LA/complex.cpp"
 
-#include "../Calc/diff.hpp"
-#include "../Calc/diff.cpp"
-
 #include "../LA/vector.hpp"
 #include "../LA/vector.cpp"
 #include "../LA/matrix.hpp"
@@ -32,13 +29,6 @@ void LABind(py::module &module){
 	    .def("Real", &Complex::Real)
 	    .def("Imag", &Complex::Imag)
 	    .def("pow", &Complex::pow);
-    //DIFFERENTIATION
-    py::class_<Diff>(module,"Diff")
-	    .def(py::init <>())
-	    .def("push",&Diff::push)
-    	    .def("call", &Diff::call)
-    	    .def("set_h", &Diff::set_h)
-	    .def("set_type", &Diff::set_type);
     //VECTOR
     py::class_<vec>(module, "vec")
 	    .def(py::init <int>())

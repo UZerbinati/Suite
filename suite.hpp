@@ -6,3 +6,5 @@
 #include "LA/sparse.hpp"
 #include "LA/iteractive.hpp"
 #include "Calc/diff.hpp"
+#include "Calc/ode.hpp"
+#include "Geo/1D.hpp"
