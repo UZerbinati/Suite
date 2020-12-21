@@ -1,6 +1,6 @@
 CXX=g++
-all: test python
-test: test.o complex.o vector.o diff.o matrix.o linearsys.o decomposition.o sparse.o iteractive.o
+all: base python
+base: test.o complex.o vector.o diff.o matrix.o linearsys.o decomposition.o sparse.o iteractive.o 1DGeo.o ODE.o
 	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o Build/matrix.o Build/linearsys.o Build/sparse.o Build/iteractive.o
 python: LAParallel.o 
 	$(CXX) -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` Py/suite.cpp -fopenmp -o Py/Build/suite`python3-config --extension-suffix`
@@ -24,3 +24,7 @@ sparse.o: vector.o LA/sparse.cpp
 	$(CXX) -c LA/sparse.cpp -o Build/sparse.o
 iteractive.o: vector.o sparse.o LA/iteractive.cpp
 	$(CXX) -c LA/iteractive.cpp -o Build/iteractive.o
+1DGeo.o: Geo/1D.cpp
+	$(CXX) -c Geo/1D.cpp -o Build/1DGo.o
+ODE.o: Calc/ode.cpp
+	$(CXX) -c Calc/ode.cpp -o Build/ODE.o

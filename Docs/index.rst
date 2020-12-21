@@ -13,6 +13,7 @@ Welcome to Suite's documentation!
    LinearAlgebra/Sparse.ipynb
    LinearAlgebra/Iterative.ipynb
    LinearAlgebra/Parallel-LA.ipynb
+   ODE/LinearODE.ipynb
 
 Indices
 ==================
