@@ -374,10 +374,10 @@ x: (1.000000,1.000000,2.000000)
 \[\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\]</div>
 <p>where the iteration matrix is defined as <span class="math notranslate nohighlight">\(B = I - C^{-1}A\)</span>, <span class="math notranslate nohighlight">\(\vec{c} = C^{-1}b\)</span>, the matrix <span class="math notranslate nohighlight">\(C\)</span> is called the preconditioner. In the Jacobi method we choose <span class="math notranslate nohighlight">\(C = diag(A)\)</span> and therefore we obtain that:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}B = -D^{-1}(L+R) = -\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ 0 &amp; 0 &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 2 &amp; -2 &amp; 0 \end{bmatrix}=\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; \frac{1}{3} \\ 0 &amp; 0 &amp; \frac{1}{2} \\ -\frac{2}{5} &amp; \frac{2}{5} &amp; 0 \end{bmatrix}\end{split}\]</div>
+\[\begin{split}B = -D^{-1}(L+R) = \\-\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ 0 &amp; 0 &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 2 &amp; -2 &amp; 0 \end{bmatrix}=\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; \frac{1}{3} \\ 0 &amp; 0 &amp; \frac{1}{2} \\ -\frac{2}{5} &amp; \frac{2}{5} &amp; 0 \end{bmatrix}\end{split}\]</div>
 <p>Now observe that the fix-iteration theorem grants the convergence of the Jacobi method if <span class="math notranslate nohighlight">\(\rho(B)&lt;1\)</span>, there are different ways to prove this fact. First one can observe that the Gershgorin circles theorem grants us that:</p>
 <div class="math notranslate nohighlight">
-\[|\lambda_1|\leq \frac{2}{5}&lt; 1\qquad\qquad |\lambda_2|\leq \frac{11}{15}&lt; 1\qquad\qquad |\lambda_3|\leq \frac{5}{6}&lt; 1\]</div>
+\[\begin{split}|\lambda_1|\leq \frac{2}{5}&lt; 1\\|\lambda_2|\leq \frac{11}{15}&lt; 1\\ |\lambda_3|\leq \frac{5}{6}&lt; 1\end{split}\]</div>
 <p>which grants us that <span class="math notranslate nohighlight">\(\rho(B)&lt;1\)</span>. An other approach would be an analytical study of the characteristic polynomial, given by:</p>
 <div class="math notranslate nohighlight">
 \[p(\lambda) = -\lambda^3-\frac{\lambda}{30}+\frac{1}{15}\]</div>
@@ -469,10 +469,10 @@ Text(0.5,1,&#39;Jacobi Method&#39;)
 \[\vec{x}_{n+1} = B\vec{x}_{n} + \vec{c}\]</div>
 <p>where the iteration matrix is defined as <span class="math notranslate nohighlight">\(B = I - C^{-1}A\)</span>, <span class="math notranslate nohighlight">\(\vec{c} = C^{-1}b\)</span>, the matrix <span class="math notranslate nohighlight">\(C\)</span> is called the preconditioner. In particular in the Gauss-Seidel method we choose <span class="math notranslate nohighlight">\(C=(D+L)^{-1}\)</span>, which imply:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}B = -(D+L)^{-1}R = -\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ -\frac{2}{5} &amp; -\frac{1}{5} &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 \end{bmatrix}=-\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; -\frac{1}{3} \\ 0 &amp; 0 &amp; -\frac{1}{2} \\ 0 &amp; -\frac{2}{5} &amp; -\frac{1}{15} \end{bmatrix}\end{split}\]</div>
+\[\begin{split}B = -(D+L)^{-1}R = \\-\begin{bmatrix}\frac{1}{3} &amp; 0 &amp; 0 \\ 0 &amp; -\frac{1}{2} &amp; 0 \\ -\frac{2}{5} &amp; -\frac{1}{5} &amp; \frac{1}{5} \end{bmatrix}\begin{bmatrix}0 &amp; 1 &amp; -1 \\ 0 &amp; 0 &amp; 1 \\ 0 &amp; 0 &amp; 0 \end{bmatrix}=-\begin{bmatrix}0 &amp; -\frac{1}{3} &amp; -\frac{1}{3} \\ 0 &amp; 0 &amp; -\frac{1}{2} \\ 0 &amp; -\frac{2}{5} &amp; -\frac{1}{15} \end{bmatrix}\end{split}\]</div>
 <p>we once again use the Greshgorin circles theorem to obtain the following estimates:</p>
 <div class="math notranslate nohighlight">
-\[|\lambda_1|=0 \qquad\qquad |\lambda_2|\leq \frac{7}{15}&lt; 1\qquad\qquad |\lambda_3+\frac{1}{15}|\leq \frac{5}{6}\Rightarrow|\lambda_3|\leq \frac{1}{15}+\frac{5}{6}=\frac{27}{30}&lt;1\]</div>
+\[\begin{split}|\lambda_1|=0 \\ |\lambda_2|\leq \frac{7}{15}&lt; 1\\ |\lambda_3+\frac{1}{15}|\leq \frac{5}{6}\Rightarrow|\lambda_3|\leq \frac{1}{15}+\frac{5}{6}=\frac{27}{30}&lt;1\end{split}\]</div>
 <p>This imply that <span class="math notranslate nohighlight">\(\rho(B)&lt;1\)</span> and therefore the fixed-point iterations theorem, grants us that the Gauss-Seidel method converges. Furthermore we can compute the eigenvalues of <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(\{0,0.2270,0.2937\}\)</span>, to use error estimates above provided, i.e.</p>
 <div class="math notranslate nohighlight">
 \[||\vec{x}_n - x|| \leq \rho(B)^n||x_0-x||\]</div>
@@ -524,7 +524,7 @@ Text(0.5,1,&#39;Gauss-Seidel Method&#39;)
 -1 &amp; 0 &amp; 0 &amp; 4 &amp; -1 &amp; 0\\
 0 &amp; -1 &amp; 0 &amp; -1 &amp; 4&amp; -1\\
 0 &amp; 0 &amp; -1 &amp; 0 &amp; -1 &amp; 4\\
-\end{bmatrix}\qquad\qquad \vec{b}=\begin{bmatrix}1\\0\\0\\0\\0\\0\end{bmatrix}\end{split}\]</div>
+\end{bmatrix}\\ \vec{b}=\begin{bmatrix}1\\0\\0\\0\\0\\0\end{bmatrix}\end{split}\]</div>
 <p>In the following line we define the the matrix <span class="math notranslate nohighlight">\(A\)</span> and the vectors <span class="math notranslate nohighlight">\(\vec{x0}\)</span> and <span class="math notranslate nohighlight">\(\vec{b}\)</span>, then we run the SOR function which wraps the C++ implementation of the successive relaxation method.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -570,7 +570,7 @@ Text(0.5,1,&#39;Gauss-Seidel Method&#39;)
 \[\omega_{OPT} = 1+\Bigg(\frac{\rho(B)}{1+\sqrt{1-\rho(B)^2}}\Bigg)\]</div>
 <p>so we compute <span class="math notranslate nohighlight">\(D^{-1}(R+L)\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}B=D^{-1}(R+L)=\begin{bmatrix}0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; 0\\
+\[\begin{split}B=D^{-1}(R+L)=\\\begin{bmatrix}0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; 0\\
 -\frac{1}{4}&amp; 0 &amp; -\frac{1}{4} &amp; 0 &amp; -\frac{1}{4} &amp; 0\\
 0 &amp; -\frac{1}{4} &amp; 0 &amp; 0 &amp; 0 &amp; -\frac{1}{4}\\
 -\frac{1}{4} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
@@ -766,7 +766,6 @@ Text(0.5,1,&#39;Jacobi Method VS Gauss-Seidel Method&#39;)
 <li class="toctree-l1"><a class="reference internal" href="GE.html">Gaussian Elimination</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Factorization.html">Cholesky factorization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Factorization.html#Gram-Schmidt">Gram-Schmidt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Factorization.html#Parallel-Cholesky">Parallel Cholesky</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Sparse.html">Sparse Linear Algebra</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Jacobi-Method">Jacobi Method</a></li>
@@ -777,6 +776,7 @@ Text(0.5,1,&#39;Jacobi Method VS Gauss-Seidel Method&#39;)
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Parallel-LA.html">Parallel Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ODE/LinearODE.html">Linear ODE</a></li>
 </ul>
 
 <div class="relations">

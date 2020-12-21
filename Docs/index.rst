@@ -14,6 +14,7 @@ Welcome to Suite's documentation!
    LinearAlgebra/Iterative.ipynb
    LinearAlgebra/Parallel-LA.ipynb
    ODE/LinearODE.ipynb
+   Geo/Geometry1D.ipynb
 
 Indices
 ==================

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cholesky factorization &#8212; Suite 0.0.1 documentation</title>
+    <title>One Dimensional Geometry &#8212; Suite 0.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -18,8 +18,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Sparse Linear Algebra" href="Sparse.html" />
-    <link rel="prev" title="Gaussian Elimination" href="GE.html" />
+    <link rel="prev" title="Linear ODE" href="../ODE/LinearODE.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -284,55 +283,143 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
+<div class="section" id="One-Dimensional-Geometry">
+<h1>One Dimensional Geometry<a class="headerlink" href="#One-Dimensional-Geometry" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../../Py/Build&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">suite</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span><span class="n">sin</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../../Py/GUI&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">suiteGUI</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="Cholesky-factorization">
-<h1>Cholesky factorization<a class="headerlink" href="#Cholesky-factorization" title="Permalink to this headline">¶</a></h1>
-<p>We here use the Cholesky factorization implemented in the C++ library suite to create a function that solve a liner system by solving the upper and lower triangular linear system obtained from the Cholesky factorization.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<p>We introduce the object we are going to mesh, in one dimension, a straight line starting at 0 and ending at <span class="math notranslate nohighlight">\(\pi\)</span>, i.e. the interval <span class="math notranslate nohighlight">\(I=[0,\pi]\)</span>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">A</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span>  <span class="mf">1.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">11.0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">b</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span></span><span class="n">I</span> <span class="o">=</span> <span class="n">line</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="n">pi</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[1.000000,2.000000,1.000000]
-[2.000000,8.000000,4.000000]
-[1.000000,4.000000,11.000000]
-
-(1.000000,2.000000,3.000000)
-</pre></div></div>
-</div>
-<p>We check that the matrix A is symmetric comparing it to A transpose.</p>
+<p>We now mesh the interval dividing it in uniform volume of a given length <span class="math notranslate nohighlight">\(h=0.2\)</span>. We can access the volume that make up the mesh converting the object to string. In particular we first introduce the mesh specifying the dimension of the object, then we pass the object that we are meshing together with the size of the volumes making up the mesh.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">())</span>
+<span></span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">UniformMesh</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">mesh</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+|1D Mesh|
+Mesh made by 32.
+0. [0.000000,0.100000]
+1. [0.100000,0.200000]
+2. [0.200000,0.300000]
+3. [0.300000,0.400000]
+4. [0.400000,0.500000]
+5. [0.500000,0.600000]
+6. [0.600000,0.700000]
+7. [0.700000,0.800000]
+8. [0.800000,0.900000]
+9. [0.900000,1.000000]
+10. [1.000000,1.100000]
+11. [1.100000,1.200000]
+12. [1.200000,1.300000]
+13. [1.300000,1.400000]
+14. [1.400000,1.500000]
+15. [1.500000,1.600000]
+16. [1.600000,1.700000]
+17. [1.700000,1.800000]
+18. [1.800000,1.900000]
+19. [1.900000,2.000000]
+20. [2.000000,2.100000]
+21. [2.100000,2.200000]
+22. [2.200000,2.300000]
+23. [2.300000,2.400000]
+24. [2.400000,2.500000]
+25. [2.500000,2.600000]
+26. [2.600000,2.700000]
+27. [2.700000,2.800000]
+28. [2.800000,2.900000]
+29. [2.900000,3.000000]
+30. [3.000000,3.100000]
+31. [3.100000,3.200000]
+</pre></div></div>
+</div>
+<p>We can access the mesh dimension and the number of elements in the mesh as follow:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">mesh</span><span class="o">.</span><span class="n">getDim</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">mesh</span><span class="o">.</span><span class="n">getElNumber</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+32
+</pre></div></div>
+</div>
+<p>We now define a given function on the afore built mesh, we can also evaluate the function in a specific point passing as argument the degree ( either 0 or 1) of polynomial interpolation with in the mesh volumes.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">f</span> <span class="o">=</span> <span class="n">MeshFunction</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">pushFunction</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="p">[</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
+</pre></div>
+</div>
+</div>
+<p>If we use degree 0 we get obtain a slight mismatch since we approximate from the right.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Draw</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">mesh</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -340,121 +427,24 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-[1.000000,2.000000,1.000000]
-[2.000000,8.000000,4.000000]
-[1.000000,4.000000,11.000000]
-
-[1.000000,2.000000,1.000000]
-[2.000000,8.000000,4.000000]
-[1.000000,4.000000,11.000000]
-
-</pre></div></div>
-</div>
-<p>The eigenvalue of A are 0.468, 5.462, 14.069 therefore the matrix is positive definite and we can perform Cholesky factorization.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">Solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Ax=b</span>
-<span class="sd">    L(L^T)x=b</span>
-<span class="sd">    Ly=b</span>
-<span class="sd">    (L^T)x=y</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1">#Init vector to store solutions of the linear systems</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">())</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">())</span>
-    <span class="n">LT</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">(),</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">())</span>
-    <span class="c1">#We perform Cholesky factorization</span>
-    <span class="n">L</span> <span class="o">=</span> <span class="n">Cholesky</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">LT</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">()</span>
-    <span class="c1">#Init the linear system Ly=b</span>
-    <span class="n">S1</span> <span class="o">=</span> <span class="n">LinSys</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">S1</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;LOWER&quot;</span><span class="p">)</span>
-    <span class="c1">#Solve linear system using forward sub</span>
-    <span class="n">y</span><span class="o">=</span><span class="n">S1</span><span class="o">.</span><span class="n">ForwardSub</span><span class="p">()</span>
-    <span class="c1">#Init the linear system (L^T)x=y</span>
-    <span class="n">S2</span> <span class="o">=</span> <span class="n">LinSys</span><span class="p">(</span><span class="n">LT</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">S2</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;UPPER&quot;</span><span class="p">)</span>
-    <span class="c1">#Solve linear system using backward sub</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">S2</span><span class="o">.</span><span class="n">BackSub</span><span class="p">()</span>
-    <span class="c1">#Freeing memory</span>
-    <span class="n">LT</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-    <span class="n">L</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-    <span class="n">y</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
-</pre></div>
+<img alt="../_images/Geo_Geometry1D_12_0.png" src="../_images/Geo_Geometry1D_12_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span></span><span class="n">Draw</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">mesh</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-(1.000000,-0.111111,0.222222)
-</pre></div></div>
+<img alt="../_images/Geo_Geometry1D_13_0.png" src="../_images/Geo_Geometry1D_13_0.png" />
 </div>
-</div>
-<div class="section" id="Gram-Schmidt">
-<h1>Gram-Schmidt<a class="headerlink" href="#Gram-Schmidt" title="Permalink to this headline">¶</a></h1>
-<p>We also implemented the classical Gram-Schmidt algorithm for QR decomposition to check computation made by hand suing Householder reflections.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">A</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">12.0</span><span class="p">,</span><span class="o">-</span><span class="mf">51.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span>  <span class="mf">6.0</span><span class="p">,</span><span class="mf">167.0</span><span class="p">,</span><span class="o">-</span><span class="mf">68.0</span><span class="p">,</span>  <span class="o">-</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">24.0</span><span class="p">,</span><span class="o">-</span><span class="mf">41.0</span><span class="p">])</span>
-<span class="n">A</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[12.000000,-51.000000,4.000000]
-[6.000000,167.000000,-68.000000]
-[-4.000000,24.000000,-41.000000]
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">GS</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-([0.857143,-0.394286,-0.331429]
- [0.428571,0.902857,0.034286]
- [-0.285714,0.171429,-0.942857],
- [14.000000,21.000000,-14.000000]
- [0.000000,175.000000,-70.000000]
- [0.000000,0.000000,35.000000])
-</pre></div></div>
 </div>
 </div>
 
@@ -476,22 +466,22 @@ div.rendered_html tbody tr:hover {
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="BasicLA.html">Basic Linear Algebra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GE.html">Gaussian Elimination</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Cholesky factorization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#Gram-Schmidt">Gram-Schmidt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Sparse.html">Sparse Linear Algebra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Iterative.html">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Parallel-LA.html">Parallel Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/BasicLA.html">Basic Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/GE.html">Gaussian Elimination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Factorization.html">Cholesky factorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Factorization.html#Gram-Schmidt">Gram-Schmidt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Sparse.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Iterative.html">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Parallel-LA.html">Parallel Linear Algebra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ODE/LinearODE.html">Linear ODE</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">One Dimensional Geometry</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="GE.html" title="previous chapter">Gaussian Elimination</a></li>
-      <li>Next: <a href="Sparse.html" title="next chapter">Sparse Linear Algebra</a></li>
+      <li>Previous: <a href="../ODE/LinearODE.html" title="previous chapter">Linear ODE</a></li>
   </ul></li>
 </ul>
 </div>
@@ -525,7 +515,7 @@ div.rendered_html tbody tr:hover {
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/LinearAlgebra/Factorization.ipynb.txt"
+      <a href="../_sources/Geo/Geometry1D.ipynb.txt"
           rel="nofollow">Page source</a>
     </div>
 
