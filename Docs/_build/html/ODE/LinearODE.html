@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cholesky factorization &#8212; Suite 0.0.1 documentation</title>
+    <title>Linear ODE &#8212; Suite 0.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -18,8 +18,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Sparse Linear Algebra" href="Sparse.html" />
-    <link rel="prev" title="Gaussian Elimination" href="GE.html" />
+    <link rel="prev" title="Parallel Linear Algebra" href="../LinearAlgebra/Parallel-LA.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -284,177 +283,119 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
+<div class="section" id="Linear-ODE">
+<h1>Linear ODE<a class="headerlink" href="#Linear-ODE" title="Permalink to this headline">¶</a></h1>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;../../Py/Build&#39;</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">suite</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="Cholesky-factorization">
-<h1>Cholesky factorization<a class="headerlink" href="#Cholesky-factorization" title="Permalink to this headline">¶</a></h1>
-<p>We here use the Cholesky factorization implemented in the C++ library suite to create a function that solve a liner system by solving the upper and lower triangular linear system obtained from the Cholesky factorization.</p>
+<p>In this notebook we study linear ODE, i.e. ordinary differential equations of the form:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{cases}
+    \sum_{i=0}^8 k_i(t)y^{(i)}+k(t)=0\\
+    y(a) = y_0
+\end{cases}\end{split}\]</div>
+<p>in particular we implement linear ODE up to the eight derivative. In the next few line we focus our attention on how to solve the following problem, which is a well know problem with solution <span class="math notranslate nohighlight">\(y(t) = e^t\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{cases}
+    y'(t)=y(t)\\
+    y(0) = 1
+\end{cases}\end{split}\]</div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">A</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span>  <span class="mf">2.0</span><span class="p">,</span><span class="mf">8.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span>  <span class="mf">1.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">11.0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">b</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">,</span><span class="mf">3.0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span></span><span class="n">DiffEq</span> <span class="o">=</span> <span class="n">LinearODE</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">DiffEq</span><span class="o">.</span><span class="n">setDomain</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">DiffEq</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[1.000000,2.000000,1.000000]
-[2.000000,8.000000,4.000000]
-[1.000000,4.000000,11.000000]
-
-(1.000000,2.000000,3.000000)
+ODE of 1-th order defined on the interval (0.000000,2.000000)
 </pre></div></div>
 </div>
-<p>We check that the matrix A is symmetric comparing it to A transpose.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">T</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[1.000000,2.000000,1.000000]
-[2.000000,8.000000,4.000000]
-[1.000000,4.000000,11.000000]
-
-[1.000000,2.000000,1.000000]
-[2.000000,8.000000,4.000000]
-[1.000000,4.000000,11.000000]
-
-</pre></div></div>
-</div>
-<p>The eigenvalue of A are 0.468, 5.462, 14.069 therefore the matrix is positive definite and we can perform Cholesky factorization.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">Solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Ax=b</span>
-<span class="sd">    L(L^T)x=b</span>
-<span class="sd">    Ly=b</span>
-<span class="sd">    (L^T)x=y</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1">#Init vector to store solutions of the linear systems</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">())</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">vec</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">())</span>
-    <span class="n">LT</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">(),</span><span class="n">b</span><span class="o">.</span><span class="n">len</span><span class="p">())</span>
-    <span class="c1">#We perform Cholesky factorization</span>
-    <span class="n">L</span> <span class="o">=</span> <span class="n">Cholesky</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
-    <span class="n">LT</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">T</span><span class="p">()</span>
-    <span class="c1">#Init the linear system Ly=b</span>
-    <span class="n">S1</span> <span class="o">=</span> <span class="n">LinSys</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">S1</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;LOWER&quot;</span><span class="p">)</span>
-    <span class="c1">#Solve linear system using forward sub</span>
-    <span class="n">y</span><span class="o">=</span><span class="n">S1</span><span class="o">.</span><span class="n">ForwardSub</span><span class="p">()</span>
-    <span class="c1">#Init the linear system (L^T)x=y</span>
-    <span class="n">S2</span> <span class="o">=</span> <span class="n">LinSys</span><span class="p">(</span><span class="n">LT</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">S2</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;UPPER&quot;</span><span class="p">)</span>
-    <span class="c1">#Solve linear system using backward sub</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">S2</span><span class="o">.</span><span class="n">BackSub</span><span class="p">()</span>
-    <span class="c1">#Freeing memory</span>
-    <span class="n">LT</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-    <span class="n">L</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-    <span class="n">y</span><span class="o">.</span><span class="n">free</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-(1.000000,-0.111111,0.222222)
-</pre></div></div>
-</div>
-</div>
-<div class="section" id="Gram-Schmidt">
-<h1>Gram-Schmidt<a class="headerlink" href="#Gram-Schmidt" title="Permalink to this headline">¶</a></h1>
-<p>We also implemented the classical Gram-Schmidt algorithm for QR decomposition to check computation made by hand suing Householder reflections.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">A</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">A</span><span class="o">.</span><span class="n">from_Array</span><span class="p">([</span><span class="mf">12.0</span><span class="p">,</span><span class="o">-</span><span class="mf">51.0</span><span class="p">,</span><span class="mf">4.0</span><span class="p">,</span>  <span class="mf">6.0</span><span class="p">,</span><span class="mf">167.0</span><span class="p">,</span><span class="o">-</span><span class="mf">68.0</span><span class="p">,</span>  <span class="o">-</span><span class="mf">4.0</span><span class="p">,</span><span class="mf">24.0</span><span class="p">,</span><span class="o">-</span><span class="mf">41.0</span><span class="p">])</span>
-<span class="n">A</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-[12.000000,-51.000000,4.000000]
-[6.000000,167.000000,-68.000000]
-[-4.000000,24.000000,-41.000000]
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">GS</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span></span><span class="c1"># a(t)u&#39;+b(t)u+c(t)=0</span>
+<span class="c1"># u&#39;-u=0</span>
+<span class="n">DiffEq</span><span class="o">.</span><span class="n">setCoeff</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">DiffEq</span><span class="o">.</span><span class="n">setCoeff</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">DiffEq</span><span class="o">.</span><span class="n">setIC</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="p">[</span><span class="n">H</span><span class="p">,</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">DiffEq</span><span class="o">.</span><span class="n">ScalarEuler</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">u</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">H</span><span class="p">),</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-([0.857143,-0.394286,-0.331429]
- [0.428571,0.902857,0.034286]
- [-0.285714,0.171429,-0.942857],
- [14.000000,21.000000,-14.000000]
- [0.000000,175.000000,-70.000000]
- [0.000000,0.000000,35.000000])
+[&lt;matplotlib.lines.Line2D at 0x7f6ea0a92080&gt;]
 </pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/ODE_LinearODE_6_1.png" src="../_images/ODE_LinearODE_6_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="p">[</span><span class="n">H</span><span class="p">,</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">DiffEq</span><span class="o">.</span><span class="n">ScalarEuler</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">u</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">H</span><span class="p">),</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;matplotlib.lines.Line2D at 0x7f6ea0bb3b38&gt;]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/ODE_LinearODE_7_1.png" src="../_images/ODE_LinearODE_7_1.png" />
+</div>
 </div>
 </div>
 
@@ -476,22 +417,21 @@ div.rendered_html tbody tr:hover {
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="BasicLA.html">Basic Linear Algebra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="GE.html">Gaussian Elimination</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Cholesky factorization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#Gram-Schmidt">Gram-Schmidt</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Sparse.html">Sparse Linear Algebra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Iterative.html">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Parallel-LA.html">Parallel Linear Algebra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ODE/LinearODE.html">Linear ODE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/BasicLA.html">Basic Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/GE.html">Gaussian Elimination</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Factorization.html">Cholesky factorization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Factorization.html#Gram-Schmidt">Gram-Schmidt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Sparse.html">Sparse Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Iterative.html">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Parallel-LA.html">Parallel Linear Algebra</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Linear ODE</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="GE.html" title="previous chapter">Gaussian Elimination</a></li>
-      <li>Next: <a href="Sparse.html" title="next chapter">Sparse Linear Algebra</a></li>
+      <li>Previous: <a href="../LinearAlgebra/Parallel-LA.html" title="previous chapter">Parallel Linear Algebra</a></li>
   </ul></li>
 </ul>
 </div>
@@ -525,7 +465,7 @@ div.rendered_html tbody tr:hover {
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/LinearAlgebra/Factorization.ipynb.txt"
+      <a href="../_sources/ODE/LinearODE.ipynb.txt"
           rel="nofollow">Page source</a>
     </div>
 
