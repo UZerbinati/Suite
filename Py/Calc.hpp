@@ -12,6 +12,7 @@ void CalcBind(py::module &module){
     	    .def("call", &Diff::call)
     	    .def("set_h", &Diff::set_h)
 	    .def("set_type", &Diff::set_type);
+    //LINEAR ODE
     py::class_<LinearODE>(module,"LinearODE")
 	    .def(py::init <int>())
 	    .def("setDomain", &LinearODE::setDomain)
