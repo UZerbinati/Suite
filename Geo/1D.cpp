@@ -1,3 +1,4 @@
+#include "../suite.hpp"
 #include "1D.hpp"
 #include <string>
 #include <cmath>
@@ -68,6 +69,8 @@ std::string Mesh::toString(){
 	}
 	return out;
 }
+MeshFunction::MeshFunction(){
+}
 MeshFunction::MeshFunction(Mesh m, int n){
 	mesh = m;
 	dim = n;
@@ -92,7 +95,7 @@ std::vector <double> MeshFunction::eval(std::vector <double> P, int p){
 	double a;
 	double b;
 	if (mesh.getDimension()==1){
-		for (int k=0; k < mesh.getElementNumber(); k++){
+		for (int k=1; k < mesh.getElementNumber()+1; k++){
 			a = mesh.getElement(k).getPoint(0)-mesh.getElementTollerance(k);
 			b = mesh.getElement(k).getPoint(1)+mesh.getElementTollerance(k);
 			flag1 = (P[0] > a);
@@ -102,12 +105,14 @@ std::vector <double> MeshFunction::eval(std::vector <double> P, int p){
 				if (p==0){
 					return data[k];
 				}else if (p==1){
-					value = {data[k][0]+(data[k+1][0]-data[k][0])/(b-a)*(P[0]-a)};
-					return value;
+						value = {data[k-1][0]+(data[k][0]-data[k-1][0])/(b-a)*(P[0]-a)};
+						std::cout << "value: " << std::to_string(value[0]) << std::endl;
+						return value;
 				}
 			}
 		}
-		return data[mesh.getElementNumber()-1]; 
+		std::cout << "Data: " << std::to_string(data[mesh.getElementNumber()][0])<< std::endl;
+		return data[mesh.getElementNumber()]; 
 	}
 }
 vec MeshFunction::export_vec(){
@@ -127,4 +132,33 @@ void MeshFunction::import_vec(vec &v){
 		}
 	}
 }
-
+std::vector <int> MeshFunction::getDim(){
+	std::vector <int>ndim = {mesh.getDimension(),dim};
+	return ndim;
+}
+BC::BC(){
+	type = "UNSET";
+}
+BC::BC(std::string BCtype, MeshFunction BCf){
+	type = BCtype;
+	f = BCf;
+}
+vec BC::apply(vec v){ 
+	int l;
+	bool flag;
+	l = v.getLen();
+	vec w(l);
+	vec vec_f(l);	
+	w = v;
+	vec_f = f.export_vec();
+	flag = (f.getDim()[0] == 1) and (f.getDim()[1]==1);
+	std::cout << "(" << std::to_string(f.getDim()[0])<<"," << std::to_string(f.getDim()[1])<<")"<< "->" << flag << std::endl;
+	if (flag){
+		w.setData(+v.getData(0),0);
+		w.setData(+v.getData(l-1),l-1);
+	}
+	return w;
+}
+MeshFunction* BC::get_function(){
+	return &f;
+}

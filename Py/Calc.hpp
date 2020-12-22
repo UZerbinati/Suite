@@ -4,6 +4,10 @@
 #include "../Calc/diff.hpp"
 #include "../Calc/diff.cpp"
 
+
+#include "../Calc/fd.hpp"
+#include "../Calc/fd.cpp"
+
 void CalcBind(py::module &module){
     //DIFFERENTIATION
     py::class_<Diff>(module,"Diff")
@@ -20,4 +24,8 @@ void CalcBind(py::module &module){
 	    .def("setIC", &LinearODE::setIC)
 	    .def("ScalarEuler", &LinearODE::ScalarEuler)
 	    .def("__repr__", &LinearODE::toString);
+    //FINITE DIFFERENCE
+    py::class_<FiniteDifference>(module,"FiniteDifference")
+	    .def(py::init <Mesh>())
+	    .def("LaplaceOp", &FiniteDifference::LaplaceOp);
 }

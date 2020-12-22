@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <functional>
-#include "../suite.hpp"
 
 class line
 {
@@ -45,11 +44,25 @@ class MeshFunction
 		int dim;
 		std::vector <std::vector<double>> data;
 	public:
+		MeshFunction();
 		MeshFunction(Mesh mesh,int n);
 		void pushFunction(std::function<std::vector<double>(std::vector<double>)>);
 		std::vector <double> eval(std::vector <double>,int p);
+		std::vector <int> getDim();
 		vec export_vec();
 		void import_vec(vec &v);
+};
+class BC
+{
+	private:
+		std::string type;  		
+		MeshFunction f;
+	public:
+		BC();
+		BC(std::string BCtype, MeshFunction BCf);
+		vec apply(vec v);
+		MeshFunction* get_function();
+
 };
 #endif
 

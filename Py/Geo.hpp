@@ -21,5 +21,11 @@ void GeoBind(py::module &module){
 		.def("vec_export", &MeshFunction::export_vec)
 		.def("vec_import", &MeshFunction::import_vec)
 		.def("pushFunction", &MeshFunction::pushFunction)
+		.def("getDim", &MeshFunction::getDim)
+
 		.def("eval", &MeshFunction::eval);
+	//BOUNDARY CONDITIONS
+	py::class_<BC>(module,"BoundaryCondition")
+		.def(py::init <std::string,MeshFunction>())
+		.def("apply", &BC::apply);
 }

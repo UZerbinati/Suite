@@ -15,6 +15,7 @@ Welcome to Suite's documentation!
    LinearAlgebra/Parallel-LA.ipynb
    ODE/LinearODE.ipynb
    Geo/Geometry1D.ipynb
+   PDE/FiniteDifferenceElliptic.ipynb
 
 Indices
 ==================
