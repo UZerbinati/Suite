@@ -110,3 +110,21 @@ std::vector <double> MeshFunction::eval(std::vector <double> P, int p){
 		return data[mesh.getElementNumber()-1]; 
 	}
 }
+vec MeshFunction::export_vec(){
+	if (dim==1){
+		vec v(mesh.getElementNumber());
+		for (int k=0; k < mesh.getElementNumber();k++){
+			v.setData(data[k][0],k);
+		}
+		return v;
+	}
+}
+void MeshFunction::import_vec(vec &v){
+	if (dim==1){
+		for (int k=0; k < mesh.getElementNumber();k++){
+			std::cout << v.getData(k) << std::endl;
+			data[k][0] = v.getData(k);
+		}
+	}
+}
+

@@ -18,6 +18,8 @@ void GeoBind(py::module &module){
 	//MESH FUNCTION
 	py::class_<MeshFunction>(module,"MeshFunction")
 		.def(py::init <Mesh,int>())
+		.def("vec_export", &MeshFunction::export_vec)
+		.def("vec_import", &MeshFunction::import_vec)
 		.def("pushFunction", &MeshFunction::pushFunction)
 		.def("eval", &MeshFunction::eval);
 }

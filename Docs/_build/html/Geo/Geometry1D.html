@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>One Dimensional Geometry &#8212; Suite 0.0.1 documentation</title>
+    <title>Geometry &#8212; Suite 0.0.1 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -18,7 +18,7 @@
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Linear ODE" href="../ODE/LinearODE.html" />
+    <link rel="prev" title="ODE" href="../ODE/LinearODE.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -283,8 +283,10 @@ div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
 </style>
+<div class="section" id="Geometry">
+<h1>Geometry<a class="headerlink" href="#Geometry" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="One-Dimensional-Geometry">
-<h1>One Dimensional Geometry<a class="headerlink" href="#One-Dimensional-Geometry" title="Permalink to this headline">¶</a></h1>
+<h2>One Dimensional Geometry<a class="headerlink" href="#One-Dimensional-Geometry" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -307,7 +309,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">I</span> <span class="o">=</span> <span class="n">line</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="n">pi</span><span class="p">)</span>
+<span></span><span class="n">I</span> <span class="o">=</span> <span class="n">line</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">2.0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -330,7 +332,7 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 |1D Mesh|
-Mesh made by 32.
+Mesh made by 20.
 0. [0.000000,0.100000]
 1. [0.100000,0.200000]
 2. [0.200000,0.300000]
@@ -351,18 +353,6 @@ Mesh made by 32.
 17. [1.700000,1.800000]
 18. [1.800000,1.900000]
 19. [1.900000,2.000000]
-20. [2.000000,2.100000]
-21. [2.100000,2.200000]
-22. [2.200000,2.300000]
-23. [2.300000,2.400000]
-24. [2.400000,2.500000]
-25. [2.500000,2.600000]
-26. [2.600000,2.700000]
-27. [2.700000,2.800000]
-28. [2.800000,2.900000]
-29. [2.900000,3.000000]
-30. [3.000000,3.100000]
-31. [3.100000,3.200000]
 </pre></div></div>
 </div>
 <p>We can access the mesh dimension and the number of elements in the mesh as follow:</p>
@@ -399,7 +389,7 @@ Mesh made by 32.
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-32
+20
 </pre></div></div>
 </div>
 <p>We now define a given function on the afore built mesh, we can also evaluate the function in a specific point passing as argument the degree ( either 0 or 1) of polynomial interpolation with in the mesh volumes.</p>
@@ -409,7 +399,7 @@ Mesh made by 32.
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">f</span> <span class="o">=</span> <span class="n">MeshFunction</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">f</span><span class="o">.</span><span class="n">pushFunction</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="p">[</span><span class="n">sin</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
+<span class="n">f</span><span class="o">.</span><span class="n">pushFunction</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mi">4</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -446,6 +436,48 @@ Mesh made by 32.
 <img alt="../_images/Geo_Geometry1D_13_0.png" src="../_images/Geo_Geometry1D_13_0.png" />
 </div>
 </div>
+<p>We can also transform to vector type the a mesh function and also import a vector to fill a mesh function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">v</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">vec_export</span><span class="p">()</span>
+<span class="n">v</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1.000000,0.997500,0.990000,0.977500,0.960000,0.937500,0.910000,0.877500,0.840000,0.797500,0.750000,0.697500,0.640000,0.577500,0.510000,0.437500,0.360000,0.277500,0.190000,0.097500)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">u</span> <span class="o">=</span> <span class="n">MeshFunction</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">u</span><span class="o">.</span><span class="n">pushFunction</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">u</span><span class="o">.</span><span class="n">vec_import</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="n">u</span><span class="o">.</span><span class="n">vec_export</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(1.000000,0.997500,0.990000,0.977500,0.960000,0.937500,0.910000,0.877500,0.840000,0.797500,0.750000,0.697500,0.640000,0.577500,0.510000,0.437500,0.360000,0.277500,0.190000,0.097500)
+</pre></div></div>
+</div>
+</div>
 </div>
 
 
@@ -466,22 +498,24 @@ Mesh made by 32.
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/BasicLA.html">Basic Linear Algebra</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/BasicLA.html">Linear Algebra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/GE.html">Gaussian Elimination</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Factorization.html">Cholesky factorization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Factorization.html#Gram-Schmidt">Gram-Schmidt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Factorization.html">Factorization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Sparse.html">Sparse Linear Algebra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Iterative.html">Iterative Methods - Jacobi and Gau<span class="math notranslate nohighlight">\(\beta\)</span>-Siedel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../LinearAlgebra/Parallel-LA.html">Parallel Linear Algebra</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ODE/LinearODE.html">Linear ODE</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">One Dimensional Geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ODE/LinearODE.html">ODE</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Geometry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#One-Dimensional-Geometry">One Dimensional Geometry</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../ODE/LinearODE.html" title="previous chapter">Linear ODE</a></li>
+      <li>Previous: <a href="../ODE/LinearODE.html" title="previous chapter">ODE</a></li>
   </ul></li>
 </ul>
 </div>

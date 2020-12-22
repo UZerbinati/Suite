@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include "../suite.hpp"
 
 class line
 {
@@ -47,6 +48,8 @@ class MeshFunction
 		MeshFunction(Mesh mesh,int n);
 		void pushFunction(std::function<std::vector<double>(std::vector<double>)>);
 		std::vector <double> eval(std::vector <double>,int p);
+		vec export_vec();
+		void import_vec(vec &v);
 };
 #endif
 
