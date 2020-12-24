@@ -62,6 +62,7 @@ class BC
 		BC(std::string BCtype, MeshFunction BCf);
 		vec apply(vec v);
 		MeshFunction* get_function();
+		std::string get_Type();
 
 };
 #endif
