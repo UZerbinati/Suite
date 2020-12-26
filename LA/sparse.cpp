@@ -64,6 +64,19 @@ spmat::spmat(int n,int m)
 	}
 		
 }
+void spmat::empty()
+{
+	/* 
+	 * [1 0 0 
+	 *  0 1 0]
+	 */
+
+	for (int i =0; i < p;i++){
+		value[i] = 0.0;
+		P[i] = (i*width)+i;
+	}
+		
+}
 spmat::spmat(){
 
 }
@@ -157,6 +170,53 @@ vec operator*(const spmat &M, const vec &v){
 		result[i] = result[i] + M.value[m]*v.getData(j-1);
 	}	
 	return result;
+}
+int spmat::getSize(){
+	return p;
+}
+spmat operator+(spmat A,spmat B){
+	assert(A.height == B.height && "Matrix don't have same dimensions");
+	assert(A.width == B.width && "Matrix don't have same dimensions");
+	spmat M(A.height,A.width);
+	int Aj;
+	int Ai;
+	int Bj;
+	int Bi;
+	double elval= 0.0;
+	std::vector <int> idx;
+	M.empty();
+	for (int k=0;k<A.p;k++){
+		Aj = (A.P[k]%A.width+1);
+		Ai = (A.P[k]/A.height+1);
+		idx = {Ai,Aj};
+		elval = M.getItem(idx.data(),idx.size())+A.getItem(idx.data(),idx.size());
+		std::cout << "A(" << Ai << "," << Aj << ")->" << A(Ai,Aj)<< std::endl;
+		M.setItem(idx.data(),idx.size(),elval);	
+	}
+	for (int k=0;k<B.p;k++){
+		Bj = (B.P[k]%B.width+1);
+		Bi = (B.P[k]/B.height+1);
+		idx = {Bi,Bj};
+		elval = M.getItem(idx.data(),idx.size())+B.getItem(idx.data(),idx.size());
+		M.setItem(idx.data(),idx.size(),elval);	
+	}
+	return M;
+}
+spmat operator*(const double lambda, spmat A){
+	spmat M(A.getHeight(),A.getWidth());
+	int Ai;
+	int Aj;
+	std::vector <int> idx;
+	double elval;
+	M.empty();
+	for (int k=0; k < A.p; k++){
+		Aj = (A.P[k]%A.width+1);
+		Ai = (A.P[k]/A.height+1);
+		idx = {Ai,Aj};
+		elval = lambda*A.getItem(idx.data(),idx.size());
+		M.setItem(idx.data(),idx.size(),elval);	
+	}
+	return M;
 }
 std::string spmat::toString(){	
 	std::string out;

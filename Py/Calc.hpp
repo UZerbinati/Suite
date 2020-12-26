@@ -27,5 +27,7 @@ void CalcBind(py::module &module){
     //FINITE DIFFERENCE
     py::class_<FiniteDifference>(module,"FiniteDifference")
 	    .def(py::init <Mesh>())
+	    .def("BoundaryOp", &FiniteDifference::BoundaryOp)
+	    .def("ReactionOp", &FiniteDifference::ReactionOp)
 	    .def("LaplaceOp", &FiniteDifference::LaplaceOp);
 }

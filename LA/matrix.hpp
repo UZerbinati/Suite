@@ -22,6 +22,7 @@ class mat
 		void setItem(int *idx,int size, double value);
 		std::string toString();
 		void from_Array(double *array, int size);
+
 		mat& operator=(const mat &A);
 		mat operator+(const mat &A) const;
 		mat operator-(const mat &A) const;

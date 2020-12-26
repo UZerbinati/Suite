@@ -13,6 +13,8 @@ class FiniteDifference
 	public:
 		FiniteDifference();
 		FiniteDifference(Mesh m);
+		spmat BoundaryOp(BC bc);
+		spmat ReactionOp(BC bc, MeshFunction f);
 		spmat LaplaceOp(BC bc);
 };
 

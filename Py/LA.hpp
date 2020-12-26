@@ -101,6 +101,11 @@ void LABind(py::module &module){
     	    .def("__mul__", [](spmat &M, vec &v) {
 			    return M*v;
 		}, py::is_operator())
+	    .def(double()*py::self)
+    	    .def("__add__", [](spmat &A, spmat &B) {
+			    std::cout << "Sparse sum !" << std::endl;
+			    return A+B;
+		}, py::is_operator())
     	    .def("__getitem__", [](spmat &M, std::vector<int> index) {
 			    double value;
 			    value = M.getItem(index.data(),index.size());

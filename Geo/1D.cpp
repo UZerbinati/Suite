@@ -32,8 +32,8 @@ double Mesh::getSize(int k){
 }
 void Mesh::UniformMesh(line I, double h){
 	type = "UNIFORM";
-	N = int((I.getPoint(1)-I.getPoint(0))/h)+1;	
-	if (I.getPoint(1)-(N-1)*h == 0){
+	N = int((I.getPoint(1)-I.getPoint(0))/h);	
+	if ((I.getPoint(1)-I.getPoint(0))-(N-1)*h == 0){
 	       N = N-1;
 	}	       
 	for (int i=0; i < N; i++){
@@ -168,4 +168,7 @@ MeshFunction* BC::get_function(){
 }
 std::string BC::get_Type(){
 	return type;
+}
+std::vector <int> BC::getDim(){
+	return f.getDim();
 }
