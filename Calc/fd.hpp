@@ -16,6 +16,7 @@ class FiniteDifference
 		spmat BoundaryOp(BC bc);
 		spmat ReactionOp(BC bc, MeshFunction f);
 		spmat LaplaceOp(BC bc);
+		spmat TransportOp(BC bc,MeshFunction f);
 };
 
 #endif

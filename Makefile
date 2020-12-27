@@ -1,9 +1,13 @@
 CXX=g++
-all: base python
+all: base python expr
 base: test.o complex.o vector.o diff.o matrix.o linearsys.o decomposition.o sparse.o iteractive.o 1DGeo.o ODE.o FD.o
 	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o Build/matrix.o Build/linearsys.o Build/sparse.o Build/iteractive.o Build/1DGeo.o Build/ODE.o Build/FD.o
 python: LAParallel.o 
 	$(CXX) -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` Py/suite.cpp -fopenmp -o Py/Build/suite`python3-config --extension-suffix`
+expr:
+	bison -d Expr/expr.ypp
+	flex Expr/expr.l
+	$(CXX) -o Expr/expreval Expr/expr.tab.cpp Expr/lex.yy.c
 test.o: test.cpp
 	$(CXX) -c test.cpp -o Build/test.o
 diff.o: Calc/diff.cpp
