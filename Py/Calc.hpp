@@ -17,13 +17,13 @@ void CalcBind(py::module &module){
     	    .def("set_h", &Diff::set_h)
 	    .def("set_type", &Diff::set_type);
     //LINEAR ODE
-    py::class_<LinearODE>(module,"LinearODE")
+    py::class_<LinearODE<double>>(module,"LinearODE")
 	    .def(py::init <int>())
-	    .def("setDomain", &LinearODE::setDomain)
-	    .def("setCoeff", &LinearODE::setCoefficient)
-	    .def("setIC", &LinearODE::setIC)
-	    .def("ScalarEuler", &LinearODE::ScalarEuler)
-	    .def("__repr__", &LinearODE::toString);
+	    .def("setDomain", &LinearODE<double>::setDomain)
+	    .def("setCoeff", &LinearODE<double>::setCoefficient)
+	    .def("setIC", &LinearODE<double>::setIC)
+	    .def("Euler", &LinearODE<double>::ScalarEuler)
+	    .def("__repr__", &LinearODE<double>::toString);
     //FINITE DIFFERENCE
     py::class_<FiniteDifference>(module,"FiniteDifference")
 	    .def(py::init <Mesh>())

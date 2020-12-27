@@ -11,6 +11,6 @@ def test_ODE_basic():
    DiffEq.setCoeff(0,lambda t : 0)
    DiffEq.setCoeff(1,lambda t : -1)
    DiffEq.setIC(1.0)
-   [H,u] = DiffEq.ScalarEuler(1e-6);
+   [H,u] = DiffEq.Euler(1e-6);
    assert (abs(u[-1]-exp(2))< tol);
 

@@ -8,24 +8,24 @@
 
 using namespace std;
 
-class LinearODE
+template <class T> class LinearODE
 {
 // K2(t) du/dt + K1(t) u + K0(t) = 0; 
 	private:
 		int order;
-		std::function <double(double)> K[10];
+		std::function <T(T)> K[10];
 		double a;
 		double b;
-		double I0;
+		T I0;
 		string form;
 	public:
 		LinearODE();
 		LinearODE(int order);
 		string toString();
 		void setDomain(double a,double b);
-		void setIC(double y0);
-		void setCoefficient(int k,std::function<double(double)> f);
-		std::tuple<std::vector<double>,std::vector<double>> ScalarEuler(double h);
+		void setIC(T y0);
+		void setCoefficient(int k,std::function<T(T)> f);
+		std::tuple<std::vector<T>,std::vector<T>> ScalarEuler(T h);
 
 };
 #endif
