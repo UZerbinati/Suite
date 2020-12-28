@@ -115,6 +115,7 @@ def test_PDE_Parabolic_1D_Test1():
     DiffEq.setCoeff(0,lambda t : (-1)*K)
     DiffEq.setCoeff(1,lambda t : M)
     DiffEq.setIC(u0_vec)
+    DiffEq.setSolver("JACOBI",500);
     [H, u] = DiffEq.Euler(0.005)
     ut = MeshFunction(mesh,1)
     ut.pushFunction(lambda P: [0])
