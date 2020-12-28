@@ -78,11 +78,18 @@ template <class T> std::tuple<std::vector<double>,std::vector<T>> LinearODE<T>::
 }
 
 std::tuple<std::vector<double>,std::vector<vec>> LinearODE<vec>::ScalarEuler(double h){
+	// MU'(t)+KU(t)=0
+	// MU'(t) = -KU(t);
+	// U'(t) = M^{-1}(-kU(t))=data;
+	// U(t+h)=U(t)+ data*h
 	int N = int((b-a)/h);
-
+	
+	vec x0 (I0->getLen());
 	vec data(I0->getLen());
+	vec x(I0->getLen());
 	for (int k=0; k < data.getLen(); k++){
 		data.setData(I0->getData(k),k);
+		x0.setData(I0->getData(k),k);
 	}
 	assert(form == "NORMAL" && "Error: ODE must be in normal form.");
 	assert(order == 1 && "Error: Euler method only work for dy/dt.");	
@@ -96,9 +103,22 @@ std::tuple<std::vector<double>,std::vector<vec>> LinearODE<vec>::ScalarEuler(dou
 	
 	for (int i=1;i<N;i++){
 		data = (K[0](i*h)*timesteps[i-1]);
-		data = data*(-h);
-		timesteps.push_back(timesteps[i-1]+data);
+		data = data*(-1);
+		spmat M(I0->getLen(),I0->getLen());
+		M = K[1](i*h);
+		if (solver == "JACOBI"){
+			x = Jacobi(M,data,x0,solverIT,1e-8);
+		}	
+		timesteps.push_back(timesteps[i-1]+x*(h));
 		domain.push_back(a+i*h);
 	}
 	return std::make_tuple(domain,timesteps);
+}
+template <class T> void LinearODE<T>::setSolver(string stype, int sIT){
+	solver = stype;
+	solverIT = sIT;
+}
+void LinearODE<vec>::setSolver(string stype, int sIT){
+	solver = stype;
+	solverIT = sIT;
 }

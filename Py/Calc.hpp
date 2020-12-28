@@ -29,6 +29,7 @@ void CalcBind(py::module &module){
 	    .def("setDomain", &LinearODE<vec>::setDomain)
 	    .def("setCoeff", &LinearODE<vec>::setCoefficient)
 	    .def("setIC", &LinearODE<vec>::setIC)
+	    .def("setSolver", &LinearODE<vec>::setSolver)
 	    .def("Euler", &LinearODE<vec>::ScalarEuler)
 	    .def("__repr__", &LinearODE<vec>::toString);
     //FINITE DIFFERENCE

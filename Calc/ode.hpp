@@ -18,12 +18,15 @@ template <class T> class LinearODE
 		double b;
 		T I0;
 		string form;
+		string solver;
+		int solverIT;
 	public:
 		LinearODE();
 		LinearODE(int order);
 		string toString();
 		void setDomain(double a,double b);
 		void setIC(T y0);
+		void setSolver(string stype, int sIT);
 		void setCoefficient(int k,std::function<T(double)> f);
 		std::tuple<std::vector<double>,std::vector<T>> ScalarEuler(double h);
 
@@ -39,12 +42,15 @@ template <> class LinearODE<vec>
 		double b;
 		vec* I0;
 		string form;
+		string solver;
+		int solverIT;
 	public:
 		LinearODE();
 		LinearODE(int order);
 		string toString();
 		void setDomain(double a,double b);
 		void setIC(vec y0);
+		void setSolver(string stype, int sIT);
 		void setCoefficient(int k,std::function<spmat(double)> f);
 		std::tuple<std::vector<double>,std::vector<vec>> ScalarEuler(double h);
 
