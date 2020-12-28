@@ -164,8 +164,8 @@ vec operator*(const spmat &M, const vec &v){
 	int j = 0;
 	int i = 0;
 	for (int k=0; k < M.p; k++){
-		i = (M.P[k]%M.width+1);
-		j = (M.P[k]/M.height+1);
+		j = (M.P[k]%M.width+1);
+		i = (M.P[k]/M.height+1);
 		int m = find(M.P,M.p,M.P[k]);
 		result[i] = result[i] + M.value[m]*v.getData(j-1);
 	}	

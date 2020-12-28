@@ -24,6 +24,13 @@ void CalcBind(py::module &module){
 	    .def("setIC", &LinearODE<double>::setIC)
 	    .def("Euler", &LinearODE<double>::ScalarEuler)
 	    .def("__repr__", &LinearODE<double>::toString);
+    py::class_<LinearODE<vec>>(module,"LinearODEs")
+	    .def(py::init <int>())
+	    .def("setDomain", &LinearODE<vec>::setDomain)
+	    .def("setCoeff", &LinearODE<vec>::setCoefficient)
+	    .def("setIC", &LinearODE<vec>::setIC)
+	    .def("Euler", &LinearODE<vec>::ScalarEuler)
+	    .def("__repr__", &LinearODE<vec>::toString);
     //FINITE DIFFERENCE
     py::class_<FiniteDifference>(module,"FiniteDifference")
 	    .def(py::init <Mesh>())

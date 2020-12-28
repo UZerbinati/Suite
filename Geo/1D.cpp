@@ -80,11 +80,11 @@ void MeshFunction::pushFunction(std::function<std::vector<double>(std::vector<do
 		std::vector<double> P;
 	        P= {mesh.getElement(0).getPoint(0)};
 		data.push_back(f(P));
-		std::cout << std::to_string(f(P)[0]) << std::endl;
+		//std::cout << std::to_string(f(P)[0]) << std::endl;
 		for (int k=0; k < mesh.getElementNumber(); k++){
 			P = {mesh.getElement(k).getPoint(1)};
 			data.push_back(f(P));
-			std::cout << std::to_string(k) << ". ("<< mesh.getElement(k).getPoint(0)-mesh.getElementTollerance(k)<< ","<< mesh.getElement(k).getPoint(1)+mesh.getElementTollerance(k)<< ") -> " << std::to_string(data[k+1][0]) << std::endl;
+			//std::cout << std::to_string(k) << ". ("<< mesh.getElement(k).getPoint(0)-mesh.getElementTollerance(k)<< ","<< mesh.getElement(k).getPoint(1)+mesh.getElementTollerance(k)<< ") -> " << std::to_string(data[k+1][0]) << std::endl;
 		}	
 	}
 }
@@ -101,18 +101,18 @@ std::vector <double> MeshFunction::eval(std::vector <double> P, int p){
 			b = mesh.getElement(k).getPoint(1)+mesh.getElementTollerance(k);
 			flag1 = (P[0] >= a);
 			flag2 = (P[0] < b);
-			std::cout << k << ". " << "point inside (" << std::to_string(flag1)<<"," <<std::to_string(flag2)<<")" << ", point value " << P[0]<< ", element ("<< a <<"," << b << ")" << std::endl;
+			//std::cout << k << ". " << "point inside (" << std::to_string(flag1)<<"," <<std::to_string(flag2)<<")" << ", point value " << P[0]<< ", element ("<< a <<"," << b << ")" << std::endl;
 			if (flag1 and flag2){
 				if (p==0){
 					return data[k];
 				}else if (p==1){
 						value = {(data[k+1][0]-data[k][0])/(b-a)*(P[0]-a)+data[k][0]};
-						std::cout << "data: (" << std::to_string(data[k+1][0]) <<"," << std::to_string(data[k][0])<< ") ; ("<< std::to_string(b)<<"," << std::to_string(a) << "); x=" << std::to_string(P[0]) << "value: " << std::to_string(value[0]) << std::endl;
+						//std::cout << "data: (" << std::to_string(data[k+1][0]) <<"," << std::to_string(data[k][0])<< ") ; ("<< std::to_string(b)<<"," << std::to_string(a) << "); x=" << std::to_string(P[0]) << "value: " << std::to_string(value[0]) << std::endl;
 						return value;
 				}
 			}
 		}
-		std::cout << "Data: " << std::to_string(data[mesh.getElementNumber()][0])<< std::endl;
+		//std::cout << "Data: " << std::to_string(data[mesh.getElementNumber()][0])<< std::endl;
 		return data[mesh.getElementNumber()]; 
 	}
 }
@@ -120,7 +120,7 @@ vec MeshFunction::export_vec(){
 	vec v(mesh.getElementNumber()+1);
 	if (dim==1){
 		for (int k=0; k < mesh.getElementNumber()+1;k++){
-			std::cout << v.getData(k) << std::endl;
+			//std::cout << v.getData(k) << std::endl;
 			v.setData(data[k][0],k);
 		}
 	}
@@ -130,7 +130,7 @@ vec MeshFunction::export_vec(){
 void MeshFunction::import_vec(vec &v){
 	if (dim==1){
 		for (int k=0; k < mesh.getElementNumber()+1;k++){
-			std::cout << v.getData(k) << std::endl;
+			//std::cout << v.getData(k) << std::endl;
 			data[k][0] = v.getData(k);
 		}
 	}
@@ -155,9 +155,9 @@ vec BC::apply(vec v){
 	w = v;
 	vec_f = f.export_vec();
 	flag = (f.getDim()[0] == 1) and (f.getDim()[1]==1);
-	std::cout << "(" << std::to_string(f.getDim()[0])<<"," << std::to_string(f.getDim()[1])<<")"<< "->" << flag << std::endl;
+	//std::cout << "(" << std::to_string(f.getDim()[0])<<"," << std::to_string(f.getDim()[1])<<")"<< "->" << flag << std::endl;
 	if (flag){
-		std::cout << "v: " << v.toString() << " f: " << vec_f.toString() << std::endl;
+		//std::cout << "v: " << v.toString() << " f: " << vec_f.toString() << std::endl;
 		w.setData(vec_f.getData(0),0);
 		w.setData(vec_f.getData(l-1),l-1);
 	}

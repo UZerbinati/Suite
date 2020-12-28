@@ -23,7 +23,7 @@ def test_Sparse_LA_Jacobi():
     x0 = vec(3);
     x0.from_Array([0,0,0]);
     x = vec(3);
-    x = Jacobi(A,b,x0,100);
+    x = Jacobi(A,b,x0,200);
     print(x);
     s = vec(3);
     s.from_Array([1.0,1.0,2.0]);

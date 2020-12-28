@@ -95,6 +95,8 @@ void LABind(py::module &module){
 	    .def(py::init <int, int>())
 	    .def("__repr__", &spmat::toString)
 	    .def("toString", &spmat::toString)
+	    .def("Width", &spmat::getWidth)
+	    .def("Height", &spmat::getHeight)
     	    .def("__setitem__", [](spmat &M, std::vector<int> idx,double value) {
 			    M.setItem(idx.data(),idx.size(), value);
 		}, py::is_operator())
@@ -130,13 +132,13 @@ void LABind(py::module &module){
     //ITERACTIVE
     module.def("Jacobi", [](spmat A, vec b, vec x0,int itmax,double eps) {
 	return Jacobi(A,b,x0,itmax,eps);
-    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.000001);
+    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.00000001);
     module.def("GauBSeidel", [](spmat A, vec b, vec x0,int itmax,double eps) {
 	return GauBSeidel(A,b,x0,itmax,eps);
-    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.000001);
+    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("itmax")=20,py::arg("eps")=0.00000001);
     module.def("SOR", [](spmat A, vec b, vec x0,double w,int itmax,double eps) {
 	return SOR(A,b,x0,w,itmax,eps);
-    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("w"),py::arg("itmax")=20,py::arg("eps")=0.000001);
+    },py::arg("A"),py::arg("b"),py::arg("x0"),py::arg("w"),py::arg("itmax")=20,py::arg("eps")=0.00000001);
     //PARALLEL
     module.def("ParallelGS", [](mat A) {
       /* Release GIL before calling into C++ code */
