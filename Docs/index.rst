@@ -16,6 +16,7 @@ Welcome to Suite's documentation!
    ODE/LinearODE.ipynb
    Geo/Geometry1D.ipynb
    PDE/FiniteDifferenceElliptic.ipynb
+   PDE/FiniteDifferenceParabolic.ipynb
 
 Indices
 ==================

@@ -93,15 +93,12 @@ std::tuple<std::vector<double>,std::vector<vec>> LinearODE<vec>::ScalarEuler(dou
 	timesteps.push_back(nadd+data);	
 	std::vector<double> domain = {a};
 
-	std::cout << "t" << 0 <<": " << timesteps[0].toString() << std::endl;
 	
 	for (int i=1;i<N;i++){
 		data = (K[0](i*h)*timesteps[i-1]);
-		std::cout << "v" << i <<": " << data.toString() << std::endl;
 		data = data*(-h);
 		timesteps.push_back(timesteps[i-1]+data);
 		domain.push_back(a+i*h);
-		std::cout << "t" << i <<": " << timesteps[i].toString() << std::endl;
 	}
 	return std::make_tuple(domain,timesteps);
 }
