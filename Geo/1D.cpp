@@ -50,7 +50,7 @@ void Mesh::UniformMesh(line I, double h){
 int Mesh::getElementNumber(){
 	return N;
 }
-line Mesh::getElement(int k){
+line Mesh::getLineElement(int k){
 	return lineElements[k];	
 }
 double Mesh::getElementTollerance(int k){
@@ -69,6 +69,9 @@ std::string Mesh::toString(){
 	}
 	return out;
 }
+std::string Mesh::getType(){
+	return type;
+}
 MeshFunction::MeshFunction(){
 }
 MeshFunction::MeshFunction(Mesh m, int n){
@@ -78,11 +81,11 @@ MeshFunction::MeshFunction(Mesh m, int n){
 void MeshFunction::pushFunction(std::function<std::vector<double>(std::vector<double>)> f){
 	if (mesh.getDimension() == 1){
 		std::vector<double> P;
-	        P= {mesh.getElement(0).getPoint(0)};
+	        P= {mesh.getLineElement(0).getPoint(0)};
 		data.push_back(f(P));
 		//std::cout << std::to_string(f(P)[0]) << std::endl;
 		for (int k=0; k < mesh.getElementNumber(); k++){
-			P = {mesh.getElement(k).getPoint(1)};
+			P = {mesh.getLineElement(k).getPoint(1)};
 			data.push_back(f(P));
 			//std::cout << std::to_string(k) << ". ("<< mesh.getElement(k).getPoint(0)-mesh.getElementTollerance(k)<< ","<< mesh.getElement(k).getPoint(1)+mesh.getElementTollerance(k)<< ") -> " << std::to_string(data[k+1][0]) << std::endl;
 		}	
@@ -97,8 +100,8 @@ std::vector <double> MeshFunction::eval(std::vector <double> P, int p){
 	double b;
 	if (mesh.getDimension()==1){
 		for (int k=0; k < mesh.getElementNumber(); k++){
-			a = mesh.getElement(k).getPoint(0)-mesh.getElementTollerance(k);
-			b = mesh.getElement(k).getPoint(1)+mesh.getElementTollerance(k);
+			a = mesh.getLineElement(k).getPoint(0)-mesh.getElementTollerance(k);
+			b = mesh.getLineElement(k).getPoint(1)+mesh.getElementTollerance(k);
 			flag1 = (P[0] >= a);
 			flag2 = (P[0] < b);
 			//std::cout << k << ". " << "point inside (" << std::to_string(flag1)<<"," <<std::to_string(flag2)<<")" << ", point value " << P[0]<< ", element ("<< a <<"," << b << ")" << std::endl;
@@ -139,6 +142,12 @@ std::vector <int> MeshFunction::getDim(){
 	std::vector <int>ndim = {mesh.getDimension(),dim};
 	return ndim;
 }
+std::vector <double> MeshFunction::getLineEx(){
+	std::vector <double> Ex;
+	Ex.push_back(mesh.getLineElement(0).getPoint(0));
+	Ex.push_back(mesh.getLineElement(mesh.getElementNumber()-1).getPoint(1));
+	return Ex;
+}
 BC::BC(){
 	type = "UNSET";
 }
@@ -172,3 +181,4 @@ std::string BC::get_Type(){
 std::vector <int> BC::getDim(){
 	return f.getDim();
 }
+

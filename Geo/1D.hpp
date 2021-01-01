@@ -30,10 +30,11 @@ class Mesh
 		void UniformMesh(line I,double h);
 		int getDimension();
 		int getElementNumber();
-		line getElement(int k);
+		line getLineElement(int k);
 		double getElementTollerance(int k);
 		double getSize(int k);
 		std::string toString();
+		std::string getType();
 	
 
 };
@@ -51,6 +52,7 @@ class MeshFunction
 		std::vector <int> getDim();
 		vec export_vec();
 		void import_vec(vec &v);
+		std::vector <double> getLineEx();
 };
 class BC
 {

@@ -90,11 +90,15 @@ void LABind(py::module &module){
 			    M.setItem(idx.data(),idx.size(), value);
 		}, py::is_operator())
 	    .def_property("parallel", &mat::GetParallel, &mat::SetParallel);
+    module.def("Vander", [](vec v, int m) {
+	return Vander(v, m);
+    },py::arg("v"),py::arg("m"));
     //SPARSE MATRIX
     py::class_<spmat>(module, "spmat")
 	    .def(py::init <int, int>())
 	    .def("__repr__", &spmat::toString)
 	    .def("toString", &spmat::toString)
+	    .def("empty", &spmat::empty)
 	    .def("Width", &spmat::getWidth)
 	    .def("Height", &spmat::getHeight)
     	    .def("__setitem__", [](spmat &M, std::vector<int> idx,double value) {

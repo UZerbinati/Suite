@@ -29,6 +29,7 @@ class mat
 		mat operator*(const double lam) const;
 		mat operator*(const mat &A) const;
 		friend vec operator*(const mat &M,const vec &v);
+		friend mat Vander(vec v, int m);
 		void free();
 		void SetParallel(bool set);
 		bool GetParallel();
@@ -37,5 +38,6 @@ class mat
 		mat transpose();
 };
 		vec operator*(const mat &M,const vec &v);
+		mat Vander(vec v);
 
 #endif

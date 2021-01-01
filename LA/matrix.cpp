@@ -53,8 +53,13 @@ std::string mat::toString(){
 		for(int j=0; j <width-1;j++){
 			out = out+std::to_string(data[width*i+j])+",";
 		}
-		out=out+std::to_string(data[width*i+height-1])+"]\n";
+		out=out+std::to_string(data[width*i+width-1])+"]\n";
 	}
+
+	/*for (int k=0; k < height*width;k++){
+		std::cout << "(" << k << ")->" << data[k] << std::endl;
+	}*/
+
 	return out;
 
 }
@@ -182,4 +187,16 @@ mat mat::transpose(){
 		}	
 	}
 	return A;
+}
+mat Vander(vec v,int m){
+	int N;
+	N = v.getLen();
+	mat M(N,m);
+	for (int k=1; k < N+1;k++){
+		M(k,1) = 1.0;
+		for (int l=2; l < m+1;l++){
+			M(k,l) = pow(v.getData(k-1),(l-1));
+		}
+	}
+	return M;
 }

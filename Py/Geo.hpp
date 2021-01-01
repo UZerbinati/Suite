@@ -12,7 +12,8 @@ void GeoBind(py::module &module){
 		.def("UniformMesh", &Mesh::UniformMesh)
 		.def("getDim", &Mesh::getDimension)
 		.def("getSize", &Mesh::getSize)
-		.def("getElement", &Mesh::getElement)
+		.def("getType", &Mesh::getType)
+		.def("getLineElement", &Mesh::getLineElement)
 		.def("getElNumber", &Mesh::getElementNumber)
 		.def("__repr__", &Mesh::toString);
 	//MESH FUNCTION
