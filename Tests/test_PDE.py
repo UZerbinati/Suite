@@ -108,12 +108,15 @@ def test_PDE_Parabolic_1D_Test1():
     FD = FiniteDifference(mesh)
     K = FD.LaplaceOp(bc)+FD.BoundaryOp(bc);
     M = spmat(K.Width(),K.Height())
+    N = spmat(K.Width(),K.Height())
+    N.empty();
     # Now we use the forward Euler method to solve the systems of ODEs represented by the following same discrete equations:
     # $$M\vec{U}'(t)-K\vec{U}(t) = 0$$
     DiffEq = LinearODEs(1);
     DiffEq.setDomain(0,6.0)
-    DiffEq.setCoeff(0,lambda t : (-1)*K)
-    DiffEq.setCoeff(1,lambda t : M)
+    DiffEq.setCoeff(0,lambda t : N)
+    DiffEq.setCoeff(1,lambda t : (-1)*K)
+    DiffEq.setCoeff(2,lambda t : M)
     DiffEq.setIC(u0_vec)
     DiffEq.setSolver("JACOBI",500);
     [H, u] = DiffEq.Euler(0.005)
