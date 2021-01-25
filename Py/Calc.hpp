@@ -8,6 +8,9 @@
 #include "../Calc/fd.hpp"
 #include "../Calc/fd.cpp"
 
+#include "../Calc/fv.hpp"
+#include "../Calc/fv.cpp"
+
 #include "../Calc/quadrature.hpp"
 #include "../Calc/quadrature.cpp"
 
@@ -43,6 +46,13 @@ void CalcBind(py::module &module){
 	    .def("setIC", &NonLinearODE<double>::setIC)
 	    .def("Euler", &NonLinearODE<double>::Euler)
 	    .def("__repr__", &NonLinearODE<double>::toString);
+    py::class_<NonLinearODE<vec>>(module,"NonLinearODEs")
+	    .def(py::init <int>())
+	    .def("setDomain", &NonLinearODE<vec>::setDomain)
+	    .def("setCoeff", &NonLinearODE<vec>::setCoefficients)
+	    .def("Euler", &NonLinearODE<vec>::Euler)
+	    .def("setIC", &NonLinearODE<vec>::setIC)
+	    .def("__repr__", &NonLinearODE<vec>::toString);
     //FINITE DIFFERENCE
     py::class_<FiniteDifference>(module,"FiniteDifference")
 	    .def(py::init <Mesh>())
@@ -50,6 +60,9 @@ void CalcBind(py::module &module){
 	    .def("TransportOp", &FiniteDifference::TransportOp)
 	    .def("ReactionOp", &FiniteDifference::ReactionOp)
 	    .def("LaplaceOp", &FiniteDifference::LaplaceOp);
+    //FINITE VOLUME
+    py::class_<FiniteVolume>(module,"FiniteVolume")
+	    .def(py::init <Mesh>());
     //QUADRATURE
     module.def("NewtonCotes", [](MeshFunction f, double h, int order) {
 	return NewtonCotes(f, h, order);
