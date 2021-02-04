@@ -7,6 +7,7 @@ namespace py = pybind11;
 #include "./LA.hpp"
 #include "./Calc.hpp"
 #include "./Geo.hpp"
+#include "./Discrete.hpp"
 #include "../Parallel/Test.cpp"
 
 
@@ -30,4 +31,5 @@ PYBIND11_MODULE(suite, module) {
     LABind(module);    
     CalcBind(module);
     GeoBind(module);
+    DiscreteBind(module);
 }

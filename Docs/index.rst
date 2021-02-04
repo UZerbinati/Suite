@@ -18,7 +18,7 @@ Welcome to Suite's documentation!
    Geo/Geometry1D.ipynb
    PDE/FiniteDifferenceElliptic.ipynb
    PDE/FiniteDifferenceParabolic.ipynb
-
+   Discrete/Automata.ipynb
 Indices
 ==================
 

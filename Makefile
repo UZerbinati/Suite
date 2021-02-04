@@ -1,7 +1,7 @@
 CXX=g++
 all: base python 
-base: test.o complex.o vector.o diff.o matrix.o linearsys.o decomposition.o sparse.o iteractive.o 1DGeo.o ODE.o FD.o quadrature.o FV.o
-	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o Build/matrix.o Build/linearsys.o Build/sparse.o Build/iteractive.o Build/1DGeo.o Build/ODE.o Build/FD.o Build/quadrature.o Build/FV.o
+base: test.o complex.o vector.o diff.o matrix.o linearsys.o decomposition.o sparse.o iteractive.o 1DGeo.o ODE.o FD.o quadrature.o FV.o 2DGeo.o automata.o
+	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o Build/matrix.o Build/linearsys.o Build/sparse.o Build/iteractive.o Build/1DGeo.o Build/ODE.o Build/FD.o Build/quadrature.o Build/FV.o Build/2DGeo.o Build/automata.o
 python: LAParallel.o 
 	$(CXX) -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` Py/suite.cpp -fopenmp -o Py/Build/suite`python3-config --extension-suffix`
 #expr:
@@ -38,3 +38,7 @@ quadrature.o: 1DGeo.o Calc/quadrature.cpp
 	$(CXX) -c Calc/quadrature.cpp -o Build/quadrature.o
 FV.o: 1DGeo.o quadrature.o Calc/fv.cpp
 	$(CXX) -c Calc/fv.cpp -o Build/FV.o
+2DGeo.o: Geo/2D.cpp
+	$(CXX) -c Geo/2D.cpp -o Build/2DGeo.o
+automata.o: 1DGeo.o Discrete/automata.cpp
+	$(CXX) -c Discrete/automata.cpp -o Build/automata.o
