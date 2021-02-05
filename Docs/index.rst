@@ -7,6 +7,7 @@ Welcome to Suite's documentation!
 =================================
 
 .. toctree::
+   GettingStarted.ipynb
    LinearAlgebra/BasicLA.ipynb
    LinearAlgebra/GE.ipynb
    LinearAlgebra/Factorization.ipynb
