@@ -2,6 +2,7 @@ import sys
 sys.path.append('../Build')
 from suite import *
 import matplotlib.pyplot as plt
+import numpy as np
 def Draw(meshfun,mesh,order,mk="*-"):
     if (meshfun.getDim()[0]==1 and meshfun.getDim()[1]==1):
         if(mesh.getType()=="UNIFORM"):
@@ -24,3 +25,30 @@ def DrawTriangle(T):
     #plt.scatter(X,Y,marker="*",color="black");
     for i in range(3):
         plt.plot([X[i-1],X[i]],[Y[i-1],Y[i]],"--",color="black");
+        
+def DrawCAState(Automata,axopt=False):
+    
+    if Automata.getNStates == 2:
+        plt.rcParams['image.cmap'] = 'binary'
+    
+    fig, ax = plt.subplots(figsize=(16, 9))
+    v = Automata.getState().vec_export();
+    data = np.array([v.to_Array()]);
+    #print(data)
+    ax.matshow(data);
+    ax.axis(axopt);
+def DrawCAStates(Automata,N,axopt=False):
+    
+    if Automata.getNStates == 2:
+        plt.rcParams['image.cmap'] = 'binary'
+    
+    fig, ax = plt.subplots(figsize=(16, 9))
+    v = Automata.getState().vec_export();
+    data = np.array([v.to_Array()]);
+    for i in range(N):
+        Automata.Run();
+        v = Automata.getState().vec_export();
+        data = np.append(data,[v.to_Array()],axis=0);
+    print(data)
+    ax.matshow(data);
+    ax.axis(axopt);

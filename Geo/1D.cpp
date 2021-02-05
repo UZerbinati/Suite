@@ -148,6 +148,11 @@ std::vector <double> MeshFunction::getLineEx(){
 	Ex.push_back(mesh.getLineElement(mesh.getElementNumber()-1).getPoint(1));
 	return Ex;
 }
+std::string MeshFunction::toString(){
+	std::string out = "Mesh function defined on: \n";
+	out = out + mesh.toString();
+	return out;
+}
 BC::BC(){
 	type = "UNSET";
 }

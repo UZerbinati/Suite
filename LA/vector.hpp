@@ -1,6 +1,8 @@
 #ifndef VECTORHEADERDEF
 #define VECTORHEADERDEF
 
+#include <vector>
+
 class vec
 {
 	private:
@@ -14,6 +16,7 @@ class vec
 		int getLen() const;
 		double& operator[] (int i);
 		void from_Array(double *array, int size);
+		std::vector<double> to_Array();
 		vec& operator= (const vec& othervec);
 		vec operator+ (const vec& addendum) const;
 		vec operator-(const vec& othervec) const;

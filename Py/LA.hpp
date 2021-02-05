@@ -55,6 +55,7 @@ void LABind(py::module &module){
 	    .def("from_Array", [](vec &a,std::vector<double> array) {
 			    a.from_Array(array.data(), array.size());
 		})
+	    .def("to_Array", &vec::to_Array)
 	    .def("free", &vec::free)
 	    .def("toString", &vec::toString)
 	    .def("__repr__", &vec::toString)

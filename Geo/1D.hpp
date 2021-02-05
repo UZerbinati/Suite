@@ -53,6 +53,7 @@ class MeshFunction
 		vec export_vec();
 		void import_vec(vec &v);
 		std::vector <double> getLineEx();
+		std::string toString();
 };
 class BC
 {

@@ -47,6 +47,14 @@ void vec::from_Array(double *array,int size)
 		data[i] = array[i];
 	}
 }
+std::vector <double> vec::to_Array(){
+	std::vector <double> v;
+	v = {};
+	for (int i=0; i < len;i++){
+		v.push_back(data[i]);
+	}
+	return v;
+}
 //Overide the assignment operator
 vec& vec::operator=(const vec& othervec)
 {
