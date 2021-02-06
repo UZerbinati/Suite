@@ -16,6 +16,7 @@ Welcome to Suite's documentation!
    LinearAlgebra/Parallel-LA.ipynb
    ODE/LinearODE.ipynb
    ODE/NonLinearODE.ipynb
+   ODE/Euler-Lagrange.ipynb
    Geo/Geometry1D.ipynb
    PDE/FiniteDifferenceElliptic.ipynb
    PDE/FiniteDifferenceParabolic.ipynb
