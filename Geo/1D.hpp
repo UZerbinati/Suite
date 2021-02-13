@@ -54,6 +54,8 @@ class MeshFunction
 		void import_vec(vec &v);
 		std::vector <double> getLineEx();
 		std::string toString();
+		double getSize(int k);
+		double norm(int p);
 };
 class BC
 {
@@ -64,7 +66,7 @@ class BC
 		BC();
 		BC(std::string BCtype, MeshFunction BCf);
 		vec apply(vec v);
-		spmat BoundaryOp();
+		vec HOApply(vec v,std::vector<double> ghosts);
 		MeshFunction* get_function();
 		std::string get_Type();
 		std::vector <int> getDim();

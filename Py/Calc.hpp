@@ -60,6 +60,10 @@ void CalcBind(py::module &module){
 	    .def("TransportOp", &FiniteDifference::TransportOp)
 	    .def("ReactionOp", &FiniteDifference::ReactionOp)
 	    .def("LaplaceOp", &FiniteDifference::LaplaceOp);
+    py::class_<HOFiniteDifference>(module,"HOFiniteDifference")
+	    .def(py::init <Mesh,int>())
+	    .def("LaplaceOp", &HOFiniteDifference::LaplaceOp)
+	    .def("BoundaryOp", &HOFiniteDifference::BoundaryOp);
     //FINITE VOLUME
     py::class_<FiniteVolume>(module,"FiniteVolume")
 	    .def(py::init <Mesh>());

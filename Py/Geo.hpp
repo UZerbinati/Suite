@@ -26,11 +26,13 @@ void GeoBind(py::module &module){
 		.def("pushFunction", &MeshFunction::pushFunction)
 		.def("getDim", &MeshFunction::getDim)
 
-		.def("eval", &MeshFunction::eval);
+		.def("eval", &MeshFunction::eval)
+		.def("norm", &MeshFunction::norm);
 	//BOUNDARY CONDITIONS
 	py::class_<BC>(module,"BoundaryCondition")
 		.def(py::init <std::string,MeshFunction>())
-		.def("apply", &BC::apply);
+		.def("apply", &BC::apply)
+		.def("HOApply", &BC::HOApply);
 	//POINT2D
 	py::class_<Point2D>(module,"Point2D")
 		.def(py::init <>())

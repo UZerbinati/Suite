@@ -76,3 +76,70 @@ spmat FiniteDifference::TransportOp(BC bc,MeshFunction f){
 		}
 	}
 }
+HOFiniteDifference::HOFiniteDifference(){
+}
+HOFiniteDifference::HOFiniteDifference(Mesh m, int p){
+	mesh = m;
+	order = p;
+}
+spmat HOFiniteDifference::LaplaceOp(BC bc){
+	int len = bc.get_function()->export_vec().getLen();
+	spmat M(len,len);
+	std::vector <int> K;
+	int k;
+	if (bc.get_Type() == "DIRICHLET"){	
+		if (bc.getDim()[0] == 1 and bc.getDim()[1]==1){
+			M(1,1) = 0;
+			if (order==3){
+				k=2;
+				K = {k,k-1};
+				M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				M(k,k) = -30.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
+				K = {k,k+1};
+				M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				K = {k,k+2};
+				M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+			}
+			for (k=order;k < len-1;k++){
+				if (order == 3){
+					K = {k,k-2};
+					M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+					K = {k,k-1};
+					M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+					M(k,k) = -30.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
+					K = {k,k+1};
+					M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+					K = {k,k+2};
+					M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				}
+			}
+			if (order==3){
+				k=len-1;
+				K = {k,k-2};
+				M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				K = {k,k-1};
+				M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				M(k,k) = -30.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
+				K = {k,k+1};
+				M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+			}
+			M(len,len) = 0;
+			return M;
+		}
+	}
+}
+spmat HOFiniteDifference::BoundaryOp(BC bc){
+	int len = bc.get_function()->export_vec().getLen();
+	spmat M(len,len);
+	std::vector <int> K;
+	if (bc.get_Type() == "DIRICHLET"){	
+		if (bc.getDim()[0] == 1 and bc.getDim()[1]==1){
+			M(1,1) = 1;
+			for (int k=2;k<len;k++){
+				M(k,k) = 0;
+			}
+			M(len,len) = 1;
+			return M;
+		}
+	}
+}
