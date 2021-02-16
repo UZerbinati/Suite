@@ -93,11 +93,13 @@ spmat HOFiniteDifference::LaplaceOp(BC bc){
 			if (order==3){
 				k=2;
 				K = {k,k-1};
-				M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-				M(k,k) = -30.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
+				M.setItem(K.data(),K.size(),11.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				M(k,k) = -20.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
 				K = {k,k+1};
-				M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				M.setItem(K.data(),K.size(),6.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
 				K = {k,k+2};
+				M.setItem(K.data(),K.size(),4.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				K = {k,k+3};
 				M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
 			}
 			for (k=order;k < len-1;k++){
@@ -115,13 +117,15 @@ spmat HOFiniteDifference::LaplaceOp(BC bc){
 			}
 			if (order==3){
 				k=len-1;
-				K = {k,k-2};
+				K = {k,k-3};
 				M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				K = {k,k-2};
+				M.setItem(K.data(),K.size(),4.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
 				K = {k,k-1};
-				M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-				M(k,k) = -30.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
+				M.setItem(K.data(),K.size(),6.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				M(k,k) = -20.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
 				K = {k,k+1};
-				M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				M.setItem(K.data(),K.size(),11.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
 			}
 			M(len,len) = 0;
 			return M;
