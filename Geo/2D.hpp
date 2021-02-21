@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 class Point2D {
 	private:
@@ -20,6 +21,33 @@ class Point2D {
 		void Set(std::vector<double> P);
 		std::string toString();
 
+};
+class Square{
+	/*
+	 * D----C
+	 * |	|
+	 * A----B
+	 */
+	private:
+		std::vector<Point2D> Ps;
+	public:
+		Square();
+		void setVertex(Point2D P,int k);	
+		Point2D getVertex(int k);
+
+};
+class Geometry
+{
+	private:
+		int dim;
+		std::vector<int> op;
+		std::vector<std::function<double(std::vector<double>)>> fd;
+	public:
+		Geometry(int dim);
+		void add(std::function <double(std::vector<double>)> f);
+		void sub(std::function <double(std::vector<double>)> f);
+		void inter(std::function <double(std::vector<double>)> f);
+		double eval(std::vector<double> P);
 };
 class Triangle {
 	private:

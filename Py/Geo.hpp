@@ -8,15 +8,30 @@ void GeoBind(py::module &module){
 	py::class_<line>(module,"line")
 		.def(py::init<double,double>())
 		.def("getPoint", &line::getPoint);
+	//SQUARE
+	py::class_<Square>(module,"Square")
+		.def(py::init<>())
+		.def("getVertex", &Square::getVertex)
+		.def("setVertex", &Square::setVertex);
+	//GEOMETRY
+	py::class_<Geometry>(module,"Geometry")
+		.def(py::init<int>())
+		.def("add", &Geometry::add)
+		.def("sub", &Geometry::sub)
+		.def("inter", &Geometry::inter)
+		.def("eval", &Geometry::eval);
 	//MESH
 	py::class_<Mesh>(module,"Mesh")
 		.def(py::init<int>())
-		.def("UniformMesh", &Mesh::UniformMesh)
+		.def("UniformMesh", static_cast<void (Mesh::*)(line,double)>(&Mesh::UniformMesh))
+		.def("UniformSqMesh", &Mesh::UniformSqMesh)
 		.def("getDim", &Mesh::getDimension)
 		.def("getSize", &Mesh::getSize)
 		.def("getType", &Mesh::getType)
 		.def("getLineElement", &Mesh::getLineElement)
+		.def("getSqEl", &Mesh::getSquareElement)
 		.def("getElNumber", &Mesh::getElementNumber)
+		.def("getContainer", &Mesh::getContainer)
 		.def("__repr__", &Mesh::toString);
 	//MESH FUNCTION
 	py::class_<MeshFunction>(module,"MeshFunction")

@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <functional>
+#include "2D.hpp"
 
 class line
 {
@@ -15,27 +16,34 @@ class line
 		line(double c, double d);
 		double getPoint(int k);
 };
+
 class Mesh
 {
 	private:
 		int dim;
 		std::vector <line> lineElements;
+		std::vector <Square> squareElements;
 		int N;
-		std::vector <double> H;
+		std::vector <double> Hx;
+		std::vector <double> Hy;
 		std::vector <double> mesh_tol;
+		std::vector <double> Container;
 		std::string type;
+		double h;
 	public:
 		Mesh();
 		Mesh(int n);
 		void UniformMesh(line I,double h);
+		void UniformSqMesh(std::vector<double> container,int k);
 		int getDimension();
 		int getElementNumber();
 		line getLineElement(int k);
+		Square getSquareElement(int k);
 		double getElementTollerance(int k);
 		double getSize(int k);
 		std::string toString();
 		std::string getType();
-	
+		std::vector<double> getContainer();	
 
 };
 class MeshFunction
@@ -43,6 +51,7 @@ class MeshFunction
 	private:
 		Mesh mesh;
 		int dim;
+		std::function <std::vector<double>(std::vector<double>)> F;
 		std::vector <std::vector<double>> data;
 	public:
 		MeshFunction();
@@ -56,6 +65,7 @@ class MeshFunction
 		std::string toString();
 		double getSize(int k);
 		double norm(int p);
+		std::vector <double> getContainer();
 };
 class BC
 {

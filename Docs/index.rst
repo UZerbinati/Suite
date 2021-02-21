@@ -18,6 +18,7 @@ Welcome to Suite's documentation!
    ODE/NonLinearODE.ipynb
    ODE/Euler-Lagrange.ipynb
    Geo/Geometry1D.ipynb
+   Geo/Geometry2D.ipynb
    PDE/FiniteDifferenceElliptic.ipynb
    PDE/FiniteDifferenceParabolic.ipynb
    Discrete/Automata.ipynb

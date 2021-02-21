@@ -1,4 +1,4 @@
-CXX=g++
+CXX=g++ -std=c++14 
 all: base python 
 base: test.o complex.o vector.o diff.o matrix.o linearsys.o decomposition.o sparse.o iteractive.o 1DGeo.o ODE.o FD.o quadrature.o FV.o 2DGeo.o automata.o
 	$(CXX) -o test Build/test.o Build/complex.o Build/vector.o Build/diff.o Build/matrix.o Build/linearsys.o Build/sparse.o Build/iteractive.o Build/1DGeo.o Build/ODE.o Build/FD.o Build/quadrature.o Build/FV.o Build/2DGeo.o Build/automata.o

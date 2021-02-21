@@ -1,9 +1,11 @@
 #include "../suite.hpp"
 #include "1D.hpp"
+#include "2D.hpp"
 #include <string>
 #include <cmath>
 #include <cstdlib>
 #include <vector>
+#include <algorithm>
 
 line::line(){
 	a = 0.0;
@@ -30,7 +32,7 @@ int Mesh::getDimension(){
 	return dim;
 }
 double Mesh::getSize(int k){
-	return H[k];
+	return Hx[k];
 }
 void Mesh::UniformMesh(line I, double h){
 	type = "UNIFORM";
@@ -41,12 +43,12 @@ void Mesh::UniformMesh(line I, double h){
 	for (int i=0; i < N; i++){
 		line l(I.getPoint(0)+i*h,I.getPoint(0)+(i+1)*h);
 		lineElements.push_back(l);
-		H.push_back(h);
+		Hx.push_back(h);
 		mesh_tol.push_back(0);
 	}
 	line l(I.getPoint(0)+N*h,I.getPoint(0)+(N+1)*h);
 	lineElements.push_back(l);
-	H.push_back(h);
+	Hx.push_back(h);
 	mesh_tol.push_back(0);
 }
 int Mesh::getElementNumber(){
@@ -81,6 +83,7 @@ MeshFunction::MeshFunction(Mesh m, int n){
 	dim = n;
 }
 void MeshFunction::pushFunction(std::function<std::vector<double>(std::vector<double>)> f){
+	F=f;
 	if (mesh.getDimension() == 1){
 		std::vector<double> P;
 	        P= {mesh.getLineElement(0).getPoint(0)};
@@ -89,7 +92,69 @@ void MeshFunction::pushFunction(std::function<std::vector<double>(std::vector<do
 		for (int k=0; k < mesh.getElementNumber(); k++){
 			P = {mesh.getLineElement(k).getPoint(1)};
 			data.push_back(f(P));
-			//std::cout << std::to_string(k) << ". ("<< mesh.getElement(k).getPoint(0)-mesh.getElementTollerance(k)<< ","<< mesh.getElement(k).getPoint(1)+mesh.getElementTollerance(k)<< ") -> " << std::to_string(data[k+1][0]) << std::endl;
+		}	
+	} else if (mesh.getDimension() == 2){
+		/*
+		 *  o---o---o---o
+		 *  |   |   |   |
+		 *  o---o---o---o
+		 *  |   |   |   |
+		 *  o---o---o---o
+		 *  |   |   |   |
+		 *  o---o---o---o
+		 */
+		int K;
+		std::vector <double> P;
+		if (dim == 1){
+			if (mesh.getType() == "SQUARE-UNIFORM"){	
+				K = sqrt(mesh.getElementNumber());
+				std::cout << "K: " << K << std::endl;
+				P = {mesh.getSquareElement(0).getVertex(3).GetX(),mesh.getSquareElement(0).getVertex(3).GetY()};
+				data.push_back(f(P));
+				for (int k=1; k < K-1; k++){
+					P = {mesh.getSquareElement(k).getVertex(3).GetX(),mesh.getSquareElement(k).getVertex(3).GetY()};
+					data.push_back(f(P));
+				}
+				P = {mesh.getSquareElement(K-1).getVertex(3).GetX(),mesh.getSquareElement(K-1).getVertex(3).GetY()};
+				data.push_back(f(P));
+				P = {mesh.getSquareElement(K-1).getVertex(2).GetX(),mesh.getSquareElement(K-1).getVertex(2).GetY()};
+				data.push_back(f(P));
+				//------------------------------
+				for (int n=1; n < K-1; n++){
+					P = {mesh.getSquareElement((n*K)).getVertex(3).GetX(),mesh.getSquareElement((n*K)).getVertex(3).GetY()};
+					data.push_back(f(P));
+					for (int k=1; k < K-1; k++){
+						P = {mesh.getSquareElement((n*K)+k).getVertex(3).GetX(),mesh.getSquareElement((n*K)+k).getVertex(3).GetY()};
+						data.push_back(f(P));
+					}
+					P = {mesh.getSquareElement((n+1)*K-1).getVertex(3).GetX(),mesh.getSquareElement((n+1)*K-1).getVertex(3).GetY()};
+					data.push_back(f(P));
+					P = {mesh.getSquareElement((n+1)*K-1).getVertex(2).GetX(),mesh.getSquareElement((n+1)*K-1).getVertex(2).GetY()};
+					data.push_back(f(P));
+				}
+				//------------------------------
+				P = {mesh.getSquareElement((K-1)*K).getVertex(3).GetX(),mesh.getSquareElement(K*(K-1)).getVertex(3).GetY()};
+				data.push_back(f(P));
+				for (int k=1; k < K-1; k++){
+					P = {mesh.getSquareElement(K*(K-1)+k).getVertex(3).GetX(),mesh.getSquareElement(K*(K-1)+k).getVertex(3).GetY()};
+					data.push_back(f(P));
+				}
+				P = {mesh.getSquareElement(K*K-1).getVertex(3).GetX(),mesh.getSquareElement(K*K-1).getVertex(3).GetY()};
+				data.push_back(f(P));
+				P = {mesh.getSquareElement(K*K-1).getVertex(2).GetX(),mesh.getSquareElement(K*K-1).getVertex(2).GetY()};
+				data.push_back(f(P));
+
+				P = {mesh.getSquareElement((K-1)*K).getVertex(0).GetX(),mesh.getSquareElement(K*(K-1)).getVertex(0).GetY()};
+				data.push_back(f(P));
+				for (int k=1; k < K-1; k++){
+					P = {mesh.getSquareElement(K*(K-1)+k).getVertex(0).GetX(),mesh.getSquareElement(K*(K-1)+k).getVertex(0).GetY()};
+					data.push_back(f(P));
+				}
+				P = {mesh.getSquareElement(K*K-1).getVertex(0).GetX(),mesh.getSquareElement(K*K-1).getVertex(0).GetY()};
+				data.push_back(f(P));
+				P = {mesh.getSquareElement(K*K-1).getVertex(1).GetX(),mesh.getSquareElement(K*K-1).getVertex(1).GetY()};
+				data.push_back(f(P));
+			}
 		}	
 	}
 }
@@ -119,24 +184,87 @@ std::vector <double> MeshFunction::eval(std::vector <double> P, int p){
 		}
 		//std::cout << "Data: " << std::to_string(data[mesh.getElementNumber()][0])<< std::endl;
 		return data[mesh.getElementNumber()]; 
+	}else if (mesh.getDimension() == 2){
+		if (mesh.getType() == "SQUARE-UNIFORM"){
+			double h;
+			int K;
+			h = mesh.getSize(0);
+			K = sqrt(mesh.getElementNumber());
+			int k;
+			k = int(P[0]/h);
+			if (k==K) { k=K-1; };
+			int j;	
+			j = int(P[1]/h);
+			if (j==K) { j=K-1; };
+			int n;
+			int m;
+			int r;
+			n = (K-j-1)*K + k;
+			m = (K-j-1)*(K+1) + k;
+			r = (K-j)*(K+1) + k;
+
+			std::vector <double> A;
+			std::vector <double> B;
+			std::vector <double> C;
+			std::vector <double> Q;
+			A = {mesh.getSquareElement(n).getVertex(0).GetX(),mesh.getSquareElement(n).getVertex(0).GetY()};
+			B = {mesh.getSquareElement(n).getVertex(1).GetX(),mesh.getSquareElement(n).getVertex(1).GetY()};
+			C = {mesh.getSquareElement(n).getVertex(2).GetX(),mesh.getSquareElement(n).getVertex(2).GetY()};
+			Q = {0.5*(A[0]+B[0]),0.5*(B[1]+C[1])};
+			/*
+			std::cout << "(" << std::to_string(k)<<","<< std::to_string(j)<< ","<<std::to_string(n)<<")->"<< std::to_string(F(Q)[0]) << std::endl;	
+			std::cout << "f(A;"<< std::to_string(m)<< ")->" << data[m][0] << std::endl;
+			std::cout << "f(B;"<< std::to_string(m+1)<< ")->" << data[m+1][0] << std::endl;
+			std::cout << "f(C;"<< std::to_string(r)<< ")->" << data[r][0] << std::endl;
+			std::cout << "f(D;"<< std::to_string(r+1)<< ")->" << data[r+1][0] << std::endl;
+			
+			*/
+			value={0.25*(data[m][0]+data[m+1][0]+data[r][0]+data[r+1][0])};	
+			//std::cout << "Mean f -> " << value[0] << std::endl;
+			return value;
+		}
 	}
 }
 vec MeshFunction::export_vec(){
-	vec v(mesh.getElementNumber()+1);
+	int M;
+
 	if (dim==1){
-		for (int k=0; k < mesh.getElementNumber()+1;k++){
-			//std::cout << v.getData(k) << std::endl;
-			v.setData(data[k][0],k);
+		if (mesh.getDimension()==1){
+			vec v(mesh.getElementNumber()+1);
+			for (int k=0; k < mesh.getElementNumber()+1;k++){
+				//std::cout << v.getData(k) << std::endl;
+				v.setData(data[k][0],k);
+			}
+			return v;
+		}else if (mesh.getDimension()==2){
+			if (mesh.getType()=="SQUARE-UNIFORM"){
+				M = sqrt(mesh.getElementNumber());
+				vec v((M+1)*(M+1));
+				for (int k=0; k < (M+1)*(M+1);k++){
+					//std::cout << v.getData(k) << std::endl;
+					v.setData(data[k][0],k);
+				}
+				return v;
+			}
 		}
 	}
-	return v;
 
 }
 void MeshFunction::import_vec(vec &v){
+	int M;
 	if (dim==1){
-		for (int k=0; k < mesh.getElementNumber()+1;k++){
-			//std::cout << v.getData(k) << std::endl;
-			data[k][0] = v.getData(k);
+		if (mesh.getDimension()==1){
+			for (int k=0; k < mesh.getElementNumber()+1;k++){
+				//std::cout << v.getData(k) << std::endl;
+				data[k][0] = v.getData(k);
+			}
+		}else if (mesh.getDimension() == 2){
+			if (mesh.getType()=="SQUARE-UNIFORM"){
+				M = sqrt(mesh.getElementNumber());
+				for (int k = 0; k < (M+1)*(M+1);k++){
+					data[k][0] = v.getData(k);
+				}
+			}
 		}
 	}
 }
@@ -169,6 +297,7 @@ double MeshFunction::norm(int p){
 	}
 	return pow(mesh.getSize(0)*S,1.0/p);	
 }
+
 BC::BC(){
 	type = "UNSET";
 }
@@ -225,4 +354,3 @@ std::string BC::get_Type(){
 std::vector <int> BC::getDim(){
 	return f.getDim();
 }
-

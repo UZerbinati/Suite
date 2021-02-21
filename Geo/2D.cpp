@@ -1,4 +1,11 @@
+#include "../suite.hpp"
+#include "1D.hpp"
 #include "2D.hpp"
+#include <string>
+#include <cmath>
+#include <cstdlib>
+#include <vector>
+#include <algorithm>
 
 Point2D::Point2D(){
 	x = 0;
@@ -32,7 +39,105 @@ std::string Point2D::toString(){
 	out = "(" + std::to_string(x) + "," + std::to_string(y) + ")\n";
 	return out;
 }
+//---------------------------Geometry------------------------
+Square::Square(){
+	Point2D P;
+	P.SetX(0.0); P.SetY(0.0);
+	Ps.push_back(P);
+	Ps.push_back(P);
+	Ps.push_back(P);
+	Ps.push_back(P);
+}
+void Square::setVertex(Point2D P,int k){
+	Ps[k] = P;
+}
+Point2D Square::getVertex(int k){
+	return Ps[k];
+}
+Geometry::Geometry(int N){
+	dim = N;
+}
+void Geometry::add(std::function <double(std::vector<double>)> f){
+	fd.push_back(f);
+	op.push_back(0);
+}
+void Geometry::inter(std::function <double(std::vector<double>)> f){
+	fd.push_back(f);
+	op.push_back(1);
+}
+void Geometry::sub(std::function <double(std::vector<double>)> f){
+	fd.push_back(f);
+	op.push_back(2);
+}
+double Geometry::eval(std::vector<double> P){
+	double value;
+	value = 1.0;
+	for (int i=0; i < fd.size();i++){
+		if (op[i]==0){
+			std::vector<double> values;
+			values = {value,fd[i](P)};
+			value = *std::min_element(values.begin(),values.end());
+		}else if (op[i]==1){
+			std::vector<double> values;
+			values = {value,fd[i](P)};
+			value = *std::max_element(values.begin(),values.end());
+		}else if (op[i]==2){
+			std::vector<double> values;
+			values = {value,(-1)*fd[i](P)};
+			value = *std::max_element(values.begin(),values.end());
+		}
+	}
+	return value;
+}
 
+void Mesh::UniformSqMesh(std::vector<double> container,int K){
+	/*
+	 * K=2 h=0.333
+	 *
+	 * |---|---|---|
+	 * 0   0.3 0.6 1.0
+	 */
+	type = "SQUARE-UNIFORM";
+	Container = container;
+	N = K*K;
+	double h;
+	h = (container[1]-container[0])/(K);
+	Point2D A; Point2D B;
+	Point2D C; Point2D D;
+	Square Q;
+	for (int j=K-1; j>=0;j--){
+		Hx.push_back(h);
+		Hy.push_back(h);
+		for (int k = 0; k <K;k++){
+
+			A.SetX(container[0]+k*h);
+			A.SetY(container[2]+j*h);
+			Q.setVertex(A,0);	
+			B.SetX(container[0]+(k+1)*h);
+			B.SetY(container[2]+j*h);
+			Q.setVertex(B,1);	
+			C.SetX(container[0]+(k+1)*h);
+			C.SetY(container[2]+(j+1)*h);
+			Q.setVertex(C,2);	
+			D.SetX(container[0]+k*h);
+			D.SetY(container[2]+(j+1)*h);
+			Q.setVertex(D,3);
+			squareElements.push_back(Q);
+		}
+
+	}
+
+}
+std::vector<double> Mesh::getContainer(){
+	return Container;
+}
+std::vector<double> MeshFunction::getContainer(){
+	return getContainer();
+}
+Square Mesh::getSquareElement(int k){
+	return squareElements[k]; 
+}
+//-----------------------------Triangle---------------------------
 Triangle::Triangle(){
 	Point2D zero;
 	zero.Set({0.0,0.0,0.0});
