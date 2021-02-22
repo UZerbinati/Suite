@@ -70,11 +70,13 @@ class MeshFunction
 class BC
 {
 	private:
-		std::string type;  		
+		std::string type;  			Geometry geo;	
 		MeshFunction f;
 	public:
 		BC();
 		BC(std::string BCtype, MeshFunction BCf);
+		BC(std::string BCtype, MeshFunction BCf,Geometry geo);
+		Geometry getGeo();
 		vec apply(vec v);
 		vec HOApply(vec v,std::vector<double> ghosts);
 		MeshFunction* get_function();

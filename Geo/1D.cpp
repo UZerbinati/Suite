@@ -305,6 +305,14 @@ BC::BC(std::string BCtype, MeshFunction BCf){
 	type = BCtype;
 	f = BCf;
 }
+Geometry BC::getGeo(){
+	return geo;
+}
+BC::BC(std::string BCtype, MeshFunction BCf,Geometry G){
+	type = BCtype;
+	f = BCf;
+	geo = G;
+}
 vec BC::apply(vec v){ 
 	int l;
 	bool flag;

@@ -46,6 +46,7 @@ void GeoBind(py::module &module){
 	//BOUNDARY CONDITIONS
 	py::class_<BC>(module,"BoundaryCondition")
 		.def(py::init <std::string,MeshFunction>())
+		.def(py::init <std::string,MeshFunction,Geometry>())
 		.def("apply", &BC::apply)
 		.def("HOApply", &BC::HOApply);
 	//POINT2D

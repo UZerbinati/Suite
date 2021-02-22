@@ -3,9 +3,17 @@ sys.path.append('../Build')
 from suite import *
 import matplotlib.pyplot as plt
 import numpy as np
+
+
+def spmat2npmat(M):
+    Mnp = np.eye(M.Height())
+    for i in range(0,M.Width()):
+        for j in range(0,M.Height()):
+            Mnp[i,j]=M[i+1,j+1]
+    return Mnp
+def zero(x,y):
+    return 0.0*x+0.0*y;
 def Draw(meshfun,mesh,order=0,mk="*-"):
-    def zero(x,y):
-        return 0.0*x+0.0*y;
     if (meshfun.getDim()[0]==1 and meshfun.getDim()[1]==1):
         if(mesh.getType()=="UNIFORM"):
             a = mesh.getLineElement(0).getPoint(0);
@@ -24,13 +32,25 @@ def Draw(meshfun,mesh,order=0,mk="*-"):
                 for j in range(len(y)):
                     Z[i,j] = meshfun.eval([x[i],y[j]],order)[0];
             plt.pcolor(Y,X,Z);
-def Figure(meshfun,mesh,order,mk="*-"):
+def Figure(meshfun,mesh,order=0,mk="*-"):
     if (meshfun.getDim()[0]==1 and meshfun.getDim()[1]==1):
         if(mesh.getType()=="UNIFORM"):
             a = mesh.getLineElement(0).getPoint(0);
             X = [a+0.1*i*mesh.getSize(1) for i in range(0,10*mesh.getElNumber()+1)]
             Y = [meshfun.eval([x],order)[0] for x in X]
             return plt.plot(X,Y,mk)
+    if (meshfun.getDim()[0]==2 and meshfun.getDim()[1]==1):
+        if(mesh.getType()=="SQUARE-UNIFORM"):
+            h = mesh.getSize(0);
+            Q = mesh.getContainer();
+            x = np.arange(Q[0],Q[1]+1e-8,h)
+            y = np.arange(Q[2],Q[3]+1e-8,h)
+            X,Y = np.meshgrid(x, y) # grid of point
+            Z = zero(X,Y);
+            for i in range(len(x)):
+                for j in range(len(y)):
+                    Z[i,j] = meshfun.eval([x[i],y[j]],order)[0];
+            return [plt.pcolor(Y,X,Z)];
 def GeoDraw(Geo,C,N):
     if N%2==0:
         N=N+1;

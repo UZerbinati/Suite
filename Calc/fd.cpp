@@ -22,7 +22,47 @@ spmat FiniteDifference::LaplaceOp(BC bc){
 			}
 			M(len,len) = 0;
 			return M;
+		}else if(bc.getDim()[0] == 2 and bc.getDim()[1]==1){
+			if (mesh.getType()=="SQUARE-UNIFORM"){
+				M.empty();
+				double h;
+				double x;
+				double y;
+				std::vector <double> P;
+				int L;
+
+				L = sqrt(len);
+				h = mesh.getSize(0);
+
+				for (int k=0;k < len;k++){
+					x = h*(k%L);
+					y = h*(floor(k/L));
+					P = {x,y};
+					std::cout << "(" << k%L << "," << floor(k/L) << ")->("<<x<<","<<y<<")" << std::endl;
+					if (bc.getGeo().eval(P)<-1.05/L){
+						K = {k+1,k};
+						M.setItem(K.data(),K.size(),1.0/(h*h));
+						M(k+1,k+1) = -4.0/(h*h);
+						K = {k+1,k+2};
+						M.setItem(K.data(),K.size(),1.0/(h*h));
+						if (k+1+L < len){
+							K = {k+1,k+1+L};
+							M.setItem(K.data(),K.size(),1.0/(h*h));
+						}
+						if (k+1-L > 1){
+							K = {k+1,k+1-L};
+							M.setItem(K.data(),K.size(),1.0/(h*h));
+						}
+					}else if (bc.getGeo().eval(P)>1.05/L){
+					}else{
+						M(k+1,k+1) = 1.0;
+					}
+				}
+
+				return M;
+			}
 		}
+
 	}
 }
 spmat FiniteDifference::ReactionOp(BC bc, MeshFunction f){

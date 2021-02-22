@@ -54,6 +54,8 @@ void Square::setVertex(Point2D P,int k){
 Point2D Square::getVertex(int k){
 	return Ps[k];
 }
+Geometry::Geometry(){
+}
 Geometry::Geometry(int N){
 	dim = N;
 }

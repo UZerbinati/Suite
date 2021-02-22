@@ -43,6 +43,7 @@ class Geometry
 		std::vector<int> op;
 		std::vector<std::function<double(std::vector<double>)>> fd;
 	public:
+		Geometry();
 		Geometry(int dim);
 		void add(std::function <double(std::vector<double>)> f);
 		void sub(std::function <double(std::vector<double>)> f);
