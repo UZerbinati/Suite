@@ -289,13 +289,17 @@ double MeshFunction::getSize(int k){
 double MeshFunction::norm(int p){
 	double S;
 	S = 0.0;
-	for (int k=0; k < mesh.getElementNumber()+1; k++){
-		if (dim==1){
-			std::cout << "h: " << mesh.getSize(k) << ", data: " << std::abs(data[k][0]) << ", S: " << std::to_string(S) << "." << std::endl; 
-			S = S + pow(std::abs(data[k][0]),p);	
+	if (dim ==1){
+		if(mesh.getDimension()==1){
+			for (int k=0; k < mesh.getElementNumber()+1; k++){
+				if (dim==1){
+					std::cout << "h: " << mesh.getSize(k) << ", data: " << std::abs(data[k][0]) << ", S: " << std::to_string(S) << "." << std::endl; 
+					S = S + pow(std::abs(data[k][0]),p);	
+				}
+			}
+			return pow(mesh.getSize(0)*S,1.0/p);
 		}
 	}
-	return pow(mesh.getSize(0)*S,1.0/p);	
 }
 
 BC::BC(){
@@ -330,7 +334,7 @@ vec BC::apply(vec v){
 	}
 	return w;
 }
-vec BC::HOApply(vec v,std::vector<double> ghosts){ 
+vec BC::HOApply(vec v,int order,std::string type,std::vector<double> ghosts){ 
 	int l;
 	bool flag;
 	l = v.getLen();
@@ -339,16 +343,33 @@ vec BC::HOApply(vec v,std::vector<double> ghosts){
 	w = v;
 	vec_f = f.export_vec();
 	flag = (f.getDim()[0] == 1) and (f.getDim()[1]==1);
-	//std::cout << "(" << std::to_string(f.getDim()[0])<<"," << std::to_string(f.getDim()[1])<<")"<< "->" << flag << std::endl;
-	if (flag){
-		//std::cout << "v: " << v.toString() << " f: " << vec_f.toString() << std::endl;
-		w.setData(vec_f.getData(0),0);
-		w.setData(vec_f.getData(l-1),l-1);
+	if (order==3){
+		if (type=="RIGHT"){
+			if (flag){
+				w.setData(vec_f.getData(0),0);
+				w.setData(vec_f.getData(l-3),l-3);
+				w.setData(vec_f.getData(l-2),l-2);
+				w.setData(vec_f.getData(l-1),l-1);
+			}	
+		}
 	}
-	if (flag){	
-		if (ghosts.size()==2){
-			w.setData(v.getData(1)+ghosts[0],1);
-			w.setData(v.getData(l-2)+ghosts[1],l-2);
+	if (order==4){
+		if (type=="CENTER"){
+			if (flag){
+				w.setData(vec_f.getData(0),0);
+				w.setData(vec_f.getData(1),1);
+				w.setData(vec_f.getData(l-2),l-2);
+				w.setData(vec_f.getData(l-1),l-1);
+			}
+		}
+		if (type=="RIGHT"){
+			if (flag){
+				w.setData(vec_f.getData(0),0);
+				w.setData(vec_f.getData(l-4),l-4);
+				w.setData(vec_f.getData(l-3),l-3);
+				w.setData(vec_f.getData(l-2),l-2);
+				w.setData(vec_f.getData(l-1),l-1);
+			}	
 		}
 	}
 	return w;

@@ -23,13 +23,15 @@ class HOFiniteDifference
 	private:
 		Mesh mesh;
 		int order;
+		std::string type;
 	public:
 		HOFiniteDifference();
 		HOFiniteDifference(Mesh m,int p);
+		void setType(std::string t);
+		int getOrder();
+		std::string getType();
 		spmat BoundaryOp(BC bc);
-		spmat ReactionOp(BC bc, MeshFunction f);
 		spmat LaplaceOp(BC bc);
-		spmat TransportOp(BC bc,MeshFunction f);
 };
 
 #endif

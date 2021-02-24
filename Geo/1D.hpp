@@ -78,7 +78,7 @@ class BC
 		BC(std::string BCtype, MeshFunction BCf,Geometry geo);
 		Geometry getGeo();
 		vec apply(vec v);
-		vec HOApply(vec v,std::vector<double> ghosts);
+		vec HOApply(vec v,int order,std::string type, std::vector<double> ghosts);
 		MeshFunction* get_function();
 		std::string get_Type();
 		std::vector <int> getDim();

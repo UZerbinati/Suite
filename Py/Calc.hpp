@@ -62,6 +62,7 @@ void CalcBind(py::module &module){
 	    .def("LaplaceOp", &FiniteDifference::LaplaceOp);
     py::class_<HOFiniteDifference>(module,"HOFiniteDifference")
 	    .def(py::init <Mesh,int>())
+	    .def("setType", &HOFiniteDifference::setType)
 	    .def("LaplaceOp", &HOFiniteDifference::LaplaceOp)
 	    .def("BoundaryOp", &HOFiniteDifference::BoundaryOp);
     //FINITE VOLUME

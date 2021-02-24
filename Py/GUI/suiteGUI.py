@@ -3,6 +3,7 @@ sys.path.append('../Build')
 from suite import *
 import matplotlib.pyplot as plt
 import numpy as np
+from numpy import inf
 
 
 def spmat2npmat(M):
@@ -13,7 +14,7 @@ def spmat2npmat(M):
     return Mnp
 def zero(x,y):
     return 0.0*x+0.0*y;
-def Draw(meshfun,mesh,order=0,mk="*-"):
+def Draw(meshfun,mesh,order=0,mk="*-",v=[-inf,inf]):
     if (meshfun.getDim()[0]==1 and meshfun.getDim()[1]==1):
         if(mesh.getType()=="UNIFORM"):
             a = mesh.getLineElement(0).getPoint(0);
@@ -31,8 +32,12 @@ def Draw(meshfun,mesh,order=0,mk="*-"):
             for i in range(len(x)):
                 for j in range(len(y)):
                     Z[i,j] = meshfun.eval([x[i],y[j]],order)[0];
-            plt.pcolor(Y,X,Z);
-def Figure(meshfun,mesh,order=0,mk="*-"):
+            if v==[-inf,inf]:
+                plt.pcolor(Y,X,Z)
+            else:
+                plt.pcolor(Y,X,Z,vmin=v[0],vmax=v[1])
+            plt.colorbar()
+def Figure(meshfun,mesh,order=0,mk="*-",v=[-inf,inf]):
     if (meshfun.getDim()[0]==1 and meshfun.getDim()[1]==1):
         if(mesh.getType()=="UNIFORM"):
             a = mesh.getLineElement(0).getPoint(0);
@@ -50,7 +55,10 @@ def Figure(meshfun,mesh,order=0,mk="*-"):
             for i in range(len(x)):
                 for j in range(len(y)):
                     Z[i,j] = meshfun.eval([x[i],y[j]],order)[0];
-            return [plt.pcolor(Y,X,Z)];
+            if v==[-inf,inf]:
+                return [plt.pcolor(Y,X,Z)];
+            else:
+                return [plt.pcolor(Y,X,Z,vmin=v[0],vmax=v[1])];
 def GeoDraw(Geo,C,N):
     if N%2==0:
         N=N+1;

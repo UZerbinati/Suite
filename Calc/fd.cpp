@@ -35,8 +35,8 @@ spmat FiniteDifference::LaplaceOp(BC bc){
 				h = mesh.getSize(0);
 
 				for (int k=0;k < len;k++){
-					x = h*(k%L);
-					y = h*(floor(k/L));
+					x = mesh.getContainer()[0]+h*(k%L);
+					y = mesh.getContainer()[2]+h*(floor(k/L));
 					P = {x,y};
 					std::cout << "(" << k%L << "," << floor(k/L) << ")->("<<x<<","<<y<<")" << std::endl;
 					if (bc.getGeo().eval(P)<-1.05/L){
@@ -120,69 +120,109 @@ HOFiniteDifference::HOFiniteDifference(){
 }
 HOFiniteDifference::HOFiniteDifference(Mesh m, int p){
 	mesh = m;
+	type = "CENTER";
 	order = p;
+}
+void HOFiniteDifference::setType(std::string t){
+	type = t;
 }
 spmat HOFiniteDifference::LaplaceOp(BC bc){
 	int len = bc.get_function()->export_vec().getLen();
 	spmat M(len,len);
+	M.empty();
 	std::vector <int> K;
 	int k;
 	if (bc.get_Type() == "DIRICHLET"){	
 		if (bc.getDim()[0] == 1 and bc.getDim()[1]==1){
 			M(1,1) = 0;
 			if (order==3){
-				k=2;
-				K = {k,k-1};
-				M.setItem(K.data(),K.size(),11.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-				M(k,k) = -20.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
-				K = {k,k+1};
-				M.setItem(K.data(),K.size(),6.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-				K = {k,k+2};
-				M.setItem(K.data(),K.size(),4.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-				K = {k,k+3};
-				M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-			}
-			for (k=order;k < len-1;k++){
-				if (order == 3){
-					K = {k,k-2};
-					M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-					K = {k,k-1};
-					M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-					M(k,k) = -30.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
-					K = {k,k+1};
-					M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-					K = {k,k+2};
-					M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+				if (type=="RIGHT"){
+					std::cout << "Right FD method of order 3" << std::endl;
+					for (int k=2; k <= len-order;k++){
+						K = {k,k-1};
+						M.setItem(K.data(),K.size(),11.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+						M(k,k) = -20.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
+						K = {k,k+1};
+						M.setItem(K.data(),K.size(),6.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+						K = {k,k+2};
+						M.setItem(K.data(),K.size(),4.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+						K = {k,k+3};
+						M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+					}
 				}
+				
 			}
-			if (order==3){
-				k=len-1;
-				K = {k,k-3};
-				M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-				K = {k,k-2};
-				M.setItem(K.data(),K.size(),4.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-				K = {k,k-1};
-				M.setItem(K.data(),K.size(),6.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
-				M(k,k) = -20.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
-				K = {k,k+1};
-				M.setItem(K.data(),K.size(),11.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+			if (order==4){
+				if (type=="CENTER"){
+					for (k=order-1;k < len-1;k++){
+							K = {k,k-2};
+							M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+							K = {k,k-1};
+							M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+							M(k,k) = -30.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
+							K = {k,k+1};
+							M.setItem(K.data(),K.size(),16.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+							K = {k,k+2};
+							M.setItem(K.data(),K.size(),-1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+					}
+				}
+				if (type=="RIGHT"){
+					std::cout << "Right FD method of order 4" << std::endl;
+					for (int k=2; k <= len-order;k++){
+						K = {k,k-1};
+						M.setItem(K.data(),K.size(),10.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+						M(k,k) = -15.0/(12*mesh.getSize(k-1)*mesh.getSize(k));
+						K = {k,k+1};
+						M.setItem(K.data(),K.size(),-4.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+						K = {k,k+2};
+						M.setItem(K.data(),K.size(),14.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+						K = {k,k+3};
+						M.setItem(K.data(),K.size(),-6.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+						K = {k,k+4};
+						M.setItem(K.data(),K.size(),+1.0/(12.0*mesh.getSize(k-1)*mesh.getSize(k)));
+					}
+				}
 			}
 			M(len,len) = 0;
 			return M;
 		}
 	}
 }
+int HOFiniteDifference::getOrder(){
+	return order;
+}
+std::string HOFiniteDifference::getType(){
+	return type;
+}
 spmat HOFiniteDifference::BoundaryOp(BC bc){
 	int len = bc.get_function()->export_vec().getLen();
 	spmat M(len,len);
+	M.empty();
 	std::vector <int> K;
 	if (bc.get_Type() == "DIRICHLET"){	
 		if (bc.getDim()[0] == 1 and bc.getDim()[1]==1){
-			M(1,1) = 1;
-			for (int k=2;k<len;k++){
-				M(k,k) = 0;
+			if (order==3){
+				if (type == "RIGHT"){
+					M(1,1) = 1;
+					for (int k=len; k>len-order;k--){
+						M(k,k)=1;
+					}
+				}
 			}
-			M(len,len) = 1;
+			if(order==4){
+				if (type=="CENTER"){
+					M(1,1) = 1;
+					M(2,2) = 1;
+					M(len-1,len-1) = 1;
+					M(len,len) = 1;
+				}
+				if (type == "RIGHT"){
+					M(1,1) = 1;
+					for (int k=len; k>len-order;k--){
+						M(k,k)=1;
+					}
+				}
+			}
 			return M;
 		}
 	}

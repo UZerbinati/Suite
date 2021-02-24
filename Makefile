@@ -28,7 +28,7 @@ sparse.o: vector.o LA/sparse.cpp
 	$(CXX) -c LA/sparse.cpp -o Build/sparse.o
 iteractive.o: vector.o sparse.o LA/iteractive.cpp
 	$(CXX) -c LA/iteractive.cpp -o Build/iteractive.o
-1DGeo.o: vector.o Geo/1D.cpp
+1DGeo.o: vector.o FD.o Geo/1D.cpp
 	$(CXX) -c Geo/1D.cpp -o Build/1DGeo.o
 ODE.o: Calc/ode.cpp
 	$(CXX) -c Calc/ode.cpp -o Build/ODE.o
