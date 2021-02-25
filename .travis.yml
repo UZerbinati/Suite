@@ -6,6 +6,7 @@ before_install:
         - pyenv global 3.8
         - pip install pybind11
         - pip install pytest
+        - pip install numpy
 script: 
         - cd Dependencies
         - cd pybind11
