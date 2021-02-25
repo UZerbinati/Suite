@@ -1,7 +1,8 @@
 import sys
 sys.path.append('../Py/Build');
 tol = 1e-4
-from suite import *;
+from suite import *
+sys.path.append('../Py/GUI');
 from suiteGUI import *
 from math import exp
 import numpy as np
