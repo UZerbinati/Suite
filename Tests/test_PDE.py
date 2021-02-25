@@ -2,7 +2,11 @@ import sys
 sys.path.append('../Py/Build');
 tol = 1e-4
 from suite import *;
+from suiteGUI import *
 from math import exp
+import numpy as np
+from numpy.linalg import solve
+
 def test_PDE_Elliptic_1D_Test1():
     I = line(0.0,2.0)
     mesh = Mesh(1);
@@ -124,3 +128,67 @@ def test_PDE_Parabolic_1D_Test1():
     ut.pushFunction(lambda P: [0])
     ut.vec_import(u[0])
     assert(u[-1].norm(2)<tol);
+def test_PDE_Elliptic_2D_Test_1():
+    mesh = Mesh(2); #We initzialize a 2D mesh
+    #We create a uniform mesh on the square [0,1]x[0,1] of N elements
+    mesh.UniformSqMesh([0.0,1.0,0.0,1.0],23);
+    #We now use a distance function to define the geometry of the domain
+    #where we want to solve the BVP with a finite difference scheme
+    Geo = Geometry(2);
+    def distSquare(P):
+        """
+        y2 -> *----------*
+               |          |
+               |          |
+               |          |
+        y1 -> *----------*
+               ^          ^
+               |x1        |x2
+        """
+        x1 = 0; x2 = 1; y1 = 0; y2=1;
+        return max([P[0]-x2,x1-P[0],P[1]-y2,y1-P[1]])
+    Geo.add(distSquare) #We add the distance function to the geometry
+
+    #We define a function for the B.C.
+    def G(x,y):
+        if x==0.0:
+            return 0.0;
+        elif x==1.0:
+            return np.cos(np.pi*y);
+        elif y==0.0:
+            return x**2;
+        elif y==1.0:
+            return -(x**2);
+        else:
+            return 0.0;
+    #We place the function G on the mesh creating the mesh function g
+    g = MeshFunction(mesh,1)
+    g.pushFunction(lambda p: [G(p[0],p[1])])
+    #We define Dirichlet B.C on the above defined geometry
+    bc = BoundaryCondition("DIRICHLET",g,Geo)
+    FD = FiniteDifference(mesh)#We decalre we are using classic finite difference
+    #Then we construct the matrix rappresenting the Laplace operator and boudary operator
+    K = FD.LaplaceOp(bc)+FD.BoundaryOp(bc);
+    #We define the known term f, as a mesh function
+    f = MeshFunction(mesh,1)
+    f.pushFunction(lambda p: [(2-(np.pi*p[0])**2)*np.cos(np.pi*p[1])])
+    f_vec = f.vec_export();
+    #We apply the B.C. modifying the vector F, of the system AU=F
+    f_bc = bc.apply(f_vec);
+    #Solve the linear system
+    uhnp = solve(spmat2npmat(K),np.array(f_bc.to_Array()));
+    #load the solution of the linear system in a mesh function
+    uh = MeshFunction(mesh,1)
+    uh.pushFunction(lambda p: [0*p[0]+0*p[1]])
+    uh_vec = uh.vec_export()
+    uh_vec.from_Array(uhnp);
+    uh.vec_import(uh_vec);
+    u = MeshFunction(mesh,1)
+    u.pushFunction(lambda p: [(p[0]**2)*np.cos(np.pi*p[1])])
+    u_vec = u.vec_export()
+    err = MeshFunction(mesh,1)
+    err.pushFunction(lambda p: [0*p[0]+0*p[1]])
+    err_vec = u_vec+(-1)*uh_vec;
+    err.vec_import(err_vec)
+    assert abs(err.norm(2))<1e-4; 
+
