@@ -66,12 +66,14 @@ class MeshFunction
 		double getSize(int k);
 		double norm(int p);
 		std::vector <double> getContainer();
+		int getElementNumber();
 };
 class BC
 {
 	private:
 		std::string type;  			Geometry geo;	
 		MeshFunction f;
+		std::vector <int> BI;
 	public:
 		BC();
 		BC(std::string BCtype, MeshFunction BCf);
@@ -82,6 +84,7 @@ class BC
 		MeshFunction* get_function();
 		std::string get_Type();
 		std::vector <int> getDim();
+		void setBI(int k);
 
 };
 #endif

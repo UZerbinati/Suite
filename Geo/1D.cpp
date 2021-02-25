@@ -292,14 +292,30 @@ double MeshFunction::norm(int p){
 	if (dim ==1){
 		if(mesh.getDimension()==1){
 			for (int k=0; k < mesh.getElementNumber()+1; k++){
-				if (dim==1){
 					std::cout << "h: " << mesh.getSize(k) << ", data: " << std::abs(data[k][0]) << ", S: " << std::to_string(S) << "." << std::endl; 
 					S = S + pow(std::abs(data[k][0]),p);	
-				}
 			}
 			return pow(mesh.getSize(0)*S,1.0/p);
 		}
+		if(mesh.getDimension()==2){	
+			int r;
+			int s;
+			double h;
+			h = mesh.getSize(0);
+			double hsq;
+			hsq = h*h;
+			for (int k=1; k < mesh.getElementNumber()+1; k++){
+				r = k+floor((k-1)/sqrt(mesh.getElementNumber()));
+				s = k+sqrt(mesh.getElementNumber())+floor((k-1)/sqrt(mesh.getElementNumber()));
+				std::cout << "data->" << data[r][0] << std::endl;
+				S = S+pow(std::abs(0.25*(data[r][0]+data[r+1][0]+data[s][0]+data[s+1][0])),p);
+			}
+			return pow(hsq*S,1.0/p);
+		}
 	}
+}
+int MeshFunction::getElementNumber(){
+	return mesh.getElementNumber();
 }
 
 BC::BC(){
@@ -319,20 +335,49 @@ BC::BC(std::string BCtype, MeshFunction BCf,Geometry G){
 }
 vec BC::apply(vec v){ 
 	int l;
-	bool flag;
+	bool flag1D1D;
+	bool flag2D1D;
+	double x;
+	double y;
+	double h;
+	int k;
+	int L;
+	std::vector<double> P;
 	l = v.getLen();
 	vec w(l);
 	vec vec_f(l);	
 	w = v;
 	vec_f = f.export_vec();
-	flag = (f.getDim()[0] == 1) and (f.getDim()[1]==1);
-	//std::cout << "(" << std::to_string(f.getDim()[0])<<"," << std::to_string(f.getDim()[1])<<")"<< "->" << flag << std::endl;
-	if (flag){
-		//std::cout << "v: " << v.toString() << " f: " << vec_f.toString() << std::endl;
+	flag1D1D = (f.getDim()[0] == 1) and (f.getDim()[1]==1);
+	flag2D1D = (f.getDim()[0] == 2) and (f.getDim()[1]==1);
+	if (flag1D1D){
 		w.setData(vec_f.getData(0),0);
 		w.setData(vec_f.getData(l-1),l-1);
 	}
+	if (flag2D1D){
+		if (type=="DIRICHLET"){
+			L = sqrt(l);
+			h = f.getSize(0);
+			std::cout << "l: " << l << std::endl;
+			for (int k=0; k <l; k++){
+
+				x = f.getContainer()[0]+h*(k%L);
+				y = f.getContainer()[2]+h*(floor(k/L));
+				std::cout << "BI index, " << k << " (x,y)=(" <<x<<"," << y << ")" << std::endl;
+				P = {x,y};
+				if (geo.eval(P)<-(1.0+(1/f.getElementNumber()))/L){
+				}else if (geo.eval(P)>(1.0+(1/f.getElementNumber()))/L){
+				}else{
+					w.setData(vec_f.getData(k),k);
+				}
+
+			}
+		}
+	}
 	return w;
+}
+void BC::setBI(int k){
+	BI.push_back(k);
 }
 vec BC::HOApply(vec v,int order,std::string type,std::vector<double> ghosts){ 
 	int l;

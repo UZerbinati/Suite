@@ -39,7 +39,7 @@ spmat FiniteDifference::LaplaceOp(BC bc){
 					y = mesh.getContainer()[2]+h*(floor(k/L));
 					P = {x,y};
 					std::cout << "(" << k%L << "," << floor(k/L) << ")->("<<x<<","<<y<<")" << std::endl;
-					if (bc.getGeo().eval(P)<-1.05/L){
+					if (bc.getGeo().eval(P)<-(1.0+(1/mesh.getElementNumber()))/L){
 						K = {k+1,k};
 						M.setItem(K.data(),K.size(),1.0/(h*h));
 						M(k+1,k+1) = -4.0/(h*h);
@@ -53,9 +53,9 @@ spmat FiniteDifference::LaplaceOp(BC bc){
 							K = {k+1,k+1-L};
 							M.setItem(K.data(),K.size(),1.0/(h*h));
 						}
-					}else if (bc.getGeo().eval(P)>1.05/L){
+					}else if (bc.getGeo().eval(P)>(1.0+(1/mesh.getElementNumber()))/L){
 					}else{
-						M(k+1,k+1) = 1.0;
+						M(k+1,k+1) = 0.0;
 					}
 				}
 
@@ -84,6 +84,7 @@ spmat FiniteDifference::ReactionOp(BC bc, MeshFunction f){
 spmat FiniteDifference::BoundaryOp(BC bc){
 	int len = bc.get_function()->export_vec().getLen();
 	spmat M(len,len);
+	M.empty();
 	std::vector <int> K;
 	if (bc.get_Type() == "DIRICHLET"){	
 		if (bc.getDim()[0] == 1 and bc.getDim()[1]==1){
@@ -93,6 +94,31 @@ spmat FiniteDifference::BoundaryOp(BC bc){
 			}
 			M(len,len) = 1;
 			return M;
+		}
+	}
+	if (mesh.getType() == "SQUARE-UNIFORM"){
+		if(bc.getDim()[0] == 2 and bc.getDim()[1]==1){
+			double h;
+			double x;
+			double y;
+			std::vector <double> P;
+			int L;
+
+			L = sqrt(len);
+			h = mesh.getSize(0);
+
+			for (int k=0;k < len;k++){
+				x = mesh.getContainer()[0]+h*(k%L);
+				y = mesh.getContainer()[2]+h*(floor(k/L));
+				P = {x,y};
+				if (bc.getGeo().eval(P)<-(1.0+(1/mesh.getElementNumber()))/L){
+				}else if (bc.getGeo().eval(P)>(1.0+(1/mesh.getElementNumber()))/L){
+				}else{
+					bc.setBI(k);
+					M(k+1,k+1) = 1.0;
+				}
+			}
+
 		}
 	}
 }

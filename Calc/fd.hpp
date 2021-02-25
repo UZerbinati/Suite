@@ -32,6 +32,7 @@ class HOFiniteDifference
 		std::string getType();
 		spmat BoundaryOp(BC bc);
 		spmat LaplaceOp(BC bc);
+		std::vector <int> GetBI();
 };
 
 #endif

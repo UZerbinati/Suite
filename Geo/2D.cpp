@@ -134,7 +134,7 @@ std::vector<double> Mesh::getContainer(){
 	return Container;
 }
 std::vector<double> MeshFunction::getContainer(){
-	return getContainer();
+	return mesh.getContainer();
 }
 Square Mesh::getSquareElement(int k){
 	return squareElements[k]; 
