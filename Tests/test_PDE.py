@@ -2,11 +2,16 @@ import sys
 sys.path.append('../Py/Build');
 tol = 1e-4
 from suite import *
-sys.path.append('../Py/GUI');
-from suiteGUI import *
 from math import exp
 import numpy as np
 from numpy.linalg import solve
+
+def spmat2npmat(M):
+    Mnp = np.eye(M.Height())
+    for i in range(0,M.Width()):
+        for j in range(0,M.Height()):
+            Mnp[i,j]=M[i+1,j+1]
+    return Mnp
 
 def test_PDE_Elliptic_1D_Test1():
     I = line(0.0,2.0)
