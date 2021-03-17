@@ -51,6 +51,7 @@ void CalcBind(py::module &module){
 	    .def("setDomain", &NonLinearODE<vec>::setDomain)
 	    .def("setCoeff", &NonLinearODE<vec>::setCoefficients)
 	    .def("Euler", &NonLinearODE<vec>::Euler)
+	    .def("RK", &NonLinearODE<vec>::RK)
 	    .def("setIC", &NonLinearODE<vec>::setIC)
 	    .def("__repr__", &NonLinearODE<vec>::toString);
     //FINITE DIFFERENCE
