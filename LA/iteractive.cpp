@@ -96,3 +96,10 @@ vec SOR(spmat &A,vec b,vec guess,double omega,int itmax,double eps){
 	}
 	return x;
 }
+vec ConjugateGradient(spmat &A,vec b,vec x0){
+	vec r(x0.getLen());
+	vec p(x0.getLen());
+	r = b - A*x0;
+	
+	return r;
+}

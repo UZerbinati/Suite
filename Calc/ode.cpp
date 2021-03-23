@@ -237,29 +237,30 @@ std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::Euler(doubl
 	return std::make_tuple(domain,timesteps);
 
 }
-std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::RK(double h,int order){
+std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::RK(double h,int RKOrder){
 	/*	| MEMENTO | We here implement a Runge-Kutta method to 
 	 *	            solves first order ODE.
 	 *	f: T x R -> T
 	 *	m(t)dy/dx = f(y,t)
-	 *	m(t)dy = f(y,t)dx 
-	 *	dy = dx*f(u(t)+0.5f(u(t)))
+	 *	dy = dx*f(u(t)+0.5dxf(u(t)))
 	 */
 	vec data(I0[0].getLen());
 	vec x0 (I0[0].getLen());
 	x0 = I0[0];
 	assert(form == "NORMAL" && "Error: ODE must be in normal form.");
-	assert(order == 1 && "Error: Euler method only work for dy/dt.");	
+	assert(order == 1 && "Error: RK method only work for dy/dt.");	
 	int N = int((b-a)/h);
 	std::vector<vec> timesteps = {x0};	
 	std::vector<double> domain = {a};
 	std::vector<vec> P;
+	std::vector<vec> k1;
 	spmat A (I0[0].getLen(),I0[0].getLen());
 	for (int i=1;i<N;i++){
 		A = M(i*h);
 		P = {timesteps[i-1]};
-		if (order==1){
-			data = ( K(P,i*h) + K(P,i*h)*0.5*h ) * h;
+		if (RKOrder==2){
+			k1 = {timesteps[i-1]+K(P,i*h)*0.5*h};
+			data = K(k1,(i+0.5)*h)*h;
 		}
 		if (solver == "JACOBI"){
 			data = Jacobi(A,data,x0,solverIT,1e-8);
