@@ -96,10 +96,27 @@ vec SOR(spmat &A,vec b,vec guess,double omega,int itmax,double eps){
 	}
 	return x;
 }
-vec ConjugateGradient(spmat &A,vec b,vec x0){
+vec ConjugateGradient(spmat &A,vec b,vec x0,int itmax,double eps){
+	vec x(x0.getLen());
 	vec r(x0.getLen());
 	vec p(x0.getLen());
+	vec q(x0.getLen());
+	double alpha;
+	double beta;
+	double rold;
+
 	r = b - A*x0;
-	
-	return r;
+	p = r;
+	x = x0;
+	for (int k=0; k < itmax; k++){
+		q = A*p;
+		alpha = (r*r)/(p*q);
+		x = x + p*alpha;
+		rold = r*r;
+		r = r - q*alpha;
+		if( ResidualStop(A,b,x,eps) == 1){ break; }
+		beta = (r*r)/rold;
+		p = r + p*beta;
+	}	
+	return x;
 }

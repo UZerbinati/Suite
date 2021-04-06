@@ -113,6 +113,8 @@ std::tuple<std::vector<double>,std::vector<vec>> LinearODE<vec>::ScalarEuler(dou
 			x = Jacobi(M,data,x0,solverIT,1e-8);
 		}else if(solver == "GAUBSEIDEL"){
 			x = GauBSeidel(M,data,x0,solverIT,1e-8);
+		}else if(solver == "CG"){
+			x = ConjugateGradient(M,data,x0,solverIT,1e-8);
 		}	
 		timesteps.push_back(timesteps[i-1]+x*(h));
 		domain.push_back(a+i*h);
@@ -229,6 +231,8 @@ std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::Euler(doubl
 			data = Jacobi(A,data,x0,solverIT,1e-8);
 		}else if(solver == "GAUBSEIDEL"){
 			data = GauBSeidel(A,data,x0,solverIT,1e-8);
+		}else if(solver == "CG"){
+			data = ConjugateGradient(A,data,x0,solverIT,1e-8);
 		}	
 		timesteps.push_back(timesteps[i-1]+data);
 		domain.push_back(a+i*h);
@@ -266,6 +270,8 @@ std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::RK(double h
 			data = Jacobi(A,data,x0,solverIT,1e-8);
 		}else if(solver == "GAUBSEIDEL"){
 			data = GauBSeidel(A,data,x0,solverIT,1e-8);
+		}else if(solver == "CG"){
+			data = ConjugateGradient(A,data,x0,solverIT,1e-8);
 		}	
 		timesteps.push_back(timesteps[i-1]+data);
 		domain.push_back(a+i*h);
