@@ -206,6 +206,41 @@ template <class T> std::tuple<std::vector<double>, std::vector<T>> NonLinearODE<
 	return std::make_tuple(domain,timesteps);
 
 }
+std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::ImplicitEuler(double h, int fixIT){
+	/*	| MEMENTO | Euler method only solves first order ODE.
+	 *	f: T x R -> T
+	 *	m(t)dy/dx = f(y,t)
+	 *	m(t)dy = f(y,t)dx 
+	 *	dy = (dx/m(t))*f(y,t)
+	 */
+	vec data(I0[0].getLen());
+	vec x0 (I0[0].getLen());
+	x0 = I0[0];
+	assert(form == "NORMAL" && "Error: ODE must be in normal form.");
+	assert(order == 1 && "Error: Euler method only work for dy/dt.");	
+	int N = int((b-a)/h);
+	std::vector<vec> timesteps = {x0};	
+	std::vector<double> domain = {a};
+	std::vector<vec> P;
+	spmat A (I0[0].getLen(),I0[0].getLen());
+	for (int i=1;i<N;i++){
+		A = M(i*h);
+		P = {timesteps[i-1]};
+		data = K(P,i*h)*h;
+		if (solver == "JACOBI"){
+			data = Jacobi(A,data,x0,solverIT,1e-8);
+		}else if(solver == "GAUBSEIDEL"){
+			data = GauBSeidel(A,data,x0,solverIT,1e-8);
+		}else if(solver == "CG"){
+			data = ConjugateGradient(A,data,x0,solverIT,1e-8);
+		}	
+		timesteps.push_back(timesteps[i-1]+data);
+		domain.push_back(a+i*h);
+	}
+	timesteps[0] = I0[0];
+	return std::make_tuple(domain,timesteps);
+
+}
 std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::Euler(double h){
 	/*	| MEMENTO | Euler method only solves first order ODE.
 	 *	f: T x R -> T
@@ -235,6 +270,59 @@ std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::Euler(doubl
 			data = ConjugateGradient(A,data,x0,solverIT,1e-8);
 		}	
 		timesteps.push_back(timesteps[i-1]+data);
+		domain.push_back(a+i*h);
+	}
+	timesteps[0] = I0[0];
+	return std::make_tuple(domain,timesteps);
+
+}
+std::tuple<std::vector<double>, std::vector<vec>> NonLinearODE<vec>::SympEuler(double h){
+	/*	| MEMENTO | Euler method only solves first order ODE.
+	 *	f: T x R -> T
+	 *	m(t)dy/dx = f(y,t)
+	 *	m(t)dy = f(y,t)dx 
+	 *	dy = (dx/m(t))*f(y,t)
+	 */
+	vec data(I0[0].getLen());
+	vec x0 (I0[0].getLen());
+	x0 = I0[0];
+	data = I0[0];
+	assert(form == "NORMAL" && "Error: ODE must be in normal form.");
+	assert(order == 1 && "Error: Euler method only work for dy/dt.");	
+	int N = int((b-a)/h);
+	std::vector<vec> timesteps = {x0};	
+	std::vector<double> domain = {a};
+	std::vector<vec> P;
+	spmat A (I0[0].getLen(),I0[0].getLen());
+
+	for (int i=1;i<N;i++){
+		A = M(i*h);
+		P = {timesteps[i-1]};
+		for (int k=1;k<I0[0].getLen();k++){
+			auto implf = [i,P,k,h,K=this->K](double xi) { 
+				std::cout << "i: "<< i << ", k: "<< k << std::endl;
+				std::vector<vec> Q;
+				Q = P;
+				Q[0].setData(xi,k-1);	
+				std::cout << "xi: " << xi << std::endl;
+				std::cout << "Q: " << Q[0].toString() << std::endl;
+				std::cout << "f("<<xi<<")"<< xi-P[0].getData(k-1)-K(Q,i*h).getData(k-1)*h << std::endl;
+				return xi-P[0].getData(k-1)-K(Q,i*h).getData(k-1)*h;
+			};	
+			data.setData(AutoNewton(implf,0.1*h,data.getData(k-1),20,1e-8,1),k-1);
+			//data.setData(K(P,i*h).getData(k-1)*h,k-1);
+			
+		}
+		data.setData(timesteps[i-1].getData(I0[0].getLen()-1)+K(P,i*h).getData(I0[0].getLen()-1)*h,I0[0].getLen()-1);
+		//data = K(P,i*h)*h;
+		if (solver == "JACOBI"){
+			data = Jacobi(A,data,x0,solverIT,1e-8);
+		}else if(solver == "GAUBSEIDEL"){
+			data = GauBSeidel(A,data,x0,solverIT,1e-8);
+		}else if(solver == "CG"){
+			data = ConjugateGradient(A,data,x0,solverIT,1e-8);
+		}	
+		timesteps.push_back(data);
 		domain.push_back(a+i*h);
 	}
 	timesteps[0] = I0[0];

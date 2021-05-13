@@ -10,3 +10,4 @@
 #include "Calc/ode.hpp"
 #include "Calc/fd.hpp"
 #include "Calc/quadrature.hpp"
+#include "Calc/root.hpp"

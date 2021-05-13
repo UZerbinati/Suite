@@ -63,6 +63,75 @@ spmat FiniteDifference::LaplaceOp(BC bc){
 			}
 		}
 
+	}else if (bc.get_Type() == "NONE"){	
+		if (bc.getDim()[0] == 1 and bc.getDim()[1]==1){
+			M(1,1) = -2/(mesh.getSize(0)*mesh.getSize(1));
+			K = {1,2};
+			M.setItem(K.data(),K.size(),1.0/(mesh.getSize(0)*mesh.getSize(1)));
+			for (int k=1;k < len;k++){
+				K = {k,k-1};
+				M.setItem(K.data(),K.size(),1.0/(mesh.getSize(k-1)*mesh.getSize(k)));
+				M(k,k) = -2/(mesh.getSize(k-1)*mesh.getSize(k));
+				K = {k,k+1};
+				M.setItem(K.data(),K.size(),1.0/(mesh.getSize(k-1)*mesh.getSize(k)));
+			}
+			K = {len,len-1};
+			M.setItem(K.data(),K.size(),1.0/(mesh.getSize(len-1)*mesh.getSize(len)));
+			M(len,len) = -2/(mesh.getSize(len-1)*mesh.getSize(len));
+			return M;
+		}else if(bc.getDim()[0] == 2 and bc.getDim()[1]==1){
+			if (mesh.getType()=="SQUARE-UNIFORM"){
+				M.empty();
+				double h;
+				double x;
+				double y;
+				std::vector <double> P;
+				int L;
+
+				L = sqrt(len);
+				h = mesh.getSize(0);
+
+				for (int k=0;k < len;k++){
+					x = mesh.getContainer()[0]+h*(k%L);
+					y = mesh.getContainer()[2]+h*(floor(k/L));
+					P = {x,y};
+					std::cout << "(" << k%L << "," << floor(k/L) << ")->("<<x<<","<<y<<")" << std::endl;
+					if (bc.getGeo().eval(P)<-(1.0+(1/mesh.getElementNumber()))/L){
+						K = {k+1,k};
+						M.setItem(K.data(),K.size(),1.0/(h*h));
+						M(k+1,k+1) = -4.0/(h*h);
+						K = {k+1,k+2};
+						M.setItem(K.data(),K.size(),1.0/(h*h));
+						if (k+1+L < len){
+							K = {k+1,k+1+L};
+							M.setItem(K.data(),K.size(),1.0/(h*h));
+						}
+						if (k+1-L > 1){
+							K = {k+1,k+1-L};
+							M.setItem(K.data(),K.size(),1.0/(h*h));
+						}
+					}else if (bc.getGeo().eval(P)>(1.0+(1/mesh.getElementNumber()))/L){
+					}else{
+						K = {k+1,k};
+						M.setItem(K.data(),K.size(),1.0/(h*h));
+						M(k+1,k+1) = -4.0/(h*h);
+						K = {k+1,k+2};
+						M.setItem(K.data(),K.size(),1.0/(h*h));
+						if (k+1+L < len){
+							K = {k+1,k+1+L};
+							M.setItem(K.data(),K.size(),1.0/(h*h));
+						}
+						if (k+1-L > 1){
+							K = {k+1,k+1-L};
+							M.setItem(K.data(),K.size(),1.0/(h*h));
+						}
+					}
+				}
+
+				return M;
+			}
+		}
+
 	}
 }
 spmat FiniteDifference::ReactionOp(BC bc, MeshFunction f){

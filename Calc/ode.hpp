@@ -110,6 +110,8 @@ template <> class NonLinearODE<vec>
 		void setSolver(string stype, int sIT);
 		void setCoefficients(std::function<spmat(double)> m,std::function<vec(std::vector<vec>,double)> k);
 		std::tuple<std::vector<double>,std::vector<vec>> Euler(double h);
+		std::tuple<std::vector<double>,std::vector<vec>> ImplicitEuler(double h,int fixIT);
+		std::tuple<std::vector<double>,std::vector<vec>> SympEuler(double h);
 		std::tuple<std::vector<double>,std::vector<vec>> RK(double h,int order);
 
 };
